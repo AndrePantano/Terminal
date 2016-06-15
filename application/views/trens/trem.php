@@ -87,81 +87,126 @@
 			</div>
 		</div>	
 
-		<!-- COLAPSE OPERAÇÃO -->
+		<!-- CABECALHO OPERAÇÃO -->
 		<div class="row">
-			<div class="col-sm-12">
-				<div class="panel-group" id="accordion1" role="tablist" aria-multiselectable="true">
-				  
-				  	<div class="panel panel-default">
-						<div class="panel-heading" role="tab" id="headingOperacoes">
-							<div class="row">
-								<div class="col-sm-6">
-									<h4 class="panel-title">
-									<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion1" href="#collapseOperacoes" aria-expanded="false" aria-controls="collapseOperacoes">
-									  <i class="fa fa-cogs"></i> Operações
-									</a>
-									</h4>
-								</div>
-								<?php if(count($operacoes) < 2): ?>
-									<div class="col-sm-6">
-										<button type="button" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#modal_add_operacao">Adicionar</button>
-									</div>
-								<?php endif;?>
-							</div>
-						</div>
-						<div id="collapseOperacoes" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOperacoes">
-							<div class="panel-body">
-								
-									<p class="text-muted"><i>Para editar clique na linha</i></p>
+			<div class="col-sm-12 page-header">
+				<h3><i class="fa fa-cogs"></i> Operações</h3>
+			<?php if(count($operacoes) < 2): ?>
+				<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal_add_operacao">Adicionar</button>
+			<?php endif;?>
+			</div>
+		</div>
 
-							</div>
-							
-							<?php if(count($operacoes) > 0): ?>
-								<table class="table table-hover table-condensed table-bordered">
-									<thead>
-										<tr>
-											<th>Linha</th>
-											<th>Qtde</th>
-											<th title="Encoste na Linha">Encoste na Linha</th>
-											<th title="Início da Operação">Início da Oper.</th>
-											<th title="Parada Inversão">P. Inver.</th>
-											<th title="Parada Manobras">P. Man.</th>
-											<th title="Parada Rodoviária">P. Rod.</th>
-											<th title="Parada Diversos">P. Div.</th>
-											<th title="Parada Troca de Turno">P. T. T.</th>
-											<th title="Parada Refições">P. Ref</th>
-											<th title="Término da Operação">Término da Oper.</th>
-											<th title="Envio Manifesto">Env. Manisfesto</th>
-											<th title="Faturamento All">Faturamento All</th>
-										</tr>
-									</thead>
-									<tbody>
-										<?php foreach ($operacoes as $operacao): ?>
-											<tr>
-												<td><?= $operacao['numero_linha']?></td>
-												<td><?= $operacao['qtd_vagoes']?></td>
-												<td><?= is_null($operacao['encoste_linha'])?"":date("d/m/Y H:i",strtotime($operacao['encoste_linha']))?></td>
-												<td><?= is_null($operacao['inicio_operacao'])?"":date("d/m/Y H:i",strtotime($operacao['inicio_operacao']))?></td>
-												<td><?= is_null($operacao['parada_inversao'])?"":date("H:i",strtotime($operacao['parada_inversao']))?></td>
-												<td><?= is_null($operacao['parada_manobras'])?"":date("H:i",strtotime($operacao['parada_manobras']))?></td>
-												<td><?= is_null($operacao['parada_rodoviaria'])?"":date("H:i",strtotime($operacao['parada_rodoviaria']))?></td>
-												<td><?= is_null($operacao['parada_diversos'])?"":date("H:i",strtotime($operacao['parada_diversos']))?></td>
-												<td><?= is_null($operacao['parada_troca_turno'])?"":date("H:i",strtotime($operacao['parada_troca_turno']))?></td>
-												<td><?= is_null($operacao['parada_refeicao'])?"":date("H:i",strtotime($operacao['parada_refeicao']))?></td>
-												<td><?= is_null($operacao['termino_operacao'])?"":date("d/m/Y H:i",strtotime($operacao['termino_operacao']))?></td>
-												<td><?= is_null($operacao['envio_manifesto'])?"":date("d/m/Y H:i",strtotime($operacao['envio_manifesto']))?></td>
-												<td><?= is_null($operacao['faturamento_all'])?"":date("d/m/Y H:i",strtotime($operacao['faturamento_all']))?></td>
-											</tr>
-										<?php endforeach; ?>
-									</tbody>						
-								</table>
-							<?php else: ?>
-								<p>Não há operações lançadas</p>
-							<?php endif; ?>
-						</div>
+		<div class="row">
+			<?php if(count($operacoes) > 0): ?>
+				<?php foreach ($operacoes as $operacao): ?>
+
+					<div class="col-sm-6">
+						 <div class="panel panel-default">
+						 	<div class="panel-heading">
+							 	<div class="row">
+									<div class="col-sm-6">
+							 			<h3 class="panel-title"><i class="fa fa-cog"></i> Operação da Linha <?= $operacao['numero_linha']?></h3>
+									</div>
+									<div class="col-sm-6">
+										<button type="button" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#modal_edit_trem">Editar Dados</button>
+									</div>
+								</div>
+						 	</div>
+						 	<div class="panel-body">
+								<div class="col-sm-12">
+									<label class="col-sm-6" style="text-align:right;">Quantidade de Vagões:</label>
+									<span class="col-sm-6"><?= $operacao['qtd_vagoes']?></span>
+								</div>
+								<div class="col-sm-12">
+									<label class="col-sm-6" style="text-align:right;">Encoste na Linha:</label>
+									<span class="col-sm-6"><?= is_null($operacao['encoste_linha'])?"&nbsp;":date("d/m/Y H:i",strtotime($operacao['encoste_linha']))?></span>
+								</div>
+								<div class="col-sm-12">
+									<label class="col-sm-6" style="text-align:right;">Início da Operação:</label>
+									<span class="col-sm-6"><?= is_null($operacao['inicio_operacao'])?"&nbsp;":date("d/m/Y H:i",strtotime($operacao['inicio_operacao']))?></span>
+								</div>
+								<div class="col-sm-12">
+									<label class="col-sm-6" style="text-align:right;">Término da Operação:</label>
+									<span class="col-sm-6"><?= is_null($operacao['termino_operacao'])?"&nbsp;":date("d/m/Y H:i",strtotime($operacao['termino_operacao']))?></span>
+								</div>
+								<div class="col-sm-12">
+									<label class="col-sm-6" style="text-align:right;">Envio do Manisfesto:</label>
+									<span class="col-sm-6"><?= is_null($operacao['envio_manifesto'])?"&nbsp;":date("d/m/Y H:i",strtotime($operacao['envio_manifesto']))?></span>
+								</div>
+								<div class="col-sm-12">
+									<label class="col-sm-6" style="text-align:right;">Faturamento All:</label>
+									<span class="col-sm-6"><?= is_null($operacao['faturamento_all'])?"&nbsp;":date("d/m/Y H:i",strtotime($operacao['faturamento_all']))?></span>
+								</div>
+						 	</div>
+						 	<div class="panel-footer"></div>
+						 </div>
 					</div>
 
+				<?php endforeach; ?>
+			
+			<?php else: ?>
+				<div class="col-sm-12">
+					<p>Não há operações lançadas</p>
 				</div>
+			<?php endif; ?>
+		</div>
+
+		<div class="row">
+			<?php if(count($operacoes) > 0): ?>
+				<?php foreach ($operacoes as $operacao): ?>
+
+					<div class="col-sm-6">
+						 <div class="panel panel-default">
+						 	<div class="panel-heading">
+							 	<div class="row">
+									<div class="col-sm-6">
+							 			<h3 class="panel-title"><i class="fa fa-hand-paper-o"></i> Paradas da Linha <?= $operacao['numero_linha']?></h3>
+									</div>
+									<div class="col-sm-6">
+										<button type="button" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#modal_add_parada">Adicionar</button>
+									</div>
+								</div>
+						 	</div>
+						 	<div class="panel-body">
+								<div class="col-sm-12">
+									<table class="table">
+										<thead>
+											<tr>
+												<th>Tipo</th>
+												<th>Data Início</th>
+												<th>Data Fim</th>
+												<th>Duração</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>&nbsp;</td>
+												<td>&nbsp;</td>
+												<td>&nbsp;</td>
+												<td>&nbsp;</td>
+											</tr>
+										</tbody>
+
+									</table>
+								</div>
+						 	</div>
+						 	<div class="panel-footer"></div>
+						 </div>
+					</div>
+				<?php endforeach; ?>
+			
+			<?php else: ?>
+				<div class="col-sm-12">
+					<p>Não há operações lançadas</p>
+				</div>
+			<?php endif; ?>
+		</div>
+
+		<!-- CABECALHO OPERAÇÃO -->
+		<div class="row">
+			<div class="col-sm-12 page-header">
+				<h3><i class="fa fa-info-circle"></i> Outras Informações</h3>			
 			</div>
 		</div>
 
