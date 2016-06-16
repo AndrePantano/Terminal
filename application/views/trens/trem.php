@@ -102,7 +102,7 @@
 				<?php foreach ($operacoes as $operacao): ?>
 
 					<div class="col-sm-6">
-						 <div class="panel panel-default">
+						<div class="panel panel-default">
 						 	<div class="panel-heading">
 							 	<div class="row">
 									<div class="col-sm-6">
@@ -173,7 +173,7 @@
 													</thead>
 													<tbody>
 														<?php 
-
+														$segundos = 0;
 														foreach ($operacao["paradas"] as $parada): ?>
 															<tr>
 																<td><?= $parada["nome_tipo_parada"]?></td>
@@ -181,14 +181,25 @@
 																<td><?= date("d/m/Y H:i",strtotime($parada["fim_parada"]))?></td>
 																<td><?= $parada["duracao"] ?></td>
 															</tr>
-														<?php endforeach; 
+														<?php 
+															list($h,$m) = explode(":",$parada["duracao"]);
+															$segundos += $h * 3600;
+															$segundos += $m * 60;
 
+														endforeach; 
+
+														$horas = floor( $segundos / 3600 ); //converte os segundos em horas e arredonda caso nescessario
+														$segundos %= 3600; // pega o restante dos segundos subtraidos das horas
+														$minutos = floor( $segundos / 60 );//converte os segundos em minutos e arredonda caso nescessario
+														$segundos %= 60;// pega o restante dos segundos subtraidos dos minutos
+														$horas < 10? $horas = "0".$horas:$horas;
+														$minutos < 10? $minutos = "0".$minutos:$minutos;
 														?>
 													</tbody>
 													<tfoot>
 														<tr>
-															<th colspan="3">Total de Paradas</th>
-															<th>&nbsp;</th>
+															<th colspan="3">Duração Total de Paradas</th>
+															<th><?=$horas.":".$minutos?></th>
 														</tr>
 													</tfoot>
 
@@ -215,9 +226,7 @@
 			<?php endif; ?>
 		</div>
 
-		
-
-		<!-- CABECALHO OUTRAS OPERAÇÕES -->
+		<!-- CABECALHO OUTRAS INFORMAÇÕES -->
 		<div class="row">
 			<div class="col-sm-12 page-header">
 				<h3><i class="fa fa-info-circle"></i> Outras Informações</h3>			
