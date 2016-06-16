@@ -172,26 +172,25 @@
 														</tr>
 													</thead>
 													<tbody>
-														<?php foreach ($operacao["paradas"] as $parada): ?>
+														<?php 
+
+														foreach ($operacao["paradas"] as $parada): ?>
 															<tr>
 																<td><?= $parada["nome_tipo_parada"]?></td>
 																<td><?= date("d/m/Y H:i",strtotime($parada["inicio_parada"]))?></td>
 																<td><?= date("d/m/Y H:i",strtotime($parada["fim_parada"]))?></td>
-																<?php 
-																	$data1 = $parada["inicio_parada"];
-																	$data2 = $parada["fim_parada"];
-
-																	$unix_data1 = strtotime($data1);
-																	$unix_data2 = strtotime($data2);
-
-																	$nHoras   = ($unix_data2 - $unix_data1) / 3600;
-																	$nMinutos = (($unix_data2 - $unix_data1) % 3600) / 60;
-																	$duracao = sprintf('%02d:%02d', $nHoras, $nMinutos);	
-																?>
-																<td><?= $duracao ?></td>
+																<td><?= $parada["duracao"] ?></td>
 															</tr>
-														<?php endforeach; ?>
+														<?php endforeach; 
+
+														?>
 													</tbody>
+													<tfoot>
+														<tr>
+															<th colspan="3">Total de Paradas</th>
+															<th>&nbsp;</th>
+														</tr>
+													</tfoot>
 
 												</table>
 											</div>
