@@ -166,6 +166,14 @@ class Trens extends CI_Controller {
       $this->load->model("Operacao_Model");
       $operacoes = $this->Operacao_Model->all("idtrem = ".$trem["idtrem"],null);
 
+      $this->load->model("Parada_Model");
+
+      // CARREGA AS PARADAS DAS OPERAÇÕES
+      foreach ($operacoes as $k => $operacao) {
+        $str_query = "SELECT * FROM tb_parada JOIN tb_tipo_parada USING(idtipo_parada) WHERE idoperacao = ".$operacao["idoperacao"];
+        $operacoes[$k]["paradas"] = $this->Parada_Model->query($str_query);
+      }
+
       $dados = array(
         "main" => array("name" => "Trem ".$trem["prefixo_trem"],"icon" => "fa fa-train"),
         "trem" => $trem,

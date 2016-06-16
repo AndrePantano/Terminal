@@ -114,86 +114,99 @@
 								</div>
 						 	</div>
 						 	<div class="panel-body">
-								<div class="col-sm-12">
-									<label class="col-sm-6" style="text-align:right;">Quantidade de Vagões:</label>
-									<span class="col-sm-6"><?= $operacao['qtd_vagoes']?></span>
-								</div>
-								<div class="col-sm-12">
-									<label class="col-sm-6" style="text-align:right;">Encoste na Linha:</label>
-									<span class="col-sm-6"><?= is_null($operacao['encoste_linha'])?"&nbsp;":date("d/m/Y H:i",strtotime($operacao['encoste_linha']))?></span>
-								</div>
-								<div class="col-sm-12">
-									<label class="col-sm-6" style="text-align:right;">Início da Operação:</label>
-									<span class="col-sm-6"><?= is_null($operacao['inicio_operacao'])?"&nbsp;":date("d/m/Y H:i",strtotime($operacao['inicio_operacao']))?></span>
-								</div>
-								<div class="col-sm-12">
-									<label class="col-sm-6" style="text-align:right;">Término da Operação:</label>
-									<span class="col-sm-6"><?= is_null($operacao['termino_operacao'])?"&nbsp;":date("d/m/Y H:i",strtotime($operacao['termino_operacao']))?></span>
-								</div>
-								<div class="col-sm-12">
-									<label class="col-sm-6" style="text-align:right;">Envio do Manisfesto:</label>
-									<span class="col-sm-6"><?= is_null($operacao['envio_manifesto'])?"&nbsp;":date("d/m/Y H:i",strtotime($operacao['envio_manifesto']))?></span>
-								</div>
-								<div class="col-sm-12">
-									<label class="col-sm-6" style="text-align:right;">Faturamento All:</label>
-									<span class="col-sm-6"><?= is_null($operacao['faturamento_all'])?"&nbsp;":date("d/m/Y H:i",strtotime($operacao['faturamento_all']))?></span>
-								</div>
-						 	</div>
-						 	<div class="panel-footer"></div>
-						 </div>
-					</div>
 
-				<?php endforeach; ?>
-			
-			<?php else: ?>
-				<div class="col-sm-12">
-					<p>Não há operações lançadas</p>
-				</div>
-			<?php endif; ?>
-		</div>
+							 	<div class="row">
+									<div class="col-sm-12">
+										<label class="col-sm-6" style="text-align:right;">Quantidade de Vagões:</label>
+										<span class="col-sm-6"><?= $operacao['qtd_vagoes']?></span>
+									</div>
+									<div class="col-sm-12">
+										<label class="col-sm-6" style="text-align:right;">Encoste na Linha:</label>
+										<span class="col-sm-6"><?= is_null($operacao['encoste_linha'])?"&nbsp;":date("d/m/Y H:i",strtotime($operacao['encoste_linha']))?></span>
+									</div>
+									<div class="col-sm-12">
+										<label class="col-sm-6" style="text-align:right;">Início da Operação:</label>
+										<span class="col-sm-6"><?= is_null($operacao['inicio_operacao'])?"&nbsp;":date("d/m/Y H:i",strtotime($operacao['inicio_operacao']))?></span>
+									</div>
+									<div class="col-sm-12">
+										<label class="col-sm-6" style="text-align:right;">Término da Operação:</label>
+										<span class="col-sm-6"><?= is_null($operacao['termino_operacao'])?"&nbsp;":date("d/m/Y H:i",strtotime($operacao['termino_operacao']))?></span>
+									</div>
+									<div class="col-sm-12">
+										<label class="col-sm-6" style="text-align:right;">Envio do Manisfesto:</label>
+										<span class="col-sm-6"><?= is_null($operacao['envio_manifesto'])?"&nbsp;":date("d/m/Y H:i",strtotime($operacao['envio_manifesto']))?></span>
+									</div>
+									<div class="col-sm-12">
+										<label class="col-sm-6" style="text-align:right;">Faturamento All:</label>
+										<span class="col-sm-6"><?= is_null($operacao['faturamento_all'])?"&nbsp;":date("d/m/Y H:i",strtotime($operacao['faturamento_all']))?></span>
+									</div>
+							 	</div>
+							 </div>
+						</div>
 
-		<div class="row">
-			<?php if(count($operacoes) > 0): ?>
-				<?php foreach ($operacoes as $operacao): ?>
-
-					<div class="col-sm-6">
-						 <div class="panel panel-default">
+						<div class="panel panel-default">
 						 	<div class="panel-heading">
 							 	<div class="row">
 									<div class="col-sm-6">
 							 			<h3 class="panel-title"><i class="fa fa-hand-paper-o"></i> Paradas da Linha <?= $operacao['numero_linha']?></h3>
 									</div>
 									<div class="col-sm-6">
-										<button type="button" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#modal_add_parada">Adicionar</button>
+										<button type="button" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#modal_add_parada">Adicionar Parada</button>
 									</div>
 								</div>
 						 	</div>
 						 	<div class="panel-body">
-								<div class="col-sm-12">
-									<table class="table">
-										<thead>
-											<tr>
-												<th>Tipo</th>
-												<th>Data Início</th>
-												<th>Data Fim</th>
-												<th>Duração</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td>&nbsp;</td>
-												<td>&nbsp;</td>
-												<td>&nbsp;</td>
-												<td>&nbsp;</td>
-											</tr>
-										</tbody>
 
-									</table>
+							 	<div class="row">
+
+									<?php if(count($operacao["paradas"]) > 0): ?>
+
+											<div class="col-sm-12">
+												<table class="table table-condensed table-hover table-striped">
+													<thead>
+														<tr>
+															<th>Tipo</th>
+															<th>Data Início</th>
+															<th>Data Fim</th>
+															<th>Duração</th>
+														</tr>
+													</thead>
+													<tbody>
+														<?php foreach ($operacao["paradas"] as $parada): ?>
+															<tr>
+																<td><?= $parada["nome_tipo_parada"]?></td>
+																<td><?= date("d/m/Y H:i",strtotime($parada["inicio_parada"]))?></td>
+																<td><?= date("d/m/Y H:i",strtotime($parada["fim_parada"]))?></td>
+																<?php 
+																	$data1 = $parada["inicio_parada"];
+																	$data2 = $parada["fim_parada"];
+
+																	$unix_data1 = strtotime($data1);
+																	$unix_data2 = strtotime($data2);
+
+																	$nHoras   = ($unix_data2 - $unix_data1) / 3600;
+																	$nMinutos = (($unix_data2 - $unix_data1) % 3600) / 60;
+																	$duracao = sprintf('%02d:%02d', $nHoras, $nMinutos);	
+																?>
+																<td><?= $duracao ?></td>
+															</tr>
+														<?php endforeach; ?>
+													</tbody>
+
+												</table>
+											</div>
+									
+									<?php else: ?>
+										<div class="col-sm-12">
+											<p>Não há paradas lançadas</p>
+										</div>
+									<?php endif; ?>
 								</div>
+
 						 	</div>
-						 	<div class="panel-footer"></div>
-						 </div>
+						</div>
 					</div>
+
 				<?php endforeach; ?>
 			
 			<?php else: ?>
@@ -203,7 +216,9 @@
 			<?php endif; ?>
 		</div>
 
-		<!-- CABECALHO OPERAÇÃO -->
+		
+
+		<!-- CABECALHO OUTRAS OPERAÇÕES -->
 		<div class="row">
 			<div class="col-sm-12 page-header">
 				<h3><i class="fa fa-info-circle"></i> Outras Informações</h3>			
