@@ -6,8 +6,10 @@
   color: #FFF;
 }
 .dataTable tbody tr {
-  background-color: #CCC;
-  color: #000;
+  //background-color: #CCC;
+  background-color:#3e444c;
+  //background-color:#c8c8c8;
+  color: #FFF;
 }
 .dataTable tbody tr:hover {
   //background-color: #F00;
