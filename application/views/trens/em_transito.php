@@ -6,7 +6,8 @@
 	<script src="<?php echo base_url('assets/data-table/js/dataTables.bootstrap.js')?>"></script>
 	<link rel="stylesheet" href="<?php echo base_url('assets/data-table/css/jquery.dataTables.css')?>"/>
 	<link rel="stylesheet" href="<?php echo base_url('assets/data-table/css/dataTables.bootstrap.css')?>"/>
-
+	<link rel="stylesheet" href="<?php echo base_url('assets/data-table/css/andre_dataTable.css')?>"/>
+	
 	<script type="text/javascript">
 		$("document").ready(function(){
 			$('#table').DataTable({

@@ -115,7 +115,7 @@
 								</div>
 							</div>						
 						</div>
-						<div id="collapsePrevisao" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingPrevisao">
+						<div id="collapsePrevisao" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingPrevisao">
 								
 							<?php if($previsoes && count($previsoes) > 0): ?>								
 								<table class="table table-hover">
@@ -150,7 +150,7 @@
 			<div class="col-sm-12 page-header">
 				<h3><i class="fa fa-cogs"></i> Operações</h3>
 			<?php if(count($operacoes) < 2): ?>
-				<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal_add_operacao">Adicionar</button>
+				<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal_add_operacao">Adicionar outra operação</button>
 			<?php endif;?>
 			</div>
 		</div>
@@ -313,7 +313,7 @@
 								</div>
 							</div>
 						</div>
-						<div id="collapseNota" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingNota">
+						<div id="collapseNota" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingNota">
 								
 								<?php if($notas && count($notas) > 0):?>
 									<table class="table table-hover">

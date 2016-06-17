@@ -3,6 +3,7 @@ table.dataTable {
   margin-top: 6px !important;
   margin-bottom: 6px !important;
   max-width: none !important;
+
 }
 table.dataTable td,
 table.dataTable th {
@@ -130,6 +131,7 @@ div.dataTables_scrollBody table thead .sorting_desc:after {
 div.dataTables_scrollBody table tbody tr:first-child th,
 div.dataTables_scrollBody table tbody tr:first-child td {
   border-top: none;
+  background: #000;
 }
 
 div.dataTables_scrollFoot table {

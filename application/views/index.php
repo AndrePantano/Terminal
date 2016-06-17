@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <?php $this->load->view("layout/head"); ?>  
-<title>Início</title>
+<title>Terminal</title>
 </head>
 <body>
   <div class="container"> 
@@ -24,7 +24,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <div class="col-sm-12">
         <div class="jumbotron">
             <h1>Ol&aacute;! Seja bem vindo.</h1>
-            <p class="text-muted">A planilha do terminal está ganhando um novo formato.</p>
+            <p class="text-muted">A planilha de Movimentação dos trens da CESARI está em novo formato.</p>
+            <p class="text-muted">Trens, Previsões de Chegada, Operações e Notas de Atividades estão mais simples de inserir e localizar.</p>
         </div>
     </div>
 </div>
