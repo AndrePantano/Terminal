@@ -150,7 +150,7 @@ class Trens extends CI_Controller {
     
     $dados = array();
     // CARREGA O TREM
-    $trem = $this->Trem_Model->find($id);
+    $trem = $this->Trem_Model->trem($id);
     
     if($trem){
 

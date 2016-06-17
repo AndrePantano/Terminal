@@ -48,7 +48,7 @@
 
 		<!-- TREM -->
 		<div class="row">
-			<div class="col-sm-12">
+			<div class="col-sm-6">
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<div class="row">
@@ -65,25 +65,83 @@
 							</div>
 					</div>
 					<div class="panel-body">
-						<div class="col-sm-3">
-							<label>Prefixo do Trem:</label></br>
-							<span><?=$trem["prefixo_trem"]?></span>
+						<div class="row">
+
+							<div class="col-sm-12">
+								<label class="col-sm-6" style="text-align:right;">Prefixo do Trem:</label>
+								<span class="col-sm-6"><?=$trem["prefixo_trem"]?></span>
+							</div>
+							<div class="col-sm-12">
+								<label class="col-sm-6" style="text-align:right;">Previsão de Chegada</label>
+							 	<span class="col-sm-6"><?= $previsoes && count($previsoes) > 0?date("d/m/Y H:i",strtotime($previsoes[count($previsoes)-1]["data_previsao"])):""?></span>
+							</div>
+							<div class="col-sm-12">
+								<label class="col-sm-6" style="text-align:right;">Data Chegada:</label>
+								<?=is_null($trem["chegada_trem"])?"<span class='col-sm-6 text-danger'>Aguardando Dados</span>":"<span class='col-sm-6'>".date("d/m/Y H:i",strtotime($trem["chegada_trem"]))."</span>"?>
+							</div>
+							<div class="col-sm-12">
+								<label class="col-sm-6" style="text-align:right;">Data Partida:</label>
+								<?=is_null($trem["partida_trem"])?"<span class='col-sm-6 text-danger'>Aguardando Dados</span>":"<span class='col-sm-6'>".date("d/m/Y H:i",strtotime($trem["partida_trem"]))."</span>"?>
+							</div>
+							<div class="col-sm-12">
+								<label class="col-sm-6" style="text-align:right;">Tempo de Permanência:</label>
+								<?=is_null($trem["chegada_trem"]) || is_null($trem["partida_trem"])?"<span class='col-sm-6 text-danger'>Aguardando Dados</span>":$trem["dias"]." dias, ".$trem["horas"]." hs e ".$trem["minutos"]." min."?>
+							</div>
+							<div class="col-sm-12">
+								<hr></hr>							
+								<p class="text-muted">O tempo de permanência é calculado somente quando há data de chegada e partida do trem.</p>
+							</div>
 						</div>
-						<div class="col-sm-3">
-							<label>Previsão de Chegada</label><br/>
-						 	<span><?= $previsoes && count($previsoes) > 0?date("d/m/Y H:i",strtotime($previsoes[count($previsoes)-1]["data_previsao"])):""?></span>
-						</div>
-						<div class="col-sm-3">
-							<label>Data Chegada:</label><br/>
-							<?=is_null($trem["chegada_trem"])?"<h4><span class='label label-danger'>Aguardando</span></h4>":date("d/m/Y H:i",strtotime($trem["chegada_trem"]))?>
-						</div>
-						<div class="col-sm-3">
-							<label>Data Partida:</label><br/>
-							<?=is_null($trem["partida_trem"])?"<h4><span class='label label-danger'>Aguardando</span></h4>":date("d/m/Y H:i",strtotime($trem["partida_trem"]))?>
-						</div>
-						
 					</div>
 				</div>	
+			</div>
+
+			<!-- COLAPSE PREVISAO -->
+			<div class="col-sm-6">
+				<div class="panel-group" id="accordion2" role="tablist" aria-multiselectable="true">
+
+					<div class="panel panel-default">
+						<div class="panel-heading" role="tab" id="headingPrevisao">
+							<div class="row">
+								<div class="col-sm-6">
+									<h4 class="panel-title">
+										<a role="button" data-toggle="collapse" data-parent="#accordion2" href="#collapsePrevisao" aria-expanded="true" aria-controls="collapsePrevisao">
+										  <i class="fa fa-clock-o"></i> Previsões de Chegada <span class="badge"><?=$previsoes?count($previsoes):0?></span>
+										</a>
+									</h4>
+								</div>
+								<div class="col-sm-6">
+									<button type="button" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#modal_add_previsao">Adicionar</button>
+								</div>
+							</div>						
+						</div>
+						<div id="collapsePrevisao" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingPrevisao">
+								
+							<?php if($previsoes && count($previsoes) > 0): ?>								
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th width="150px">Previsão</th>
+											<th>Motivo</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php foreach ($previsoes as $previsao): ?>
+											<tr>
+												<td><?= date("d/m/Y H:i",strtotime($previsao['data_previsao']))?></td>
+												<td><?= $previsao['motivo_previsao']?></td>
+											</tr>
+										<?php endforeach; ?>
+									</tbody>						
+								</table>
+							<?php else: ?>
+								<p>Não há previsões lançadas</p>
+							<?php endif; ?>
+													
+						</div>
+					</div>
+					
+				</div>
 			</div>
 		</div>	
 
@@ -159,7 +217,7 @@
 
 							 	<div class="row">
 
-									<?php if(count($operacao["paradas"]) > 0): ?>
+									<?php if($operacao["paradas"] && count($operacao["paradas"]) > 0): ?>
 
 											<div class="col-sm-12">
 												<table class="table table-condensed table-hover table-striped">
@@ -234,56 +292,10 @@
 		</div>
 
 		<div class="row">
-			<!-- COLAPSE PREVISAO -->
-			<div class="col-sm-6">
-				<div class="panel-group" id="accordion2" role="tablist" aria-multiselectable="true">
-
-					<div class="panel panel-default">
-						<div class="panel-heading" role="tab" id="headingPrevisao">
-							<div class="row">
-								<div class="col-sm-6">
-									<h4 class="panel-title">
-										<a role="button" data-toggle="collapse" data-parent="#accordion2" href="#collapsePrevisao" aria-expanded="true" aria-controls="collapsePrevisao">
-										  <i class="fa fa-clock-o"></i> Previsões de Chegada <span class="badge"><?=$previsoes?count($previsoes):0?></span>
-										</a>
-									</h4>
-								</div>
-								<div class="col-sm-6">
-									<button type="button" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#modal_add_previsao">Adicionar</button>
-								</div>
-							</div>						
-						</div>
-						<div id="collapsePrevisao" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingPrevisao">
-								
-							<?php if($previsoes && count($previsoes) > 0): ?>								
-								<table class="table table-hover">
-									<thead>
-										<tr>
-											<th width="150px">Previsão</th>
-											<th>Motivo</th>
-										</tr>
-									</thead>
-									<tbody>
-										<?php foreach ($previsoes as $previsao): ?>
-											<tr>
-												<td><?= date("d/m/Y H:i",strtotime($previsao['data_previsao']))?></td>
-												<td><?= $previsao['motivo_previsao']?></td>
-											</tr>
-										<?php endforeach; ?>
-									</tbody>						
-								</table>
-							<?php else: ?>
-								<p>Não há previsões lançadas</p>
-							<?php endif; ?>
-													
-						</div>
-					</div>
-					
-				</div>
-			</div>
+			
 		
 			<!-- COLAPSE NOTAS -->
-			<div class="col-sm-6">
+			<div class="col-sm-12">
 				<div class="panel-group" id="accordion3" role="tablist" aria-multiselectable="true">
 				  	
 					<div class="panel panel-default">
