@@ -7,6 +7,7 @@ class Nota extends CI_Controller {
 
     parent::__construct();  
 
+    $this->load->model("Trem_Model");
     $this->load->model("Nota_Model");
     
   }
@@ -33,7 +34,6 @@ class Nota extends CI_Controller {
         // RETORNA A MENSAGEM
         $this->session->set_flashdata([
           'class' => 'success',
-          'title' => 'Parabéns!',
           'content' => 'Nota adicionada com sucesso'
         ]);        
            
@@ -42,7 +42,6 @@ class Nota extends CI_Controller {
         // RETORNA O ERRO
         $this->session->set_flashdata([
           'class' => 'danger',
-          'title' => 'Atenção!',
           'content' => 'Ocorreum erro na validação dos dados.<br/>'.validation_errors()
         ]);
         
@@ -52,7 +51,6 @@ class Nota extends CI_Controller {
       // RETORNA O ERRO
       $this->session->set_flashdata([
         'class' => 'danger',
-        'title' => 'Atenção!',
         'content' => 'É preciso preencher o formulário para criar uma nota'
       ]); 
 
@@ -66,6 +64,32 @@ class Nota extends CI_Controller {
     $this->form_validation->set_rules('idtrem','Trem','required');    
     $this->form_validation->set_rules('texto','Texto','required');       
     return $this->form_validation->run();
+  }
+
+  public function trem($id){
+    
+    $dados = array();
+    // CARREGA O TREM
+    $trem = $this->Trem_Model->trem($id);
+    
+    if($trem){
+
+      // CARREGA AS NOTAS
+      $this->load->model("Nota_Model");
+      $notas = $this->Nota_Model->all("idtrem = ".$trem["idtrem"],null);
+
+      $dados = array(
+        "main" => array("name" => "Trem ".$trem["prefixo_trem"],"icon" => "fa fa-train"),
+        "trem" => $trem,
+        "notas" => $notas,
+      );
+      $this->load->view('nota/trem',$dados);
+    }else{
+      $dados["heading"] = "Registro Inexistente.";
+      $dados["message"] = "Este registro não se encontra em nossa base de dados!";
+      $this->load->view('errors/cli/error_404',$dados);
+    }   
+    
   }
 
 }

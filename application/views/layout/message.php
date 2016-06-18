@@ -1,19 +1,24 @@
 <?php if($this->session->flashdata("class")): ?>
-				
-	<div class="row" id="mensagem">
-		<div class="col-sm-12">
-			<div class="alert alert-<?=$this->session->flashdata('class')?> alert-dismissible" role="alert">
-			  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-			  	<span aria-hidden="true">&times;</span>
-			  </button>
-			  <h3><?=$this->session->flashdata('title')?></h3> 
-			  <p><?=$this->session->flashdata('content')?><p>
-			</div>
-		</div>
-	</div>
+
+	<div class="modal fade" tabindex="-1" role="dialog" id="modal_session">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Mensagem</h4>
+				</div>
+				<div class="modal-body text-<?=$this->session->flashdata('class')?>">
+					<p><?=$this->session->flashdata('content')?><p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
 
 	<script>
-	$('#mensagem').delay(3000).fadeOut('slow');
-	</script>	
-	
+		$('#modal_session').modal({show:true});
+	</script>
+
 <?php endif;?>	

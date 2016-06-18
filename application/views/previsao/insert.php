@@ -13,7 +13,7 @@
             <div class="form-group">
               <label class="col-md-4 control-label" for="previsao">Previsão:</label>  
               <div class="col-md-8">
-                <input id="previsao" name="previsao" type="datetime-local" class="form-control input-md" required="">
+                <input name="previsao" type="datetime-local" class="form-control input-md" required="">
                 <span class="help-block">Informe a data de chegada prevista deste Trem.</span>  
               </div>
             </div>

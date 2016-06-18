@@ -6,11 +6,50 @@ class Operacao extends CI_Controller {
   public function __construct(){  
 
     parent::__construct();  
-
+    $this->load->model("Trem_Model");
     $this->load->model("Operacao_Model");
     
   }
-     
+  
+  public function trem($id){
+    
+    $dados = array();
+    // CARREGA O TREM
+    $trem = $this->Trem_Model->trem($id);
+    
+    if($trem){
+      
+      // CARREGA AS OPERAÇÕES
+      $this->load->model("Operacao_Model");
+      $operacoes = $this->Operacao_Model->all("idtrem = ".$trem["idtrem"],null);
+
+      // CARREGA OS TIPOS DE PARADAS
+      $this->load->model("TipoParada_Model");
+      $tipos_paradas = $this->TipoParada_Model->all();
+
+      // CARREGA AS PARADAS DAS OPERAÇÕES
+      $this->load->model("Parada_Model");
+      foreach ($operacoes as $k => $operacao) {
+        $str_query = "SELECT *, DATE_FORMAT(TIMEDIFF(fim_parada,inicio_parada),'%H:%i') as duracao FROM tb_parada JOIN tb_tipo_parada USING(idtipo_parada) WHERE idoperacao = ".$operacao["idoperacao"];
+        $operacoes[$k]["paradas"] = $this->Parada_Model->query($str_query);
+      }
+
+      $dados = array(
+        "main" => array("name" => "Trem ".$trem["prefixo_trem"],"icon" => "fa fa-train"),
+        "trem" => $trem,
+        "operacoes" => $operacoes,
+        "tipos_paradas" => $tipos_paradas
+      );
+
+      $this->load->view('operacao/trem',$dados);
+
+    }else{
+      $dados["heading"] = "Registro Inexistente.";
+      $dados["message"] = "Este registro não se encontra em nossa base de dados!";
+      $this->load->view('errors/cli/error_404',$dados);
+    }   
+    
+  }
   public function create(){
     
     $idtrem = $this->input->post("idtrem");
@@ -46,7 +85,6 @@ class Operacao extends CI_Controller {
         // RETORNA A MENSAGEM
         $this->session->set_flashdata([
           'class' => 'success',
-          'title' => 'Parabéns!',
           'content' => 'Operação adicionada com sucesso'
         ]);        
            
@@ -55,7 +93,6 @@ class Operacao extends CI_Controller {
         // RETORNA O ERRO
         $this->session->set_flashdata([
           'class' => 'danger',
-          'title' => 'Atenção!',
           'content' => 'Ocorreum erro na validação dos dados.<br/>'.validation_errors()
         ]);
         
@@ -65,17 +102,16 @@ class Operacao extends CI_Controller {
       // RETORNA O ERRO
       $this->session->set_flashdata([
         'class' => 'danger',
-        'title' => 'Atenção!',
         'content' => 'É preciso preencher o formulário para criar uma previsão'
       ]); 
 
     }
 
-    redirect("trens/trem/".$idtrem);
+    redirect("operacao/trem/".$idtrem);
     
   }
 
-   public function update(){
+  public function update(){
     
     $idtrem = $this->input->post("idtrem");
     
@@ -111,7 +147,6 @@ class Operacao extends CI_Controller {
         // RETORNA A MENSAGEM
         $this->session->set_flashdata([
           'class' => 'success',
-          'title' => 'Parabéns!',
           'content' => 'Operação atualizada com sucesso'
         ]);        
            
@@ -120,7 +155,6 @@ class Operacao extends CI_Controller {
         // RETORNA O ERRO
         $this->session->set_flashdata([
           'class' => 'danger',
-          'title' => 'Atenção!',
           'content' => 'Ocorreum erro na validação dos dados.<br/>'.validation_errors()
         ]);
         
@@ -130,7 +164,6 @@ class Operacao extends CI_Controller {
       // RETORNA O ERRO
       $this->session->set_flashdata([
         'class' => 'danger',
-        'title' => 'Atenção!',
         'content' => 'É preciso preencher o formulário para criar uma previsão'
       ]); 
 

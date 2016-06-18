@@ -34,15 +34,13 @@ class Parada extends CI_Controller {
           // RETORNA A MENSAGEM
           $this->session->set_flashdata([
             'class' => 'success',
-            'title' => 'Parabéns!',
             'content' => 'Parada adicionada com sucesso'
           ]);
         }else{
           // RETORNA A MENSAGEM
           $this->session->set_flashdata([
             'class' => 'warning',
-            'title' => 'Ops!',
-            'content' => 'Data início da parada é maior ou igual a data final. Informe um período válido.'
+            'content' => 'Data início da parada é maior ou igual a data final.<br>Informe um período válido.'
           ]);        
            
         }      
@@ -52,7 +50,6 @@ class Parada extends CI_Controller {
         // RETORNA O ERRO
         $this->session->set_flashdata([
           'class' => 'danger',
-          'title' => 'Atenção!',
           'content' => 'Ocorreum erro na validação dos dados.<br/>'.validation_errors()
         ]);
         
@@ -62,13 +59,12 @@ class Parada extends CI_Controller {
       // RETORNA O ERRO
       $this->session->set_flashdata([
         'class' => 'danger',
-        'title' => 'Atenção!',
         'content' => 'É preciso preencher o formulário para criar uma previsão'
       ]); 
 
     }
 
-    redirect("trens/trem/".$idtrem);
+    redirect("operacao/trem/".$idtrem);
     
   }
 
@@ -108,7 +104,6 @@ class Parada extends CI_Controller {
         // RETORNA A MENSAGEM
         $this->session->set_flashdata([
           'class' => 'success',
-          'title' => 'Parabéns!',
           'content' => 'Operação atualizada com sucesso'
         ]);        
            
@@ -117,7 +112,6 @@ class Parada extends CI_Controller {
         // RETORNA O ERRO
         $this->session->set_flashdata([
           'class' => 'danger',
-          'title' => 'Atenção!',
           'content' => 'Ocorreum erro na validação dos dados.<br/>'.validation_errors()
         ]);
         
@@ -127,13 +121,12 @@ class Parada extends CI_Controller {
       // RETORNA O ERRO
       $this->session->set_flashdata([
         'class' => 'danger',
-        'title' => 'Atenção!',
         'content' => 'É preciso preencher o formulário para criar uma previsão'
       ]); 
 
     }
 
-    redirect("trens/trem/".$idtrem);
+    redirect("operacao/trem/".$idtrem);
     
   }
 

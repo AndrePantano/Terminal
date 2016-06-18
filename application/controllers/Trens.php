@@ -116,8 +116,7 @@ class Trens extends CI_Controller {
         // RETORNA A MENSAGEM
         $this->session->set_flashdata([
           'class' => 'success',
-          'title' => 'Parabéns!',
-          'content' => 'Trem adicionado com sucesso'
+          'content' => 'Operação com sucesso'
         ]);
           
         return $this->trem($idtrem);
@@ -127,7 +126,6 @@ class Trens extends CI_Controller {
         // RETORNA O ERRO
         $this->session->set_flashdata([
           'class' => 'danger',
-          'title' => 'Atenção!',
           'content' => 'Ocorreum erro na validação dos dados.<br/>'.validation_errors()
         ]);
         
@@ -138,7 +136,6 @@ class Trens extends CI_Controller {
       // RETORNA O ERRO
       $this->session->set_flashdata([
         'class' => 'danger',
-        'title' => 'Atenção!',
         'content' => 'É preciso preencher o formulário para criar um anúncio'
       ]); 
 
@@ -224,7 +221,6 @@ class Trens extends CI_Controller {
         // RETORNA A MENSAGEM
         $this->session->set_flashdata([
           'class' => 'success',
-          'title' => 'Parabéns!',
           'content' => 'Dados atualizados com sucesso'
         ]);
           
@@ -235,7 +231,6 @@ class Trens extends CI_Controller {
         // RETORNA O ERRO
         $this->session->set_flashdata([
           'class' => 'danger',
-          'title' => 'Atenção!',
           'content' => 'Ocorreum erro na validação dos dados.<br/>'.validation_errors()
         ]);
         
@@ -246,7 +241,6 @@ class Trens extends CI_Controller {
       // RETORNA O ERRO
       $this->session->set_flashdata([
         'class' => 'danger',
-        'title' => 'Atenção!',
         'content' => 'Nenhum formulário foi recebido!'
       ]); 
 

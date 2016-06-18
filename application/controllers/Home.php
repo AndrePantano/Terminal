@@ -9,8 +9,6 @@ class Home extends CI_Controller {
 
     parent::__construct();  
 
-    $this->load->model("Previsao_Model");
-    
   }
      
   public function index(){

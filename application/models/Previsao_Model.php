@@ -13,6 +13,12 @@ class Previsao_Model extends CI_Model {
 		return $this->db->insert($this->table,$data);
 	}
 
+	// ATUALIZA OS DADOS NA TABELA
+	public function update($dados){
+		$this->db->where(array("idprevisao" => $dados["idprevisao"]));
+		return $this->db->update($this->table,$dados);
+	}
+
 	public function all($where,$joins){
 		$this->db->select("*");
 		$this->db->from($this->table);
