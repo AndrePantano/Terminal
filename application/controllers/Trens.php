@@ -97,8 +97,9 @@ class Trens extends CI_Controller {
         $operacao = array(
           "idtrem" => $idtrem,
           "qtd_vagoes" => $this->input->post("quantidade"),
-          "numero_linha" => 1
+          "numero_linha" => 1 
         );
+
         $this->load->model("Operacao_Model");
         $this->Operacao_Model->create($operacao);
         
@@ -162,13 +163,16 @@ class Trens extends CI_Controller {
       $this->load->model("Nota_Model");
       $notas = $this->Nota_Model->all("idtrem = ".$trem["idtrem"],null);
 
-       // CARREGA AS OPERAÇÕES
+      // CARREGA AS OPERAÇÕES
       $this->load->model("Operacao_Model");
       $operacoes = $this->Operacao_Model->all("idtrem = ".$trem["idtrem"],null);
 
-      $this->load->model("Parada_Model");
+      // CARREGA OS TIPOS DE PARADAS
+      $this->load->model("TipoParada_Model");
+      $tipos_paradas = $this->TipoParada_Model->all();
 
       // CARREGA AS PARADAS DAS OPERAÇÕES
+      $this->load->model("Parada_Model");
       foreach ($operacoes as $k => $operacao) {
         $str_query = "SELECT *, DATE_FORMAT(TIMEDIFF(fim_parada,inicio_parada),'%H:%i') as duracao FROM tb_parada JOIN tb_tipo_parada USING(idtipo_parada) WHERE idoperacao = ".$operacao["idoperacao"];
         $operacoes[$k]["paradas"] = $this->Parada_Model->query($str_query);
@@ -179,7 +183,8 @@ class Trens extends CI_Controller {
         "trem" => $trem,
         "previsoes" => $previsoes,
         "notas" => $notas,
-        "operacoes" => $operacoes
+        "operacoes" => $operacoes,
+        "tipos_paradas" => $tipos_paradas
       );
       $this->load->view('trens/trem',$dados);
     }else{

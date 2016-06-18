@@ -15,11 +15,7 @@
 				paging: true,
         		select: true
 			});
-
-			$("#table > tbody > tr").hover(function(){
-				$(this).css("cursor","pointer");
-			});
-
+			
 		});
 	</script>
 	<title><?=$main['name']?></title>

@@ -1,33 +1,25 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<?php $this->load->view("layout/head"); ?> 
-	<script src="<?php echo base_url('assets/data-table/js/data-table-o.js')?>"></script>
-	<script src="<?php echo base_url('assets/data-table/js/dataTables.bootstrap.js')?>"></script>
-	<link rel="stylesheet" href="<?php echo base_url('assets/data-table/css/jquery.dataTables.css')?>"/>
-	<link rel="stylesheet" href="<?php echo base_url('assets/data-table/css/dataTables.bootstrap.css')?>"/>
-
+	<?php $this->load->view("layout/head"); ?> 	
+	<title><?=$main['name']?></title>
 	<script type="text/javascript">
-		$("document").ready(function(){
-			$('#table').DataTable({
-				//order: [[ 2, "asc" ]],
-				paging: true,
-        		select: true
+		$(document).ready(function(){
+			$(".add-parada").click(function(){
+				$(".idoperacao").val($(this).data("operacao"));
+				$(".numero_linha").text($(this).data("linha"));
+				$("#modal_add_parada").modal().hide();
 			});
-
-			$("#table > tbody > tr").hover(function(){
-				$(this).css("cursor","pointer");
-			});
-
 		});
 	</script>
-	<title><?=$main['name']?></title>
 </head>
 <body>
 	<div class="container">
 
 		<?php $this->load->view("trens/edit"); ?>
+		<?php $this->load->view("operacao/edit"); ?>
 		<?php $this->load->view("previsao/insert"); ?>
+		<?php $this->load->view("parada/insert"); ?>
 		<?php $this->load->view("operacao/insert"); ?>
 		<?php $this->load->view("nota/insert"); ?>
 		<?php $this->load->view("layout/nav_bar"); ?>
@@ -167,7 +159,7 @@
 							 			<h3 class="panel-title"><i class="fa fa-cog"></i> Operação da Linha <?= $operacao['numero_linha']?></h3>
 									</div>
 									<div class="col-sm-6">
-										<button type="button" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#modal_edit_trem">Editar Dados</button>
+										<button type="button" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#modal_edit_operacao<?=$operacao['numero_linha']?>">Editar Dados</button>
 									</div>
 								</div>
 						 	</div>
@@ -202,79 +194,86 @@
 							 </div>
 						</div>
 
-						<div class="panel panel-default">
-						 	<div class="panel-heading">
-							 	<div class="row">
-									<div class="col-sm-6">
-							 			<h3 class="panel-title"><i class="fa fa-hand-paper-o"></i> Paradas da Linha <?= $operacao['numero_linha']?></h3>
-									</div>
-									<div class="col-sm-6">
-										<button type="button" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#modal_add_parada">Adicionar Parada</button>
-									</div>
-								</div>
-						 	</div>
-						 	<div class="panel-body">
-
-							 	<div class="row">
-
-									<?php if($operacao["paradas"] && count($operacao["paradas"]) > 0): ?>
-
-											<div class="col-sm-12">
-												<table class="table table-condensed table-hover table-striped">
-													<thead>
-														<tr>
-															<th>Tipo</th>
-															<th>Data Início</th>
-															<th>Data Fim</th>
-															<th>Duração</th>
-														</tr>
-													</thead>
-													<tbody>
-														<?php 
-														$segundos = 0;
-														foreach ($operacao["paradas"] as $parada): ?>
-															<tr>
-																<td><?= $parada["nome_tipo_parada"]?></td>
-																<td><?= date("d/m/Y H:i",strtotime($parada["inicio_parada"]))?></td>
-																<td><?= date("d/m/Y H:i",strtotime($parada["fim_parada"]))?></td>
-																<td><?= $parada["duracao"] ?></td>
-															</tr>
-														<?php 
-															list($h,$m) = explode(":",$parada["duracao"]);
-															$segundos += $h * 3600;
-															$segundos += $m * 60;
-
-														endforeach; 
-
-														$horas = floor( $segundos / 3600 ); //converte os segundos em horas e arredonda caso nescessario
-														$segundos %= 3600; // pega o restante dos segundos subtraidos das horas
-														$minutos = floor( $segundos / 60 );//converte os segundos em minutos e arredonda caso nescessario
-														$segundos %= 60;// pega o restante dos segundos subtraidos dos minutos
-														$horas < 10? $horas = "0".$horas:$horas;
-														$minutos < 10? $minutos = "0".$minutos:$minutos;
-														?>
-													</tbody>
-													<tfoot>
-														<tr>
-															<th colspan="3">Duração Total de Paradas</th>
-															<th><?=$horas.":".$minutos?></th>
-														</tr>
-													</tfoot>
-
-												</table>
-											</div>
-									
-									<?php else: ?>
-										<div class="col-sm-12">
-											<p>Não há paradas lançadas</p>
+						<div class="panel-group" id="parada<?= $operacao['numero_linha']?>" role="tablist" aria-multiselectable="true">
+							
+							<div class="panel panel-default">
+							 	<div class="panel-heading" id="heading_parada<?= $operacao['numero_linha']?>">
+								 	<div class="row">
+										<div class="col-sm-6">
+								 			<h3 class="panel-title">
+												<a class="collapsed" role="button" data-toggle="collapse" data-parent="#parada<?= $operacao['numero_linha']?>" href="#collapseparada<?= $operacao['numero_linha']?>" aria-expanded="false" aria-controls="collapseparada<?= $operacao['numero_linha']?>">
+									 				<i class="fa fa-hand-paper-o"></i> Paradas da Linha <?= $operacao['numero_linha']?>
+												</a>
+								 			</h3>
 										</div>
-									<?php endif; ?>
-								</div>
+										<div class="col-sm-6">
+											<button type="button" class="btn btn-default btn-sm pull-right add-parada" data-operacao="<?= $operacao['idoperacao']?>" data-linha="<?= $operacao['numero_linha']?>">Adicionar Parada</button>
+										</div>
+									</div>
+							 	</div>
 
-						 	</div>
+								<div id="collapseparada<?= $operacao['numero_linha']?>" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading_parada<?= $operacao['numero_linha']?>">
+							 		<div class="panel-body">
+									 	<div class="row">
+
+											<?php if($operacao["paradas"] && count($operacao["paradas"]) > 0): ?>
+
+													<div class="col-sm-12">
+														<table class="table table-condensed table-hover table-striped">
+															<thead>
+																<tr>
+																	<th>Tipo</th>
+																	<th>Data Início</th>
+																	<th>Data Fim</th>
+																	<th>Duração</th>
+																</tr>
+															</thead>
+															<tbody>
+																<?php 
+																$segundos = 0;
+																foreach ($operacao["paradas"] as $parada): ?>
+																	<tr>
+																		<td><?= $parada["nome_tipo_parada"]?></td>
+																		<td><?= date("d/m/Y H:i",strtotime($parada["inicio_parada"]))?></td>
+																		<td><?= date("d/m/Y H:i",strtotime($parada["fim_parada"]))?></td>
+																		<td><?= $parada["duracao"] ?></td>
+																	</tr>
+																<?php 
+																	list($h,$m) = explode(":",$parada["duracao"]);
+																	$segundos += $h * 3600;
+																	$segundos += $m * 60;
+
+																endforeach; 
+
+																$horas = floor( $segundos / 3600 ); //converte os segundos em horas e arredonda caso nescessario
+																$segundos %= 3600; // pega o restante dos segundos subtraidos das horas
+																$minutos = floor( $segundos / 60 );//converte os segundos em minutos e arredonda caso nescessario
+																$segundos %= 60;// pega o restante dos segundos subtraidos dos minutos
+																$horas < 10? $horas = "0".$horas:$horas;
+																$minutos < 10? $minutos = "0".$minutos:$minutos;
+																?>
+															</tbody>
+															<tfoot>
+																<tr>
+																	<th colspan="3">Duração Total de Paradas</th>
+																	<th><?=$horas.":".$minutos?></th>
+																</tr>
+															</tfoot>
+
+														</table>
+													</div>
+											
+											<?php else: ?>
+												<div class="col-sm-12">
+													<p>Não há paradas lançadas</p>
+												</div>
+											<?php endif; ?>
+										</div>
+									</div>
+							 	</div>
+							</div>
 						</div>
 					</div>
-
 				<?php endforeach; ?>
 			
 			<?php else: ?>
@@ -293,7 +292,6 @@
 
 		<div class="row">
 			
-		
 			<!-- COLAPSE NOTAS -->
 			<div class="col-sm-12">
 				<div class="panel-group" id="accordion3" role="tablist" aria-multiselectable="true">
