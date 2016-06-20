@@ -24,4 +24,8 @@ class Parada_Model extends CI_Model {
 		}
 	}
 
+	public function delete($coluna, $dado){
+		$this->db->where($coluna,$dado);
+		$this->db->delete($this->table);
+	}
 }

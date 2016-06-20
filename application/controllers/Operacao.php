@@ -169,7 +169,55 @@ class Operacao extends CI_Controller {
 
     }
 
-    redirect("trens/trem/".$idtrem);
+    redirect("operacao/trem/".$idtrem);
+    
+  }
+
+  public function delete(){
+    
+    $idtrem = $this->input->post("idtrem");
+    
+    if($this->input->post()){
+
+      // VALIDA O FORMULÁRIO
+      if($this->validar_formulario_delete()){
+        
+        // INSERE A PREVISAO COM A DATA PASSADA
+        $idoperacao = $this->input->post("idoperacao");
+
+        
+        $this->load->model("Parada_Model");
+        $this->Parada_Model->delete('idoperacao',$idoperacao);
+        
+        $this->load->model("Operacao_Model");
+        $this->Operacao_Model->delete('idoperacao',$idoperacao);
+
+        // RETORNA A MENSAGEM
+        $this->session->set_flashdata([
+          'class' => 'success',
+          'content' => 'Operação excluída com sucesso'
+        ]);        
+           
+      }else{
+        
+        // RETORNA O ERRO
+        $this->session->set_flashdata([
+          'class' => 'danger',
+          'content' => 'Ocorreum erro na validação dos dados.<br/>'.validation_errors()
+        ]);
+        
+      }
+    
+    }else{
+      // RETORNA O ERRO
+      $this->session->set_flashdata([
+        'class' => 'danger',
+        'content' => 'É preciso preencher o formulário para criar uma previsão'
+      ]); 
+
+    }
+
+    redirect("operacao/trem/".$idtrem);
     
   }
 
@@ -185,6 +233,12 @@ class Operacao extends CI_Controller {
     $this->form_validation->set_rules('idtrem','Id do Trem','required');    
     $this->form_validation->set_rules('linha','Número da Linha','required');    
     $this->form_validation->set_rules('quantidade','Quantidade de Vagões','required');    
+    return $this->form_validation->run();
+  }
+
+  public function validar_formulario_delete(){
+    $this->form_validation->set_rules('idoperacao','Id da Operacao','required');    
+    $this->form_validation->set_rules('idtrem','Id do Trem','required');    
     return $this->form_validation->run();
   }
 

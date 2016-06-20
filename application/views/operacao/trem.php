@@ -5,10 +5,28 @@
 	<title><?=$main['name']?></title>
 	<script type="text/javascript">
 		$(document).ready(function(){
+			
+			// ADICIONA PARADA
 			$(".add-parada").click(function(){
 				$(".idoperacao").val($(this).data("operacao"));
 				$(".numero_linha").text($(this).data("linha"));
 				$("#modal_add_parada").modal().hide();
+			});
+
+			//CHAMA A MODAL DE EXCLUIR
+			$(".btn-del").click(function(){
+				var id = $(this).data("id");
+				$("#modal_edit_operacao"+id).modal().hide();
+				$("#modal_del_operacao"+id).modal({
+					show:true,
+					backdrop:'static'
+				});
+			});
+
+			//CHAMA MODAL EDITAR AO SAIR DA MODAL DE EXCLUIR
+			$(".close-del").click(function(){
+				var id = $(this).data("id");
+				$("#modal_edit_operacao"+id).modal().show();
 			});
 		});
 	</script>
@@ -18,6 +36,7 @@
 
 		<?php $this->load->view("operacao/insert"); ?>
 		<?php $this->load->view("operacao/edit"); ?>
+		<?php $this->load->view("operacao/delete"); ?>
 		<?php $this->load->view("parada/insert"); ?>
 		<?php $this->load->view("layout/nav_bar"); ?>
 		<?php $this->load->view("layout/page_header"); ?>
@@ -47,7 +66,7 @@
 							 			<h3 class="panel-title"><i class="fa fa-cog"></i> Operação da Linha <?= $operacao['numero_linha']?></h3>
 									</div>
 									<div class="col-sm-6">
-										<button type="button" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#modal_edit_operacao<?=$operacao['numero_linha']?>">Editar Dados</button>
+										<button type="button" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#modal_edit_operacao<?=$operacao['idoperacao']?>">Editar Dados</button>
 									</div>
 								</div>
 						 	</div>

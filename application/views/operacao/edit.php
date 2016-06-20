@@ -3,7 +3,8 @@
   foreach ($operacoes as $operacao): 
 ?>
 
-<div class="modal fade" tabindex="-1" role="dialog" id="modal_edit_operacao<?=$operacao['numero_linha']?>">
+<!-- MODAL EDITAR -->
+<div class="modal fade" tabindex="-1" role="dialog" id="modal_edit_operacao<?=$operacao['idoperacao']?>">
   <div class="modal-dialog modal-md">
     
         <form class="form-horizontal" method="post" action="<?=base_url('operacao/update')?>">
@@ -77,6 +78,9 @@
 
           </div>
           <div class="modal-footer">
+            <?php if(count($operacoes) == 2): ?>
+              <button type="button" class="btn btn-default pull-left btn-del" data-id="<?=$operacao['idoperacao']?>">Excluir</button>
+            <?php endif; ?>
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
             <button type="submit" class="btn btn-primary">Salvar</button>
           </div>
@@ -87,6 +91,7 @@
 
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
 
 <?php 
 endforeach;

@@ -36,7 +36,7 @@
 							</div>
 							<div class="col-sm-12">
 								<label class="col-sm-6" style="text-align:right;">Previsão de Chegada</label>
-							 	<span class="col-sm-6"><?= $previsoes && count($previsoes) > 0?date("d/m/Y H:i",strtotime($previsoes[count($previsoes)-1]["data_previsao"])):""?></span>
+							 	<?= $previsoes && count($previsoes) > 0?"<span class='col-sm-6'>".date("d/m/Y H:i",strtotime($previsoes[count($previsoes)-1]["data_previsao"]))."</span>":"<span class='col-sm-6 text-danger'>Aguardando Dados</span>"?></span>
 							</div>
 							<div class="col-sm-12">
 								<label class="col-sm-6" style="text-align:right;">Data Chegada:</label>

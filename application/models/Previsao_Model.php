@@ -40,13 +40,8 @@ class Previsao_Model extends CI_Model {
 		}
 	}
 
-	public function find($id){	
-		$where = "idprevisao = ".$id;
-		$previsoes = $this->all($where,null);
-		if($previsoes){						
-			return $previsoes[0];
-		}else{
-			return false;
-		}
+	public function delete($id){
+		$this->db->where('idprevisao',$id);
+		$this->db->delete($this->table);
 	}
 }

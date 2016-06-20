@@ -8,10 +8,24 @@
 			
 			$("tr").click(function(){
 				var id = $(this).data("id");
-				$("#idprevisao").val(id);
+				$(".idprevisao").val(id);
 				$("#edit_previsao").val($(".data-prev"+id).data("previsao"));
 				$("#edit_motivo").val($(".motivo-prev"+id).text());
+				$("#del_previsao").text($(".data-prev"+id).text());
+				$("#del_motivo").text($(".motivo-prev"+id).text());
 				$("#modal_edit_previsao").modal({show:true});
+			});
+
+			$("#btn-excluir").click(function(){
+				$("#modal_edit_previsao").modal().hide();				
+				$("#modal_del_previsao").modal({
+					show:true,
+					backdrop:'static'
+				});
+			});
+
+			$(".close-del").click(function(){
+				$("#modal_edit_previsao").modal().show();
 			});
 
 		});
@@ -22,6 +36,7 @@
 
 		<?php $this->load->view("previsao/insert"); ?>
 		<?php $this->load->view("previsao/edit"); ?>
+		<?php $this->load->view("previsao/delete"); ?>
 		<?php $this->load->view("layout/nav_bar"); ?>
 		<?php $this->load->view("layout/page_header"); ?>
 		<?php $this->load->view("layout/message"); ?>

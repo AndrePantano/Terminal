@@ -14,6 +14,49 @@ class Previsao extends CI_Controller {
     
   }
   
+  public function delete(){
+    
+    $idtrem = $this->input->post("idtrem");
+    
+    if($this->input->post()){
+
+      // VALIDA O FORMULÁRIO
+      if($this->validar_formulario_delete()){
+        
+        // INSERE A PREVISAO COM A DATA PASSADA
+        $idprevisao = $this->input->post("idprevisao");
+        
+        $this->Previsao_Model->delete($idprevisao);
+
+        // RETORNA A MENSAGEM
+        $this->session->set_flashdata([
+          'class' => 'success',
+          'content' => 'Previsão excluída com sucesso'
+        ]);        
+           
+      }else{
+        
+        // RETORNA O ERRO
+        $this->session->set_flashdata([
+          'class' => 'danger',
+          'content' => 'Ocorreum erro na validação dos dados.<br/>'.validation_errors()
+        ]);
+        
+      }
+    
+    }else{
+      // RETORNA O ERRO
+      $this->session->set_flashdata([
+        'class' => 'danger',
+        'content' => 'É preciso preencher o formulário para criar uma previsão'
+      ]); 
+
+    }
+
+    redirect("previsao/trem/".$idtrem);
+    
+  }
+
   public function update(){
     
     $idtrem = $this->input->post("idtrem");
@@ -123,6 +166,12 @@ class Previsao extends CI_Controller {
     $this->form_validation->set_rules('idoperacao','Operacao','required');    
     $this->form_validation->set_rules('previsao','Previsão','required');   
     $this->form_validation->set_rules('motivo','Motivo','required');       
+    return $this->form_validation->run();
+  }
+
+  public function validar_formulario_delete(){
+    $this->form_validation->set_rules('idtrem','Trem','required');    
+    $this->form_validation->set_rules('idprevisao','previsao','required'); 
     return $this->form_validation->run();
   }
 

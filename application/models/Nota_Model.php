@@ -13,6 +13,17 @@ class Nota_Model extends CI_Model {
 		return $this->db->insert($this->table,$data);
 	}
 
+	// ATUALIZA OS DADOS NA TABELA
+	public function update($dados){
+		$this->db->where(array("idnota" => $dados["idnota"]));
+		return $this->db->update($this->table,$dados);
+	}
+
+	public function delete($id){
+		$this->db->where('idnota',$id);
+		$this->db->delete($this->table);
+	}
+
 	public function all($where,$joins){
 		$this->db->select("*");
 		$this->db->from($this->table);
@@ -34,13 +45,5 @@ class Nota_Model extends CI_Model {
 		}
 	}
 
-	public function find($id){	
-		$where = "idnota = ".$id;
-		$registros = $this->all($where,null);
-		if($registros){						
-			return $registros[0];
-		}else{
-			return false;
-		}
-	}
+
 }

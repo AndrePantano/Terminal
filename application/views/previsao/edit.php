@@ -3,11 +3,11 @@
     
     <form class="form-horizontal" method="post" action="<?=base_url('previsao/update')?>">
       <input type="hidden" name="idtrem" value="<?=$trem['idtrem']?>">
-      <input type="hidden" name="idprevisao" id="idprevisao" value="">
+      <input type="hidden" name="idprevisao" class="idprevisao" value="">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title"><i class="fa fa-plus"></i> Previsão de Chegada</h4>
+            <h4 class="modal-title"><i class="fa fa-edit"></i> Previsão de Chegada</h4>
           </div>
           <div class="modal-body">
 
@@ -29,7 +29,8 @@
 
 
           </div>
-          <div class="modal-footer">
+          <div class="modal-footer">            
+            <button type="button" class="btn btn-default pull-left" id="btn-excluir">Excluir</button>
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
             <button type="submit" class="btn btn-primary">Salvar</button>
           </div>

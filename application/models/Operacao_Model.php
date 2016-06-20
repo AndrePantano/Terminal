@@ -40,14 +40,8 @@ class Operacao_Model extends CI_Model {
 		}
 	}
 
-	public function find($id){	
-		$where = "idoperacao = ".$id;
-		$registros = $this->all($where,null);
-		if($registros){						
-			return $registros[0];
-		}else{
-			return false;
-		}
+	public function delete($coluna, $dado){
+		$this->db->where($coluna,$dado);
+		$this->db->delete($this->table);
 	}
-
 }

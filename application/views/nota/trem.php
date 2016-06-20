@@ -5,11 +5,27 @@
   <title><?=$main['name']?></title>
   <script type="text/javascript">
     $(document).ready(function(){
-      $(".add-parada").click(function(){
-        $(".idoperacao").val($(this).data("operacao"));
-        $(".numero_linha").text($(this).data("linha"));
-        $("#modal_add_parada").modal().hide();
+            
+      $("tr").click(function(){
+        var id = $(this).data("id");
+        $(".idnota").val(id);
+        $("#edit_texto_nota").val($(".texto_nota"+id).text());
+        $("#del_texto_nota").text($(".texto_nota"+id).text());
+        $("#modal_edit_nota").modal({show:true});
       });
+
+      $("#btn-excluir").click(function(){
+        $("#modal_edit_nota").modal().hide();       
+        $("#modal_del_nota").modal({
+          show:true,
+          backdrop:'static'
+        });
+      });
+
+      $(".close-del").click(function(){
+        $("#modal_edit_nota").modal().show();
+      });
+
     });
   </script>
 </head>
@@ -17,6 +33,8 @@
   <div class="container">
 
     <?php $this->load->view("nota/insert"); ?>
+    <?php $this->load->view("nota/edit"); ?>
+    <?php $this->load->view("nota/delete"); ?>
     <?php $this->load->view("layout/nav_bar"); ?>
     <?php $this->load->view("layout/page_header"); ?>
     <?php $this->load->view("layout/message"); ?>
@@ -52,9 +70,9 @@
                       </thead>
                       <tbody>
                         <?php foreach ($notas as $nota): ?>
-                          <tr>
+                          <tr data-id="<?=$nota['idnota']?>">
                             <td><?= date("d/m/Y H:i",strtotime($nota['criacao_nota']))?></td>
-                            <td><?= $nota['texto_nota']?></td>
+                            <td class="texto_nota<?=$nota['idnota']?>"><?= $nota['texto_nota']?></td>
                           </tr>
                         <?php endforeach;?> 
                       </tbody>            
