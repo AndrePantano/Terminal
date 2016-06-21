@@ -46,36 +46,36 @@
 					<div class="panel panel-default">
 						<div class="panel-heading"></div>
 						<div class="panel-body">
-					<?php if(count($trens) > 0 ): ?>				
-					
-							<table class="table table-hover" id="table">
-								<thead>
-									<tr>
-										<th>Cód.</th>
-										<th>Trem</th>
-										<th>Previsão de Chegada</th>
-									</tr>
-								</thead>
-								<tbody>
-									<?php foreach ($trens as $value): ?>
-										<tr onclick="javascript:window.location.href = '<?=base_url('trens/trem/'.$value['idtrem'])?>'" >
-											<td><?= $value['idtrem']?></td>
-											<td><?= $value['prefixo_trem']?></td>
-											<td><?= date("d/m/Y H:i",strtotime($value['data_previsao']))?></td>
-										</tr>
-									<?php endforeach; ?>
-								</tbody>						
-							</table>
-						
-					<?php else: ?>
-						<div class="jumbotron">
-						  <h1>Não há trens neste período!</h1>
-						  <p>Para adicionar um trem, clique no botão abaixo.</p>
-						  <p><a class="btn btn-primary btn-lg" href="<?= base_url('ads/insert') ?>" role="button">Adicionar Trem</a></p>
+							<?php if(count($trens) > 0 ): ?>				
+							
+									<table class="table table-hover" id="table">
+										<thead>
+											<tr>
+												<th>Cód.</th>
+												<th>Trem</th>
+												<th>Previsão de Chegada</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php foreach ($trens as $value): ?>
+												<tr onclick="javascript:window.location.href = '<?=base_url('trens/trem/'.$value['idtrem'])?>'" >
+													<td><?= $value['idtrem']?></td>
+													<td><?= $value['prefixo_trem']?></td>
+													<td><?= date("d/m/Y H:i",strtotime($value['data_previsao']))?></td>
+												</tr>
+											<?php endforeach; ?>
+										</tbody>						
+									</table>
+								
+							<?php else: ?>
+								<div class="jumbotron">
+								  <h1>Não há trens em trânsito!</h1>
+								  <p>Para adicionar um trem, clique no botão abaixo.</p>
+								  <p><a class="btn btn-primary btn-lg" data-target="#modal_add_trem" data-toggle="modal" role="button">Adicionar Trem</a></p>
+								</div>
+							<?php endif; ?>
 						</div>
-					<?php endif; ?>
-					</div>
-					<div class="panel-footer"></div>
+						<div class="panel-footer"></div>
 					</div>
 				</div>
 			</div>

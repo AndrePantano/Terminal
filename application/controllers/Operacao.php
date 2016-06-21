@@ -21,7 +21,7 @@ class Operacao extends CI_Controller {
       
       // CARREGA AS OPERAÇÕES
       $this->load->model("Operacao_Model");
-      $operacoes = $this->Operacao_Model->all("idtrem = ".$trem["idtrem"],null);
+      $operacoes = $this->Operacao_Model->query("SELECT * FROM tb_operacao WHERE idtrem = ".$trem["idtrem"]);
 
       // CARREGA OS TIPOS DE PARADAS
       $this->load->model("TipoParada_Model");
@@ -63,7 +63,6 @@ class Operacao extends CI_Controller {
         $operacao = array(
           "idtrem" => $idtrem,
           "qtd_vagoes" => $this->input->post("quantidade"),
-          "numero_linha" => 2,
           "encoste_linha" => null,
           "inicio_operacao" => null,
           "termino_operacao" => null,
@@ -125,7 +124,6 @@ class Operacao extends CI_Controller {
           "idoperacao" =>  $this->input->post("idoperacao"),
           "idtrem" => $idtrem,
           "qtd_vagoes" => $this->input->post("quantidade"),
-          "numero_linha" =>  $this->input->post("linha"),
           "encoste_linha" => null,
           "inicio_operacao" => null,
           "termino_operacao" => null,
@@ -190,7 +188,8 @@ class Operacao extends CI_Controller {
         $this->Parada_Model->delete('idoperacao',$idoperacao);
         
         $this->load->model("Operacao_Model");
-        $this->Operacao_Model->delete('idoperacao',$idoperacao);
+        $dados = array("idoperacao" => $idoperacao);
+        $this->Operacao_Model->delete($dados);
 
         // RETORNA A MENSAGEM
         $this->session->set_flashdata([
@@ -223,7 +222,6 @@ class Operacao extends CI_Controller {
 
   public function validar_formulario(){
     $this->form_validation->set_rules('idtrem','Id do Trem','required');    
-    $this->form_validation->set_rules('linha','Número da Linha','required');    
     $this->form_validation->set_rules('quantidade','Quantidade de Vagões','required');    
     return $this->form_validation->run();
   }
@@ -231,7 +229,6 @@ class Operacao extends CI_Controller {
   public function validar_formulario_update(){
     $this->form_validation->set_rules('idoperacao','Id da Operacao','required');    
     $this->form_validation->set_rules('idtrem','Id do Trem','required');    
-    $this->form_validation->set_rules('linha','Número da Linha','required');    
     $this->form_validation->set_rules('quantidade','Quantidade de Vagões','required');    
     return $this->form_validation->run();
   }

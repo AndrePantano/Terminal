@@ -19,8 +19,8 @@ class Nota_Model extends CI_Model {
 		return $this->db->update($this->table,$dados);
 	}
 
-	public function delete($id){
-		$this->db->where('idnota',$id);
+	public function delete($dados){
+		$this->db->where($dados);
 		$this->db->delete($this->table);
 	}
 

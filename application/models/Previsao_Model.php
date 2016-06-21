@@ -19,19 +19,9 @@ class Previsao_Model extends CI_Model {
 		return $this->db->update($this->table,$dados);
 	}
 
-	public function all($where,$joins){
-		$this->db->select("*");
-		$this->db->from($this->table);
-				
-		if(!is_null($where) ) $this->db->where($where);		
+	public function query($str_query){
 		
-		if(!is_null($joins) ) {
-			foreach ($joins as $k => $join) {
-				$this->db->join($k,$join);
-			}
-		}
-
-		$query = $this->db->get();
+		$query = $this->db->query($str_query);
 
 		if($query->num_rows()){						
 			return $query->result_array();
@@ -40,8 +30,8 @@ class Previsao_Model extends CI_Model {
 		}
 	}
 
-	public function delete($id){
-		$this->db->where('idprevisao',$id);
+	public function delete($dados){
+		$this->db->where($dados);
 		$this->db->delete($this->table);
 	}
 }

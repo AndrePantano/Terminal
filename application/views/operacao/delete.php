@@ -1,6 +1,7 @@
 <?php 
-  if($operacoes && count($operacoes) > 0):
-  foreach ($operacoes as $operacao): 
+  if($operacoes && count($operacoes) > 1):
+  foreach ($operacoes as $linha => $operacao): 
+  $linha = $linha + 1;
 ?>
 
 <!-- MODAL EXCLUIR -->
@@ -14,12 +15,12 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close close-del" data-id="<?=$operacao['idoperacao']?>" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title"><i class="fa fa-trash"></i> Excluir Operação da Linha <?=$operacao['numero_linha']?>?</h4>
+            <h4 class="modal-title"><i class="fa fa-trash"></i> Excluir Operação da Linha <?=$linha?>?</h4>
           </div>
           <div class="modal-body">
 
             <div class="row">
-              <div class="col-sm12">
+              <div class="col-sm-12">
                 <div class="well well-sm">
                   <div class="row">
                     <div class="col-sm-6">

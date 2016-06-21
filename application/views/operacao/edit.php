@@ -1,6 +1,7 @@
 <?php 
   if($operacoes && count($operacoes) > 0):
-  foreach ($operacoes as $operacao): 
+  foreach ($operacoes as $linha => $operacao): 
+    $linha = $linha + 1;
 ?>
 
 <!-- MODAL EDITAR -->
@@ -10,12 +11,11 @@
         <form class="form-horizontal" method="post" action="<?=base_url('operacao/update')?>">
           <input name="idoperacao" type="hidden" value="<?=$operacao['idoperacao']?>" required="">
           <input name="idtrem" type="hidden" value="<?=$operacao['idtrem']?>" required="">
-          <input name="linha" type="hidden" value="<?=$operacao['numero_linha']?>" required="">
 
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title"><i class="fa fa-edit"></i> Editar Dados da Operação da Linha <?=$operacao['numero_linha']?></h4>
+            <h4 class="modal-title"><i class="fa fa-edit"></i> Editar Dados da Operação da Linha <?=$linha?></h4>
           </div>
           <div class="modal-body">
 

@@ -29,8 +29,10 @@
 
 
           </div>
-          <div class="modal-footer">            
+          <div class="modal-footer">
+          <?php if(count($previsoes) > 1): ?>
             <button type="button" class="btn btn-default pull-left" id="btn-excluir">Excluir</button>
+          <?php endif;?>
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
             <button type="submit" class="btn btn-primary">Salvar</button>
           </div>

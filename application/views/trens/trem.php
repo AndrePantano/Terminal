@@ -8,6 +8,7 @@
 	<div class="container">
 
 		<?php $this->load->view("trens/edit"); ?>
+		<?php $this->load->view("trens/delete"); ?>
 		<?php $this->load->view("layout/nav_bar"); ?>
 		<?php $this->load->view("layout/page_header"); ?>
 		<?php $this->load->view("layout/message"); ?>
@@ -18,7 +19,10 @@
 			<div class="col-sm-6">
 				<h3>
 					<i class="fa fa-train"></i> Trem
-					<button type="button" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#modal_edit_trem">Editar Dados</button>
+					<div class="btn-group pull-right">
+						<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal_del_trem">Excluir Trem</button>
+						<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal_edit_trem">Editar Dados</button>
+					</div>
 				</h3>
 			</div>
 		</div>
@@ -48,7 +52,14 @@
 							</div>
 							<div class="col-sm-12">
 								<label class="col-sm-6" style="text-align:right;">Tempo de Permanência:</label>
-								<?=is_null($trem["chegada_trem"]) || is_null($trem["partida_trem"])?"<span class='col-sm-6 text-danger'>Aguardando Dados</span>":$trem["dias"]." dias, ".$trem["horas"]." hs e ".$trem["minutos"]." min."?>
+								<?php 
+								if(is_null($trem["chegada_trem"]) || is_null($trem["partida_trem"])){
+									echo "<span class='col-sm-6 text-danger'>Aguardando Dados</span>";
+								}else{
+									echo $trem["dias"] > 0 ? $trem["dias"]." dias, ":"";
+									echo $trem["horas"] > 0 ? $trem["horas"]." hs, ":"";
+									echo $trem["minutos"] > 0 ? $trem["minutos"]." min.":"";
+								}?>
 							</div>							
 						</div>
 					</div>

@@ -19,29 +19,17 @@ class Operacao_Model extends CI_Model {
 		return $this->db->update($this->table,$dados);
 	}
 
-	public function all($where,$joins){
-		$this->db->select("*");
-		$this->db->from($this->table);
-				
-		if(!is_null($where) ) $this->db->where($where);		
-		
-		if(!is_null($joins) ) {
-			foreach ($joins as $k => $join) {
-				$this->db->join($k,$join);
-			}
-		}
+	public function delete($dados){
+		$this->db->where($dados);
+		$this->db->delete($this->table);
+	}
 
-		$query = $this->db->get();
-
-		if($query->num_rows()){						
-			return $query->result_array();
+	public function query($query){
+		$registros = $this->db->query($query);
+		if($registros->num_rows()){						
+			return $registros->result_array();
 		}else{
 			return false;
 		}
-	}
-
-	public function delete($coluna, $dado){
-		$this->db->where($coluna,$dado);
-		$this->db->delete($this->table);
 	}
 }

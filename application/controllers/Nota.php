@@ -114,14 +114,11 @@ class Nota extends CI_Controller {
     
     if($this->input->post()){
 
-      // VALIDA O FORMULÁRIO
       if($this->validar_formulario_delete()){
         
-
-        // INSERE A PREVISAO COM A DATA PASSADA
-        $idnota =$this->input->post("idnota");
+        $dados = array("idnota" => $this->input->post("idnota"));
         
-        $this->Nota_Model->delete($idnota);
+        $this->Nota_Model->delete($dados);
 
         // RETORNA A MENSAGEM
         $this->session->set_flashdata([

@@ -13,6 +13,12 @@ class Parada_Model extends CI_Model {
 		return $this->db->insert($this->table,$data);
 	}
 
+	// ATUALIZA OS DADOS NA TABELA
+	public function update($dados){
+		$this->db->where(array("idparada" => $dados["idparada"]));
+		return $this->db->update($this->table,$dados);
+	}
+
 	public function query($str_query){
 		
 		$query = $this->db->query($str_query);
@@ -24,8 +30,8 @@ class Parada_Model extends CI_Model {
 		}
 	}
 
-	public function delete($coluna, $dado){
-		$this->db->where($coluna,$dado);
+	public function delete($dados){
+		$this->db->where($dados);
 		$this->db->delete($this->table);
 	}
 }

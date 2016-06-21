@@ -24,9 +24,8 @@ class Previsao extends CI_Controller {
       if($this->validar_formulario_delete()){
         
         // INSERE A PREVISAO COM A DATA PASSADA
-        $idprevisao = $this->input->post("idprevisao");
-        
-        $this->Previsao_Model->delete($idprevisao);
+        $dados = array("idprevisao" => $this->input->post("idprevisao"));        
+        $this->Previsao_Model->delete($dados);
 
         // RETORNA A MENSAGEM
         $this->session->set_flashdata([
@@ -185,7 +184,7 @@ class Previsao extends CI_Controller {
 
       // CARREGA AS PREVISOES
       $this->load->model("Previsao_Model");
-      $previsoes = $this->Previsao_Model->all("idtrem = ".$trem["idtrem"],null);
+      $previsoes = $this->Previsao_Model->query("SELECT * FROM tb_previsao WHERE idtrem = ".$trem["idtrem"]);
      
       $dados = array(
         "main" => array("name" => "Trem ".$trem["prefixo_trem"],"icon" => "fa fa-train"),

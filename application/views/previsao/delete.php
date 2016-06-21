@@ -1,3 +1,4 @@
+<?php if(count($previsoes) > 1):?>
 <div class="modal fade" tabindex="-1" role="dialog" id="modal_del_previsao">
   <div class="modal-dialog modal-md">
     
@@ -53,4 +54,4 @@
 
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
+<?php endif; ?>
