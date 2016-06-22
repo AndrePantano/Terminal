@@ -1,7 +1,7 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="modal_edit_previsao">
   <div class="modal-dialog">
     
-    <form class="form-horizontal" method="post" action="<?=base_url('previsao/update')?>">
+    <form class="form-horizontal" method="post" action="<?=base_url('previsao_chegada/update')?>">
       <input type="hidden" name="idtrem" value="<?=$trem['idtrem']?>">
       <input type="hidden" name="idprevisao" class="idprevisao" value="">
         <div class="modal-content">
@@ -30,7 +30,7 @@
 
           </div>
           <div class="modal-footer">
-          <?php if(count($previsoes) > 1): ?>
+          <?php if(count($previsoes_chegada) > 1): ?>
             <button type="button" class="btn btn-default pull-left" id="btn-excluir">Excluir</button>
           <?php endif;?>
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>

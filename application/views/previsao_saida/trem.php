@@ -34,9 +34,9 @@
 <body>
 	<div class="container">
 
-		<?php $this->load->view("previsao/insert"); ?>
-		<?php $this->load->view("previsao/edit"); ?>
-		<?php $this->load->view("previsao/delete"); ?>
+		<?php $this->load->view("previsao_saida/insert"); ?>
+		<?php $this->load->view("previsao_saida/edit"); ?>
+		<?php $this->load->view("previsao_saida/delete"); ?>
 		<?php $this->load->view("layout/nav_bar"); ?>
 		<?php $this->load->view("layout/page_header"); ?>
 		<?php $this->load->view("layout/message"); ?>
@@ -46,7 +46,7 @@
 		<!-- CABECALHO -->
 		<div class="row">
 			<div class="col-sm-8">
-				<h3><i class="fa fa-clock-o"></i> Previsões de Chegada
+				<h3><i class="fa fa-clock-o"></i> Previsões de Saída
 					<button type="button" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#modal_add_previsao">Adicionar</button>
 				</h3>
 			</div>
@@ -59,7 +59,7 @@
 											
 					</div>
 					<div class="panel-body">
-						<?php if($previsoes && count($previsoes) > 0): ?>								
+						<?php if($previsoes_saida && count($previsoes_saida) > 0): ?>								
 							<div class="table-responsive">
 								
 								<table class="table table-hover">
@@ -70,7 +70,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										<?php foreach ($previsoes as $previsao): ?>
+										<?php foreach ($previsoes_saida as $previsao): ?>
 											<tr data-id="<?= $previsao['idprevisao']?>">
 												<td class="data-prev<?= $previsao['idprevisao']?>" data-previsao="<?=date('Y-m-d\TH:i',strtotime($previsao['data_previsao']))?>"><?= date("d/m/Y H:i",strtotime($previsao['data_previsao']))?></td>
 												<td class="motivo-prev<?= $previsao['idprevisao']?>"><?= $previsao['motivo_previsao']?></td>

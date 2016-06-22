@@ -1,8 +1,8 @@
-<?php if(count($previsoes) > 1):?>
+<?php if(count($previsoes_chegada) > 1):?>
 <div class="modal fade" tabindex="-1" role="dialog" id="modal_del_previsao">
   <div class="modal-dialog modal-md">
     
-    <form class="form-horizontal" method="post" action="<?=base_url('previsao/delete')?>">
+    <form class="form-horizontal" method="post" action="<?=base_url('previsao_chegada/delete')?>">
       <input type="hidden" name="idtrem" value="<?=$trem['idtrem']?>">
       <input type="hidden" name="idprevisao" class="idprevisao" value="">
         <div class="modal-content">

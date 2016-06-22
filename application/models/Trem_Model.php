@@ -26,7 +26,7 @@ class Trem_Model extends CI_Model {
 	}
 
 	public function em_transito(){
-		$str = "SELECT * FROM tb_trem t JOIN tb_previsao USING(idtrem) WHERE chegada_trem is null AND partida_trem is null AND idprevisao = (SELECT MAX(idprevisao) from tb_previsao WHERE idtrem = t.idtrem)";
+		$str = "SELECT * FROM tb_trem t JOIN tb_previsao_chegada USING(idtrem) WHERE chegada_trem is null AND partida_trem is null AND idprevisao = (SELECT MAX(idprevisao) from tb_previsao_chegada WHERE idtrem = t.idtrem)";
 		$query = $this->db->query($str);
 		if($query->num_rows()){						
 			return $query->result_array();

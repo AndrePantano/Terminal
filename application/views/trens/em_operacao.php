@@ -58,7 +58,7 @@
 								</thead>
 								<tbody>
 									<?php foreach ($trens as $value): ?>
-										<tr onclick="javascript:window.location.href = '<?=base_url('trens/trem/'.$value['idtrem'])?>'" >
+										<tr onclick="javascript:window.location.href = '<?=base_url('trem/trem/'.$value['idtrem'])?>'" >
 											<td><?= $value['idtrem']?></td>
 											<td><?= $value['prefixo_trem']?></td>
 											<td><?= date("d/m/Y H:i",strtotime($value['chegada_trem']))?></td>

@@ -1,8 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Operacao_Model extends CI_Model {
-	private $table = "tb_operacao";
+class Previsao_Saida_Model extends CI_Model {
+	private $table = "tb_previsao_saida";
 
 	public function __construct(){
 		parent::__construct();
@@ -15,8 +15,19 @@ class Operacao_Model extends CI_Model {
 
 	// ATUALIZA OS DADOS NA TABELA
 	public function update($dados){
-		$this->db->where(array("idoperacao" => $dados["idoperacao"]));
+		$this->db->where(array("idprevisao" => $dados["idprevisao"]));
 		return $this->db->update($this->table,$dados);
+	}
+
+	public function query($str_query){
+		
+		$query = $this->db->query($str_query);
+
+		if($query->num_rows()){						
+			return $query->result_array();
+		}else{
+			return false;
+		}
 	}
 
 	public function delete($dados){
@@ -24,16 +35,7 @@ class Operacao_Model extends CI_Model {
 		$this->db->delete($this->table);
 	}
 
-	public function query($query){
-		$registros = $this->db->query($query);
-		if($registros->num_rows()){						
-			return $registros->result_array();
-		}else{
-			return false;
-		}
-	}
-
-	public function operacoes($coluna, $valor){
+	public function previsoes_saida($coluna, $valor){
 		$str = "SELECT * FROM ".$this->table." WHERE ".$coluna." =".$valor;
 		return $this->query($str);
 	}

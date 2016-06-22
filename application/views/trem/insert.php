@@ -1,7 +1,7 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="modal_add_trem">
   <div class="modal-dialog">
     
-        <form class="form-horizontal" method="post" action="<?=base_url('trens/create')?>">
+        <form class="form-horizontal" method="post" action="<?=base_url('trem/create')?>">
 
         <div class="modal-content">
           <div class="modal-header">

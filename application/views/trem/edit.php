@@ -1,7 +1,7 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="modal_edit_trem">
   <div class="modal-dialog">
     
-        <form class="form-horizontal" method="post" action="<?=base_url('trens/update')?>">
+        <form class="form-horizontal" method="post" action="<?=base_url('trem/update')?>">
           <input name="idtrem" type="hidden" value="<?=$trem['idtrem']?>" required="">
 
         <div class="modal-content">

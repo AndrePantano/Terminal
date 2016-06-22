@@ -1,8 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Previsao_Model extends CI_Model {
-	private $table = "tb_previsao";
+class Previsao_Chegada_Model extends CI_Model {
+	private $table = "tb_previsao_chegada";
 
 	public function __construct(){
 		parent::__construct();
@@ -33,5 +33,10 @@ class Previsao_Model extends CI_Model {
 	public function delete($dados){
 		$this->db->where($dados);
 		$this->db->delete($this->table);
+	}
+
+	public function previsoes_chegada($coluna, $valor){
+		$str = "SELECT * FROM ".$this->table." WHERE ".$coluna." =".$valor;
+		return $this->query($str);
 	}
 }

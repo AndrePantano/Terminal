@@ -1,7 +1,7 @@
 <?php 
   if($operacoes && count($operacoes) > 0):
   foreach ($operacoes as $linha => $operacao): 
-    $linha = $linha + 1;
+    $linha = $linha + 1;    
 ?>
 
 <!-- MODAL EDITAR -->

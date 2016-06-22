@@ -2,7 +2,7 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="modal_del_trem">
   <div class="modal-dialog">
     
-    <form class="form-horizontal" method="post" action="<?=base_url('trens/delete')?>">
+    <form class="form-horizontal" method="post" action="<?=base_url('trem/delete')?>">
           <input name="idtrem" type="hidden" value="<?=$trem['idtrem']?>" required="">
 
         <div class="modal-content">

@@ -3,7 +3,6 @@
     
         <form class="form-horizontal" method="post" action="<?=base_url('operacao/create')?>">
           <input name="idtrem" type="hidden" value="<?=$trem['idtrem']?>" required="">
-          <input name="linha" type="hidden" value="2" required="">
 
         <div class="modal-content">
           <div class="modal-header">
@@ -20,8 +19,9 @@
                   <div class="form-group">
                     <label class="col-md-12" for="quantidade">Qtde. Vagões:</label>  
                     <div class="col-md-6">
-                      <input name="quantidade" type="number" placeholder="00" value="" class="form-control input-md" pattern="[0-9]{2}" required="" min="1" max="99">
+                      <input name="quantidade" type="number" placeholder="00" value="" class="form-control input-md" pattern="[0-9]{2}" required="" min="1" max="<?=$operacoes[0]["qtd_vagoes"]?>">
                     </div>
+                    <span class="help-block">Máx.: <?=$operacoes[0]["qtd_vagoes"]?> vagões. </span>
                   </div>
 
                   <div class="form-group">

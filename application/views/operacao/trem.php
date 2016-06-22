@@ -90,6 +90,7 @@
 						<button type="button" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#modal_add_operacao">Adicionar outra operação</button>
 				<?php endif;?>
 				</h3>
+				<p>Total atual de vagões: <?=$qtd_vagoes?></p>
 			</div>
 		</div>
 

@@ -7,8 +7,8 @@
 <body>
 	<div class="container">
 
-		<?php $this->load->view("trens/edit"); ?>
-		<?php $this->load->view("trens/delete"); ?>
+		<?php $this->load->view("trem/edit"); ?>
+		<?php $this->load->view("trem/delete"); ?>
 		<?php $this->load->view("layout/nav_bar"); ?>
 		<?php $this->load->view("layout/page_header"); ?>
 		<?php $this->load->view("layout/message"); ?>
