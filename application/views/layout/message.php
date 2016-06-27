@@ -11,7 +11,7 @@
 					<p><?=$this->session->flashdata('content')?><p>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" autofocus >OK</button>
 				</div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->

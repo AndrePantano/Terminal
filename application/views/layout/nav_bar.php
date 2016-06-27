@@ -39,6 +39,17 @@
           </ul>
         </li>
       </ul>
+
+      <!-- NAVBAR RIGHT -->
+      <ul class="nav navbar-nav navbar-right">                                              
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> Usuário <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="<?= base_url('auth/logout')?>"><i class="fa fa-sign-out"></i> Sair</a></li>
+          </ul>
+        </li>        
+      </ul>
+
     </div><!-- /.navbar-collapse -->
 
   </div><!-- /.container-fluid -->

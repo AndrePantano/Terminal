@@ -52,16 +52,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'home';
 
 // ROTA INICIAL DOS ANÚNCIOS, EXIBE TODOS
-$route['search'] = 'ads/search';
+//$route['search'] = 'ads/search';
 
 // ROTA DOS ATRIBUTOS DA PESQUISA. PRIMEIRO PARAMETRO FILTRO, SEGUNDO PARAMETRO ID
-$route['search_for/(:any)/(:any)/(:any)'] = 'ads/search_for/$1/$2/$3';
+//$route['search_for/(:any)/(:any)/(:any)'] = 'ads/search_for/$1/$2/$3';
 
 // ROTA EXIBE O ANÚNCIO INDICADO
-$route['search_ad/(:num)'] = 'ads/search_ad/$1';
+//$route['search_ad/(:num)'] = 'ads/search_ad/$1';
 
 // ROTA DE ATIVAÇÃO
-$route['auth/activation/(:num)/(:any)'] = 'auth/activation/$1/$2';
+//$route['auth/activation/(:num)/(:any)'] = 'auth/activation/$1/$2';
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
