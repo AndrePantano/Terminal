@@ -6,6 +6,11 @@ class Parada extends CI_Controller {
   public function __construct(){  
 
     parent::__construct();  
+    
+    // SE NÃO HOUVER SESSÃO O USUARIO É REDIRECIONADO PARA A ÁREA DE LOGIN
+    if(!$this->session->has_userdata("idusuario")){
+      redirect("auth/entrar");
+    }
 
     $this->load->model("Parada_Model");
     

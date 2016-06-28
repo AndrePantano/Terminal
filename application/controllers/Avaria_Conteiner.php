@@ -5,11 +5,18 @@ class Avaria_Conteiner extends CI_Controller {
 
   public function __construct(){  
 
-    parent::__construct();  
+    parent::__construct();
+    
+    // SE NÃO HOUVER SESSÃO O USUARIO É REDIRECIONADO PARA A ÁREA DE LOGIN
+    if(!$this->session->has_userdata("idusuario")){
+      redirect("auth/entrar");
+    }
+
 
     $this->load->model("Trem_Model");
     $this->load->model("Avaria_Conteiner_Model");
     $this->load->model("Grupo_Avaria_Conteiner_Model");
+
     
   }
      
@@ -17,13 +24,7 @@ class Avaria_Conteiner extends CI_Controller {
     $this->validar_formulario('create');
     $this->validar_conteiner();
 
-    $avaria = array(
-      "idtrem" => $this->input->post("idtrem"),
-      "idgrupo_avaria_conteiner" => $this->input->post("grupo"),
-      "conteiner" => $this->input->post("conteiner")
-    );
-    
-    if(!empty($this->input->post("observacao"))){ $avaria["observacao"] = $this->input->post("observacao");}
+    $avaria = $this->montar_dados();
 
     $this->Avaria_Conteiner_Model->create($avaria);
 
@@ -36,23 +37,31 @@ class Avaria_Conteiner extends CI_Controller {
     
   }
 
+  public function montar_dados(){
+    $avaria = array(
+      "idtrem" => $this->input->post("idtrem"),
+      "idgrupo_avaria_conteiner" => $this->input->post("grupo"),
+      "conteiner" => $this->input->post("conteiner")
+    );
+    
+    if($this->input->post("idavaria")){ $avaria["idavaria"] = $this->input->post("idavaria");}
+    if(!empty($this->input->post("observacao"))){ $avaria["observacao"] = $this->input->post("observacao");}
+    return $avaria;    
+  }
+
   public function update(){
     
     $this->validar_formulario('update');
-
-    $idtrem = $this->input->post("idtrem");
-
-    $nota = array(
-      "idnota" => $this->input->post("idnota"),
-      "criacao_nota" => date("Y-m-d H:i:s"),
-      "texto_nota" => $this->input->post("texto")
-    );
     
-    $this->Avaria_Conteiner_Model->update($nota);
+    $this->validar_conteiner();
+
+    $avaria = $this->montar_dados();
+    
+    $this->Avaria_Conteiner_Model->update($avaria);
 
     $this->session->set_flashdata([
       'class' => 'success',
-      'content' => 'Nota editada com sucesso'
+      'content' => 'Avaria atualizada com sucesso'
     ]);        
            
     $this->redireciona();
@@ -63,9 +72,7 @@ class Avaria_Conteiner extends CI_Controller {
     
     $this->validar_formulario('delete');
 
-    $idtrem = $this->input->post("idtrem");
-        
-    $dados = array("idnota" => $this->input->post("idnota"));
+    $dados = array("idavaria" => $this->input->post("idavaria"));
     
     $this->Avaria_Conteiner_Model->delete($dados);
 
@@ -127,8 +134,14 @@ class Avaria_Conteiner extends CI_Controller {
         $this->form_validation->set_rules('conteiner','Conteiner','required');   
         break;
       case 'update':
+        $this->form_validation->set_rules('idtrem','Trem','required');    
+        $this->form_validation->set_rules('idavaria','Avaria','required');    
+        $this->form_validation->set_rules('grupo','Grupo','required');   
+        $this->form_validation->set_rules('conteiner','Conteiner','required');   
         break;
       case 'delete':
+        $this->form_validation->set_rules('idtrem','Trem','required');    
+        $this->form_validation->set_rules('idavaria','Avaria','required');
         break;
     }
 

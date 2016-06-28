@@ -3,7 +3,7 @@
     
         <form class="form-horizontal" method="post" action="<?=base_url('avaria_conteiner/delete')?>">
           <input type="hidden" name="idtrem" value="<?=$trem['idtrem']?>">
-          <input type="hidden" name="idnota" class="idnota" value="">
+          <input type="hidden" name="idavaria" class="idavaria" value="">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close close-del" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -12,8 +12,18 @@
           <div class="modal-body">
 
             <div class="form-group">
-              <span class="col-sm-2">Texto:</span>  
-              <span class="col-sm-10" id="del_texto_nota"></span>  
+              <span class="col-sm-3">Conteiner:</span>  
+              <span class="col-sm-9 del_conteiner"></span>  
+            </div>
+
+            <div class="form-group">
+              <span class="col-sm-3">Grupo Avaria:</span>  
+              <span class="col-sm-9 del_grupo_avaria"></span>  
+            </div>
+
+            <div class="form-group">
+              <span class="col-sm-3">Observação:</span>  
+              <span class="col-sm-9 del_observacao"></span>  
             </div>
 
 

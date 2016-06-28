@@ -8,22 +8,30 @@
             
       $("tr").click(function(){
         var id = $(this).data("id");
-        $(".idnota").val(id);
-        $("#edit_texto_nota").val($(".texto_nota"+id).text());
-        $("#del_texto_nota").text($(".texto_nota"+id).text());
-        $("#modal_edit_nota").modal({show:true});
+
+        $(".idavaria").val(id);
+        $(".conteiner").val($(".conteiner"+id).text());
+        $(".del_conteiner").text($(".conteiner"+id).text());
+        $(".observacao").val($(".observacao"+id).text());
+        $(".del_observacao").text($(".observacao"+id).text());
+
+        //SELECIONA O OPTION DO SELECT DE TIPOS DE PARADAS
+        var idgrupo = $(".grupo_avaria"+id).data("id");      
+        $(".edit_grupo_avaria option[value='"+idgrupo+"']").prop("selected","selected");
+        $(".del_grupo_avaria").text($(".grupo_avaria"+id).data("nome"));
+        $("#modal_edit").modal({show:true});
       });
 
-      $("#btn-excluir").click(function(){
-        $("#modal_edit_nota").modal().hide();       
-        $("#modal_del_nota").modal({
+      $("#btn_del").click(function(){
+        $("#modal_edit").modal().hide();       
+        $("#modal_del").modal({
           show:true,
           backdrop:'static'
         });
       });
 
       $(".close-del").click(function(){
-        $("#modal_edit_nota").modal().show();
+        $("#modal_edit").modal().show();
       });
 
     });
@@ -31,10 +39,12 @@
 </head>
 <body>
   <div class="container">
+    <?php if($this->session->userdata('idperfil')!=3):?>
+      <?php $this->load->view("avaria_conteiner/insert");?>
+      <?php $this->load->view("avaria_conteiner/edit");?>
+      <?php if($this->session->userdata('idperfil')==1){$this->load->view("avaria_conteiner/delete");}?>
+    <?php endif; ?>
 
-    <?php $this->load->view("avaria_conteiner/insert");?>
-    <?php $this->load->view("avaria_conteiner/edit");?>
-    <?php $this->load->view("avaria_conteiner/delete");?>
     <?php $this->load->view("layout/nav_bar");?>
     <?php $this->load->view("layout/page_header");?>
     <?php $this->load->view("layout/message");?>
@@ -46,7 +56,10 @@
       <div class="col-sm-8">
         <h3>
           <i class="fa fa-warning"></i> Avarias de Conteiner <span class="badge"><?= $avarias ? count($avarias) : 0?></span>
-          <button type="button" data-toggle="modal" data-target="#modal_add" class="btn btn-default btn-sm pull-right" role="button">Adicionar</button>
+          <?php if($this->session->userdata('idperfil')!=3):?>
+            <button type="button" data-toggle="modal" data-target="#modal_add" class="btn btn-default btn-sm pull-right" role="button">Adicionar</button>
+          <?php endif; ?>
+
         </h3>     
       </div>
     </div>
@@ -72,9 +85,9 @@
                       <tbody>
                         <?php foreach ($avarias as $avaria): ?>
                           <tr data-id="<?=$avaria['idavaria']?>">
-                            <td class="conteiner<?=$avaria['conteiner']?>"><?= $avaria['conteiner']?></td>
-                            <td class="nome_avaria<?=$avaria['nome_avaria']?>"><?= $avaria['nome_avaria']?></td>
-                            <td class="observacao<?=$avaria['observacao']?>"><?= $avaria['observacao']?></td>
+                            <td class="conteiner<?=$avaria['idavaria']?>"><?= $avaria['conteiner']?></td>
+                            <td class="grupo_avaria<?=$avaria['idavaria']?>" data-nome="<?=$avaria['nome_avaria']?>" data-id="<?=$avaria['idgrupo_avaria_conteiner']?>"><?= $avaria['nome_avaria']?></td>
+                            <td class="observacao<?=$avaria['idavaria']?>"><?= $avaria['observacao']?></td>
                           </tr>
                         <?php endforeach;?> 
                       </tbody>            

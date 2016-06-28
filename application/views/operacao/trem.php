@@ -70,13 +70,15 @@
 </head>
 <body>
 	<div class="container">
-
-		<?php $this->load->view("operacao/insert"); ?>
-		<?php $this->load->view("operacao/edit"); ?>
-		<?php $this->load->view("operacao/delete"); ?>
-		<?php $this->load->view("parada/insert"); ?>
-		<?php $this->load->view("parada/edit"); ?>
-		<?php $this->load->view("parada/delete"); ?>
+		<?php if($this->session->userdata('idperfil')!=3):?>
+			<?php $this->load->view("operacao/insert"); ?>
+			<?php $this->load->view("operacao/edit"); ?>
+			<?php if($this->session->userdata('idperfil')==1){$this->load->view("operacao/delete"); }?>
+			<?php $this->load->view("parada/insert"); ?>
+			<?php $this->load->view("parada/edit"); ?>
+			<?php if($this->session->userdata('idperfil')==1){$this->load->view("parada/delete"); }?>
+		<?php endif; ?>
+		
 		<?php $this->load->view("layout/nav_bar"); ?>
 		<?php $this->load->view("layout/page_header"); ?>
 		<?php $this->load->view("layout/message"); ?>
@@ -86,8 +88,10 @@
 		<div class="row">
 			<div class="col-sm-6">
 				<h3><i class="fa fa-cogs"></i> Operações
-				<?php if(count($operacoes) < 2): ?>
-						<button type="button" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#modal_add_operacao">Adicionar outra operação</button>
+				<?php if($this->session->userdata('idperfil')!=3):?>
+					<?php if(count($operacoes) < 2): ?>
+							<button type="button" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#modal_add_operacao">Adicionar outra operação</button>
+					<?php endif;?>
 				<?php endif;?>
 				</h3>
 				<p>Total atual de vagões: <?=$qtd_vagoes?></p>
@@ -106,7 +110,9 @@
 						 	<div class="panel-heading">
 					 			<h4>
 					 				<i class="fa fa-cog"></i> Operação da Linha <?= $linha?>
-									<button type="button" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#modal_edit_operacao<?=$operacao['idoperacao']?>">Editar Dados</button>
+									<?php if($this->session->userdata('idperfil')!=3):?>
+										<button type="button" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#modal_edit_operacao<?=$operacao['idoperacao']?>">Editar Dados</button>
+									<?php endif;?>
 								</h4>
 						 	</div>
 						 	<div class="panel-body">
@@ -144,7 +150,9 @@
 						<div class="panel panel-default">
 						 	<div class="panel-heading">
 									<h4><i class="fa fa-hand-paper-o"></i> Paradas da Linha <?= $linha?>
-									<button type="button" class="btn btn-default btn-sm pull-right add-parada" data-operacao="<?= $operacao['idoperacao']?>" data-linha="<?= $linha?>">Adicionar Parada</button>
+									<?php if($this->session->userdata('idperfil')!=3):?>
+										<button type="button" class="btn btn-default btn-sm pull-right add-parada" data-operacao="<?= $operacao['idoperacao']?>" data-linha="<?= $linha?>">Adicionar Parada</button>
+									<?php endif;?>
 									</h4>
 						 	</div>
 								<div class="panel-body">

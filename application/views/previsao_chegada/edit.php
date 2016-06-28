@@ -30,8 +30,10 @@
 
           </div>
           <div class="modal-footer">
-          <?php if(count($previsoes_chegada) > 1): ?>
-            <button type="button" class="btn btn-default pull-left" id="btn-excluir">Excluir</button>
+          <?php if($this->session->userdata('idperfil')==1):?>
+            <?php if(count($previsoes_chegada) > 1 ): ?>
+              <button type="button" class="btn btn-default pull-left" id="btn-excluir">Excluir</button>
+            <?php endif;?>
           <?php endif;?>
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
             <button type="submit" class="btn btn-primary">Salvar</button>

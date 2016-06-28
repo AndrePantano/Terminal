@@ -15,7 +15,7 @@ class Avaria_Conteiner_Model extends CI_Model {
 
 	// ATUALIZA OS DADOS NA TABELA
 	public function update($dados){
-		$this->db->where(array("idnota" => $dados["idnota"]));
+		$this->db->where(array("idavaria" => $dados["idavaria"]));
 		return $this->db->update($this->table,$dados);
 	}
 

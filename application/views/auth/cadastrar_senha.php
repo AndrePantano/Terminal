@@ -27,7 +27,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           </div>
           <div class="panel-body">
             <form role="form" action="<?= base_url('auth/nova_senha')?>" method="POST">
-              <input name="idusuario" value="<?=$this->session->flashdata('idusuario')?>" type="hidden" required>
               <input name="token" value="<?=$this->session->flashdata('token')?>" type="hidden" required>
               <fieldset>                
                 <div class="row">

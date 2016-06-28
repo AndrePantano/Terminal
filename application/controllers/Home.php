@@ -11,10 +11,11 @@ class Home extends CI_Controller {
      
   public function index(){
 
+    // SE NÃO HOUVER SESSÃO O USUARIO É REDIRECIONADO PARA A ÁREA DE LOGIN
     if($this->session->has_userdata("idusuario")){
-    	return $this->load->view("index");
+    	$this->load->view("index");
     }else{
-	  	redirect("auth/entrar");
+      redirect("auth/entrar");
     }
 
   }

@@ -31,10 +31,11 @@
 </head>
 <body>
   <div class="container">
-
-    <?php $this->load->view("nota/insert"); ?>
-    <?php $this->load->view("nota/edit"); ?>
-    <?php $this->load->view("nota/delete"); ?>
+    <?php if($this->session->userdata('idperfil')!=3):?>
+      <?php $this->load->view("nota/insert"); ?>
+      <?php $this->load->view("nota/edit"); ?>
+      <?php if($this->session->userdata('idperfil')==1){ $this->load->view("nota/delete"); }?>
+    <?php endif; ?>
     <?php $this->load->view("layout/nav_bar"); ?>
     <?php $this->load->view("layout/page_header"); ?>
     <?php $this->load->view("layout/message"); ?>
@@ -46,7 +47,9 @@
       <div class="col-sm-12">
         <h3>
           <i class="fa fa-info-circle"></i> Notas de Atividades
-          <button type="button" data-toggle="modal" data-target="#modal_add_nota" class="btn btn-default btn-sm pull-right" role="button">Adicionar</button>
+          <?php if($this->session->userdata('idperfil')!=3):?>
+            <button type="button" data-toggle="modal" data-target="#modal_add_nota" class="btn btn-default btn-sm pull-right" role="button">Adicionar</button>
+          <?php endif; ?>
         </h3>     
       </div>
     </div>

@@ -7,7 +7,12 @@ class Trem extends CI_Controller {
 
   public function __construct(){  
 
-    parent::__construct();  
+    parent::__construct(); 
+
+    // SE NÃO HOUVER SESSÃO O USUARIO É REDIRECIONADO PARA A ÁREA DE LOGIN
+    if(!$this->session->has_userdata("idusuario")){
+      redirect("auth/entrar");
+    } 
 
     $this->load->model("Trem_Model");    
   }
@@ -53,8 +58,13 @@ class Trem extends CI_Controller {
     $this->validar_formulario('create');
         
     // INSERE O TREM E PEGA O SEU ID
-    $trem = array("prefixo_trem" => strtoupper($this->input->post("trem")));
-    $this->load->model("Trem_Model");
+    $trem = array(
+      "prefixo_trem" => strtoupper($this->input->post("trem")),
+      "criado_em" => date("Y-m-d H:i:s"),
+      "atualizado_em" => date("Y-m-d H:i:s"),
+      "idusuario" => $this->session->userdata("idusuario")
+    );
+
     $this->Trem_Model->create($trem);
     $idtrem = $this->db->insert_id();
 
@@ -82,8 +92,8 @@ class Trem extends CI_Controller {
       'class' => 'success',
       'content' => 'Trem cadastrado com sucesso'
     ]);
-      
-    redirect("trem/trem/".$idtrem);
+    
+    $this->redireciona($idtrem);
   }
 
   public function update(){
@@ -102,6 +112,8 @@ class Trem extends CI_Controller {
       "prefixo_trem" => strtoupper($this->input->post("trem")),
       "chegada_trem" => $chegada,
       "partida_trem" => $partida,
+      "atualizado_em" => date("Y-m-d H:i:s"),
+      "idusuario" => $this->session->userdata("idusuario")
     );
 
     $this->load->model("Trem_Model");
@@ -113,7 +125,7 @@ class Trem extends CI_Controller {
       'content' => 'Dados atualizados com sucesso'
     ]);
           
-    redirect("trem/trem/".$dados["idtrem"]);     
+    $this->redireciona($this->input->post("idtrem"));
   }
 
   public function delete(){
@@ -157,6 +169,11 @@ class Trem extends CI_Controller {
     ]);
 
     redirect("/");
+  }
+
+  public function redireciona($trem){
+    
+    redirect("trem/trem/".$trem);
   }
 
   public function check_post(){

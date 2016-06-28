@@ -33,24 +33,28 @@
 </head>
 <body>
 	<div class="container">
+		<?php if($this->session->userdata('idperfil')!=3):?>
+			<?php $this->load->view("previsao_saida/insert"); ?>
+			<?php $this->load->view("previsao_saida/edit"); ?>
+			<?php if($this->session->userdata('idperfil')==1){$this->load->view("previsao_saida/delete"); }?>
+		<?php endif; ?>
 
-		<?php $this->load->view("previsao_saida/insert"); ?>
-		<?php $this->load->view("previsao_saida/edit"); ?>
-		<?php $this->load->view("previsao_saida/delete"); ?>
 		<?php $this->load->view("layout/nav_bar"); ?>
 		<?php $this->load->view("layout/page_header"); ?>
 		<?php $this->load->view("layout/message"); ?>
 		<?php $this->load->view("layout/nav_tab"); ?>
 
-
 		<!-- CABECALHO -->
 		<div class="row">
 			<div class="col-sm-8">
 				<h3><i class="fa fa-clock-o"></i> Previsões de Saída
-					<button type="button" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#modal_add_previsao">Adicionar</button>
+					<?php if($this->session->userdata('idperfil')!=3):?>
+						<button type="button" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#modal_add_previsao">Adicionar</button>
+					<?php endif; ?>
 				</h3>
 			</div>
 		</div>
+
 		<!-- PANEL -->
 		<div class="row">
 			<div class="col-sm-8">

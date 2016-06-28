@@ -6,9 +6,11 @@
 </head>
 <body>
 	<div class="container">
+		<?php if($this->session->userdata('idperfil')!=3):?>
+			<?php $this->load->view("trem/edit"); ?>
+			<?php if($this->session->userdata('idperfil')==1){$this->load->view("trem/delete"); }?>
+		<?php endif; ?>
 
-		<?php $this->load->view("trem/edit"); ?>
-		<?php $this->load->view("trem/delete"); ?>
 		<?php $this->load->view("layout/nav_bar"); ?>
 		<?php $this->load->view("layout/page_header"); ?>
 		<?php $this->load->view("layout/message"); ?>
@@ -19,10 +21,14 @@
 			<div class="col-sm-6">
 				<h3>
 					<i class="fa fa-train"></i> Trem
-					<div class="btn-group pull-right">
-						<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal_del_trem">Excluir Trem</button>
-						<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal_edit_trem">Editar Dados</button>
-					</div>
+					<?php if($this->session->userdata('idperfil')!=3):?>
+						<div class="btn-group pull-right">
+							<?php if($this->session->userdata('idperfil')==1):?>
+								<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal_del_trem">Excluir Trem</button>
+							<?php endif;?>
+							<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal_edit_trem">Editar Dados</button>
+						</div>
+					<?php endif;?>
 				</h3>
 			</div>
 		</div>

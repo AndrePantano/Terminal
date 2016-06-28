@@ -38,4 +38,9 @@ class Usuario_Model extends CI_Model {
 		return $this->query($str);
 	}
 
+	public function check_token($token){
+		$str = "SELECT * FROM ".$this->table." WHERE token = '".$token."'";
+		return $this->query($str);
+	}
+
 }

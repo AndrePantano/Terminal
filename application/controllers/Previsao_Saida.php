@@ -7,7 +7,12 @@ class Previsao_Saida extends CI_Controller {
 
   public function __construct(){  
 
-    parent::__construct();  
+    parent::__construct();
+
+    // SE NÃO HOUVER SESSÃO O USUARIO É REDIRECIONADO PARA A ÁREA DE LOGIN
+    if(!$this->session->has_userdata("idusuario")){
+      redirect("auth/entrar");
+    }  
 
     $this->load->model("Previsao_Saida_Model");
     $this->load->model("Trem_Model");
@@ -18,8 +23,6 @@ class Previsao_Saida extends CI_Controller {
     
     $this->validar_formulario('delete');
 
-    $idtrem = $this->input->post("idtrem");
-        
     $dados = array("idprevisao" => $this->input->post("idprevisao"));
 
     $this->Previsao_Saida_Model->delete($dados);
@@ -29,7 +32,7 @@ class Previsao_Saida extends CI_Controller {
       'content' => 'Previsão excluída com sucesso'
     ]);        
            
-    $this->redireciona($idtrem);
+    $this->redireciona();
     
   }
 
@@ -37,16 +40,9 @@ class Previsao_Saida extends CI_Controller {
     
     $this->validar_formulario('update');
     
-    $idtrem = $this->input->post("idtrem");
-
-    $previsao = array(
-      "idtrem" => $idtrem,
-      "idprevisao" => $this->input->post("idprevisao"),
-      "data_previsao" => $this->input->post("previsao"),
-      "motivo_previsao" => $this->input->post("motivo")
-    );
+    $dados = $this->montar_dados();
     
-    $this->Previsao_Saida_Model->update($previsao);
+    $this->Previsao_Saida_Model->update($dados);
 
     $this->session->set_flashdata([
       'class' => 'success',
@@ -56,20 +52,31 @@ class Previsao_Saida extends CI_Controller {
     $this->redireciona($idtrem);
     
   }
+
+  public function montar_dados(){
+
+    $dados = array(
+      "idtrem" => $this->input->post("idtrem"),      
+      "data_previsao" => $this->input->post("previsao"),
+      "motivo_previsao" => $this->input->post("motivo"),
+      "criado_em" => date("Y-m-d H:i:s"),
+      "atualizado_em" => date("Y-m-d H:i:s"),
+      "idusuario" => $this->session->userdata("idusuario")
+    );
+    
+    if($this->input->post("idprevisao"))
+      $dados["idprevisao"] = $this->input->post("idprevisao");
+
+    return $dados;
+  }
+
   public function create(){
     
     $this->validar_formulario('create');
     
-    $idtrem = $this->input->post("idtrem");
+    $dados = $this->montar_dados();
 
-    $previsao = array(
-      "idtrem" => $idtrem,
-      "criacao_previsao" => date("Y-m-d H:i"),
-      "data_previsao" => $this->input->post("previsao"),
-      "motivo_previsao" => $this->input->post("motivo")
-    );
-    
-    $this->Previsao_Saida_Model->create($previsao);
+    $this->Previsao_Saida_Model->create($dados);
 
     // RETORNA A MENSAGEM
     $this->session->set_flashdata([
@@ -77,7 +84,7 @@ class Previsao_Saida extends CI_Controller {
       'content' => 'Previsão adicionada com sucesso'
     ]);        
        
-    $this->redireciona($idtrem);
+    $this->redireciona();
     
   }
 
@@ -150,8 +157,8 @@ class Previsao_Saida extends CI_Controller {
     }
   }
 
-  public function redireciona($idtrem){
-    redirect("previsao_saida/trem/".$idtrem);
+  public function redireciona(){
+    redirect("previsao_saida/trem/".$this->input->post("idtrem"));
   }
 }
 

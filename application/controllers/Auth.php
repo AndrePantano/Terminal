@@ -31,7 +31,7 @@ class Auth extends CI_Controller {
     
     $dados = array(
       "email" => $this->input->post("usuario"),
-      "senha" =>$this->input->post("senha")
+      "senha" => $this->input->post("senha")
     );
 
     $usuarios = $this->Usuario_Model->check_login($dados);
@@ -39,21 +39,32 @@ class Auth extends CI_Controller {
     if($usuarios){
       
       $usuario = $usuarios[0];
+      $usuario["padrao"] = md5("brado");
 
       // SE A SENHA FOR BRADO CHAMA A FUNÇÃO DE CADASTRAR NOVA SENHA
-      if ($this->senha_padrao($usuario["senha"])){
+      if ($this->verificar_senha_padrao($usuario["senha"])){
         
-        redirect("home/");
+        // TUDO CERTO, ARMAZENA DADOS NA SESSAO E VAI PARA A HOME
+        $this->session->set_userdata("idusuario",$usuario["idusuario"]);
+        $this->session->set_userdata("nome",$usuario["nome"]);
+        $this->session->set_userdata("idperfil",$usuario["idperfil"]);
+        redirect("/");
 
       }else{
 
-        // CADASTRAR NOVA SENHA
-        $this->session->set_flashdata([
-          'idusuario' => $usuario["idusuario"],
-          'nome' => $usuario["nome"],
-          'token' => $this->gerar_token($usuario)
-        ]);
-        
+        // CRIA O ARRAY DE DADOS
+        $dados = array(
+          "idusuario" => $usuario["idusuario"],
+          "nome" => $usuario["nome"],
+          "token" => $this->gerar_token()
+        );
+        // ATUALIZA O USUARIO COM O NOVO TOKEN;
+        $this->Usuario_Model->update($dados);
+
+        // ARMAZENA DADOS NA SESSION FLASH
+        $this->session->set_flashdata($dados);
+      
+        // VAI PARA A PÁGINA DE CADASTRO DE NOVA SENHA
         redirect("auth/cadastrar_senha");
       }
 
@@ -63,10 +74,19 @@ class Auth extends CI_Controller {
       $this->redireciona();
       
     }
+    
+  }
+
+  public function verificar_senha_padrao($senha){
+    if($senha != md5("brado"))
+      return true;
+    return false;
   }
 
   public function logout(){
     unset($_SESSION["idusuario"]);
+    unset($_SESSION["nome"]);
+    unset($_SESSION["perfil"]);
     $this->redireciona();
   }
 
@@ -87,7 +107,6 @@ class Auth extends CI_Controller {
         $this->form_validation->set_rules('senha','Senha','required|min_length[5]');   
         break;
       case 'nova_senha':
-        $this->form_validation->set_rules('idusuario','Usuário','required');    
         $this->form_validation->set_rules('token','Token','required');    
         $this->form_validation->set_rules('senha','Senha','required');    
         $this->form_validation->set_rules('confirmar_senha','Confirmação da Senha','required');    
@@ -115,15 +134,9 @@ class Auth extends CI_Controller {
       'content' => $text
     ]);
   }
-
-  public function senha_padrao($senha){
-    if(md5($senha) != md5("brado"))
-      return true;
-    return false;
-  }
-      
-  public function gerar_token($usuario){
-      $token = md5($usuario["email"] . $usuario["nome"]);      
+  
+  public function gerar_token(){
+      $token = md5(date("dmYHis"));  
       return $token;
   }
     
@@ -144,19 +157,35 @@ class Auth extends CI_Controller {
     if($this->input->post("senha") == $this->input->post("confirmar_senha")){   
     
       // VERIFICA SE A SENHA É BRADO
-      if($this->senha_padrao($this->input->post("senha"))){
-        $this->message("success","Ok, agora sim!");
-        redirect("auth/entrar");
+      if($this->verificar_senha_padrao($this->input->post("senha"))){
+
+        $usuarios = $this->Usuario_Model->check_token($this->input->post("token"));
+        if($usuarios){
+          $usuario = $usuarios[0];
+          
+          $dados = array(
+            "idusuario" => $usuario["idusuario"],
+            "token" => "",
+            "senha" => md5($this->input->post("senha"))
+          );
+          $this->Usuario_Model->update($dados);
+
+          $this->message("success","Parabéns ".ucwords($usuario["nome"])."!<br>Senha atualizada com sucesso.<br>Faça login para acessar o sistema.");
+          redirect("auth/entrar");
+        }else{
+          $this->message("danger","Token inválido!");
+          redirect("auth/entrar");
+        }
+      
       }else{
         $this->message("danger","Esta senha não pode ser utilizada!");
         redirect("auth/entrar");
       }
 
     }else{
-       $this->message("danger","As senhas informadas não conferem!");
+      $this->message("danger","As senhas informadas não conferem!");
       redirect("auth/entrar");
     }
-
   }
 
 }
