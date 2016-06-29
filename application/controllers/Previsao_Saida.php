@@ -158,6 +158,7 @@ class Previsao_Saida extends CI_Controller {
   }
 
   public function redireciona(){
+    
     redirect("previsao_saida/trem/".$this->input->post("idtrem"));
   }
 }
