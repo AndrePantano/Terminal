@@ -7,6 +7,9 @@
 	body{
 		margin-top: 70px;
 	}
+  canvas{
+    background-color: #FFF;
+  }
 	</style>
 	<script src="<?= base_url('assets/jquery/charts.js')?>"></script>
 
@@ -38,40 +41,37 @@
 
     <!-- AREA DOS GRAFICOS -->    
     <div class="row">       
-      <div class="col-sm-8">
-        <div class="well well-sm">
-          <p class="text-muted">Tempo calculado entre o Enconste na Linha e Faturamento ALL em horas (hs).</p>
-          <?php if($relatorio): ?>
-            <canvas id="chart1" style="background-color:#FFF"></canvas>
-            <br>
+      <?php if($relatorio): ?>
+        <div class="col-sm-12">
+          <div class="well well-sm">
+            <!-- p class="text-muted">Tempo calculado entre o Enconste na Linha e Faturamento ALL em horas (hs).</p -->
+              <canvas id="chart1" height="100"></canvas>
 
-            <p>Período de Apuração: de <?= date("d/m/Y",strtotime($inicio))?> a <?= date("d/m/Y",strtotime($fim))?>.</p>
-            <p>Operações Realizadas: <?=count($relatorio["labels"])?> Operações.</p>
-            <p>Operações Excedidas: <?=$relatorio["excedidas_operacao"]?> Operações - <?=$relatorio["margem_total"]?>%.</p>
-            <p>Operações Excedidas (Time ALL): <?=$relatorio["excedidas_all"]?> Operações - <?=$relatorio["margem_all"]?>%.</p>
-            <p>Assertividade: <?=$relatorio["assertividade"]?> Operações - <?=$relatorio["margem_assertividade"]?>%</p>
-          <?php else: ?>
-            <div class="jumbotron">
-              <h1>Sem resultados!</h1>
-              <p>Não há dados para gerar o relatório, tente outro período.</p>              
-            </div>
-          <?php endif;?>
+              <p>Período de Apuração: de <?= date("d/m/Y",strtotime($inicio))?> a <?= date("d/m/Y",strtotime($fim))?>.</p>
+              <p>Operações Realizadas: <?=count($relatorio["labels"])?> Operações.</p>
+              <p>Operações Excedidas: <?=$relatorio["excedidas_operacao"]?> Operações - <?=$relatorio["margem_total"]?>%.</p>
+              <p>Operações Excedidas (Time ALL): <?=$relatorio["excedidas_all"]?> Operações - <?=$relatorio["margem_all"]?>%.</p>
+              <p>Assertividade: <?=$relatorio["assertividade"]?> Operações - <?=$relatorio["margem_assertividade"]?>%</p>
+            
+          </div>
         </div>
-      </div>
-      
-       <div class="col-sm-4">
-        <div class="well well-sm">
-          <p class="text-muted">Calculado em quantidade de Operações.</p>
-          <?php if($relatorio): ?>
-            <canvas id="chart2" style="background-color:#FFF"></canvas>
-            <?php else: ?>
-            <div class="jumbotron">
-              <h1>Sem resultados!</h1>
-              <p>Não há dados para gerar o relatório, tente outro período.</p>              
-            </div>
-          <?php endif;?>
+
+        <div class="col-sm-4">
+          <div class="well well-sm">
+            <p class="text-muted">Calculado em quantidade de Operações.</p>
+              <canvas id="chart2" style="background-color:#FFF"></canvas>
+
+          </div>
         </div>
-      </div>
+
+      <?php else: ?>
+
+        <div class="jumbotron">
+          <h1>Sem resultados!</h1>
+          <p>Não há dados para gerar o relatório, tente outro período.</p>              
+        </div>
+
+      <?php endif;?>
 
     </div>
 
@@ -81,30 +81,55 @@
     	<script>
 
         var colunas = {
-            labels: <?= json_encode($relatorio["labels"])?>,
+            labels: <?= json_encode($relatorio["labels"])?>,            
             datasets: [
             {
                 type: 'line',
                 label: 'Meta Operação',
                 //backgroundColor: "rgba(151,187,205,0.5)",
                 data: <?= json_encode($relatorio["meta_operacao"])?>,
-                borderColor: 'blue',
+                borderColor: 'rgba(0,0,255,0.8)',
                 borderWidth: 2
             },
             {
                 type: 'line',
-                label: 'Meta Operação ALL',
+                label: 'Meta ALL',
                 //backgroundColor: "rgba(151,187,205,0.5)",
                 data: <?= json_encode($relatorio["meta_all"])?>,
-                borderColor: 'red',
+                borderColor: 'rgba(255,0,0,0.8)',
                 borderWidth: 2
             }, 
             {
                 type: 'bar',
-                label: 'Operações',
-                backgroundColor: "rgba(0,255,0,0.5)",
+                label: 'Tempo Útil',
+                backgroundColor: "rgba(210,105,30,0.8)",
                 data:<?= json_encode($relatorio["duracao"])?>
-            }]
+            },
+            {
+                type: 'bar',
+                label: 'Operação',
+                backgroundColor: "rgba(218,165,32,0.8)",
+                data:<?= json_encode($relatorio["duracao"])?>
+            },
+            {
+                type: 'bar',
+                label: 'Manobra e Inversão',
+                backgroundColor: "rgba(50,205,50,0.8)",
+                data:<?= json_encode($relatorio["duracao"])?>
+            },
+            {
+                type: 'bar',
+                label: 'Parada Rodoviária',
+                backgroundColor: "rgba(128,0,255,0.8)",
+                data:<?= json_encode($relatorio["duracao"])?>
+            },
+            {
+                type: 'bar',
+                label: 'Tempo do BO',
+                backgroundColor: "rgba(100,149,237,0.8)",
+                data:<?= json_encode($relatorio["duracao"])?>
+            }
+          ]
 
         };
 
@@ -129,10 +154,9 @@
           var ctx = document.getElementById("chart1").getContext("2d");
           window.myBar = new Chart(ctx, {
             type: 'bar',
-            data: colunas,            
-          
+            data: colunas,
             options: {
-              //responsive: true,
+              responsive: true,
               title: {
                   display: true,
                   fontColor: 'rgb(0, 0, 0)',
@@ -177,6 +201,8 @@
         };
       </script>
     <?php endif;?>
+
+    <!-- ?="<pre>".print_r($relatorio,1)."</pre>"? -->
   </div>    
 </body>
 </html>

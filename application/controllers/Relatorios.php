@@ -37,10 +37,10 @@ class Relatorios extends CI_Controller {
 
     $dados = array(
       "main" => array(
-      	"name" => "Rel. Encoste X Faturamento ALL",
-      	"icon" => "fa fa-line-chart"
+      	"name" => "Rel. Painel Operações",
+      	"icon" => "fa fa-bar-chart"
       ),
-      "titulo" => "Rel. Encoste X Faturamento ALL",
+      "titulo" => "Rel. Painel Operações",
       "relatorio" => $relatorio,
       "inicio" => $inicio,
       "fim" => $fim

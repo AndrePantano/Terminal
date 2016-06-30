@@ -34,10 +34,8 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bar-chart"></i> Relatórios <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="<?= base_url('relatorios/rel_01')?>"><i class="fa fa-line-chart"></i> Encoste X Faturamento ALL</a></li>
-            <li><a href="#"><i class="fa fa-pie-chart"></i> Por Trens</a></li>
-            <li><a href="#"><i class="fa fa-pie-chart"></i> Por Tempo de Parada</a></li>
-            <li><a href="#"><i class="fa fa-pie-chart"></i> Por Tempo de Saída</a></li>
+            <li><a href="<?= base_url('relatorios/rel_01')?>"><i class="fa fa-bar-chart"></i> Painel Operações</a></li>
+            <li><a href="<?= base_url('relatorios/rel_01')?>"><i class="fa fa-bar-chart"></i> Painel Trens</a></li>
           </ul>
         </li>
       </ul>

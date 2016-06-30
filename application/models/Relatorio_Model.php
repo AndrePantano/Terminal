@@ -24,23 +24,27 @@ class Relatorio_Model extends CI_Model {
 		// RETORNA FALSE SE O INICIO FOR MAIOR QUE O FIM
 		if($inicio > $fim) return false;
 
-		$str = "SELECT *," 
-			." idtrem,"
-			." idoperacao,"
-			." prefixo_trem, "
-			." encoste_linha,"
-			." faturamento_all, "
-			." TIMESTAMPDIFF(HOUR,encoste_linha,faturamento_all) AS duracao, "
-			." meta_all, "
-			." meta_operacao FROM `tb_operacao` JOIN tb_trem USING(idtrem)"
+		$i = "encoste_linha";
+		$f = "faturamento_all";
+
+		$diff_dias = "TIMESTAMPDIFF(DAY,  ".$i.", ".$f.") DAY";
+		$diff_horas = "TIMESTAMPDIFF(HOUR,  ".$i.", ".$f.") HOUR";
+
+		$str = "SELECT *," 			
+			." TIMESTAMPDIFF(HOUR, ".$i." + INTERVAL ".$diff_dias.",".$f.") AS horas,"			
+			." TIMESTAMPDIFF(MINUTE, ".$i." + INTERVAL ".$diff_horas.",".$f.") AS minutos"			
+			." FROM tb_operacao"
+			." JOIN tb_trem USING(idtrem)"
 			." WHERE "
-				."encoste_linha"
+				."chegada_trem"
 					." BETWEEN "
 						."'".date("Y-m-d",strtotime($inicio))."'"
 						." AND "
 						."'".date("Y-m-d",strtotime($fim))."'"
 						." AND "
-						." TIMESTAMPDIFF(HOUR,encoste_linha,faturamento_all) IS NOT NULL";
+						." TIMESTAMPDIFF(MINUTE,encoste_linha,faturamento_all) IS NOT NULL";
+
+		//echo $str;
 
 		$operacoes = $this->query($str);
 
@@ -57,19 +61,27 @@ class Relatorio_Model extends CI_Model {
 				
 				$prefixo = "";
 				
-				if( $k > 0 && $operacao["idtrem"] == $operacoes[$k - 1]["idtrem"]){
-					$prefixo = $operacao["prefixo_trem"]." (2)";
+				if($k < (count($operacoes) -1) && $operacao["idtrem"] == $operacoes[$k + 1]["idtrem"]){
+					$prefixo = $operacao["prefixo_trem"]." I";
 				}else{
-					$prefixo = $operacao["prefixo_trem"]." (1)";
+					if( $k > 0 && $operacao["idtrem"] == $operacoes[$k - 1]["idtrem"]){
+						$prefixo = $operacao["prefixo_trem"]." II";
+					}else{
+						$prefixo = $operacao["prefixo_trem"]." ";
+					}
 				}
 
-				array_push($labels, $prefixo." - ".date("d/m H:i",strtotime($operacao["encoste_linha"])));
-				array_push($duracao,$operacao["duracao"]);
+				array_push($labels, $prefixo." ".date("d/m H:i",strtotime($operacao["chegada_trem"])));
+				
+				// FORMATA O TEMPO 0.00
+				$tempo = floatval($operacao["horas"].".".($operacao["minutos"]<10?"0".$operacao["minutos"]:$operacao["minutos"]));
+				
+				array_push($duracao,$tempo);
 				array_push($meta_all,$operacao["meta_all"]);
 				array_push($meta_operacao,$operacao["meta_operacao"]);
 
-				if($operacao["duracao"] > $operacao["meta_all"]) $excedidas_all += 1;
-				if($operacao["duracao"] > $operacao["meta_operacao"]) $excedidas_operacao += 1;
+				if($tempo > $operacao["meta_all"]) $excedidas_all += 1;
+				if($tempo > $operacao["meta_operacao"]) $excedidas_operacao += 1;
 
 			}
 
@@ -90,7 +102,7 @@ class Relatorio_Model extends CI_Model {
 		}
 
 		return false;
-
+		
 	}
 
 }
