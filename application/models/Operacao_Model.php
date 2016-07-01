@@ -25,6 +25,7 @@ class Operacao_Model extends CI_Model {
 	}
 
 	public function query($query){
+
 		$registros = $this->db->query($query);
 		if($registros->num_rows()){						
 			return $registros->result_array();

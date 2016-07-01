@@ -1,7 +1,7 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="modal_pesquisar">
   <div class="modal-dialog modal-sm">
     
-    <form class="form-horizontal" method="post" action="<?=base_url('relatorios/rel_01')?>">
+    <form class="form-horizontal" method="post" action="<?=base_url('relatorios/'.$tipo_relatorio)?>">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -13,7 +13,7 @@
             <div class="form-group">
               <label class="col-sm-3 control-label" for="inicio">Início:</label>  
               <div class="col-sm-9">
-              <input value="<?= $inicio > $fim ?'':$inicio?>" id="inicio" name="inicio" type="date" placeholder="placeholder" class="form-control" required>
+              <input value="<?= $inicio > $fim ?'':$inicio?>" id="inicio" name="inicio" type="date" placeholder="placeholder" class="form-control">
               <span class="help-block">Data início do período.</span>  
               </div>
             </div>
@@ -22,8 +22,21 @@
             <div class="form-group">
               <label class="col-sm-3 control-label" for="fim">Término:</label>  
               <div class="col-sm-9">
-              <input value="<?= $inicio > $fim ?'':$fim?>" id="fim" name="fim" type="date" placeholder="placeholder" class="form-control" required>
+              <input value="<?= $inicio > $fim ?'':$fim?>" id="fim" name="fim" type="date" placeholder="placeholder" class="form-control">
               <span class="help-block">Data término do período.</span>  
+              </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+              <label class="col-sm-3 control-label" for="fim">Mês:</label>  
+              <div class="col-sm-9">
+              <select name="mes" class="form-control">
+                <?php for($i=1;$i<date("m");$i++): ?>
+                  <option value="<?=$i?>"><?=$i?></option>
+                <?php endfor; ?>
+              </select>
+              <span class="help-block">Mês do período.</span>  
               </div>
             </div>
 

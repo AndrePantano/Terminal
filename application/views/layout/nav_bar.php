@@ -35,7 +35,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bar-chart"></i> Relatórios <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="<?= base_url('relatorios/rel_01')?>"><i class="fa fa-bar-chart"></i> Painel Operações</a></li>
-            <li><a href="<?= base_url('relatorios/rel_01')?>"><i class="fa fa-bar-chart"></i> Painel Trens</a></li>
+            <li><a href="<?= base_url('relatorios/rel_02')?>"><i class="fa fa-bar-chart"></i> Painel Trens</a></li>
           </ul>
         </li>
       </ul>

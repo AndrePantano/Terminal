@@ -87,6 +87,7 @@
                 type: 'line',
                 label: 'Meta Operação',
                 //backgroundColor: "rgba(151,187,205,0.5)",
+                backgroundColor: "transparent",
                 data: <?= json_encode($relatorio["meta_operacao"])?>,
                 borderColor: 'rgba(0,0,255,0.8)',
                 borderWidth: 2
@@ -95,6 +96,7 @@
                 type: 'line',
                 label: 'Meta ALL',
                 //backgroundColor: "rgba(151,187,205,0.5)",
+                backgroundColor: "transparent",
                 data: <?= json_encode($relatorio["meta_all"])?>,
                 borderColor: 'rgba(255,0,0,0.8)',
                 borderWidth: 2
