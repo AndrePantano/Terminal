@@ -30,6 +30,16 @@ class Parada_Model extends CI_Model {
 		}
 	}
 
+	public function paradas($coluna,$valor){
+		$str_query = "SELECT *,"
+			." DATE_FORMAT(TIMEDIFF(fim_parada,inicio_parada),'%H:%i') as duracao,"
+			." DATE_FORMAT(TIMEDIFF(fim_parada,inicio_parada),'%H.%i') as tempo"
+			." FROM tb_parada".
+			" JOIN tb_tipo_parada USING(idtipo_parada)"
+			." WHERE ".$coluna." = ".$valor;
+		return $this->query($str_query);
+	}
+
 	public function delete($dados){
 		$this->db->where($dados);
 		$this->db->delete($this->table);

@@ -5,6 +5,7 @@ class Relatorio_Model extends CI_Model {
 
 	public function __construct(){
 		parent::__construct();
+		$this->load->model("Parada_Model");
 	}
 
 	public function query($str_query){
@@ -24,15 +25,9 @@ class Relatorio_Model extends CI_Model {
 		// RETORNA FALSE SE O INICIO FOR MAIOR QUE O FIM
 		if($inicio > $fim) return false;
 
-		$i = "encoste_linha";
-		$f = "faturamento_all";
-
-		$diff_dias = "TIMESTAMPDIFF(DAY,  ".$i.", ".$f.") DAY";
-		$diff_horas = "TIMESTAMPDIFF(HOUR,  ".$i.", ".$f.") HOUR";
-
 		$str = "SELECT *," 			
-			." TIMESTAMPDIFF(HOUR, ".$i." + INTERVAL ".$diff_dias.",".$f.") AS horas,"			
-			." TIMESTAMPDIFF(MINUTE, ".$i." + INTERVAL ".$diff_horas.",".$f.") AS minutos"			
+			." DATE_FORMAT(TIMEDIFF(faturamento_all,encoste_linha),'%H.%i') as tempo_operacao,"
+			." DATE_FORMAT(TIMEDIFF(faturamento_all,envio_manifesto),'%H.%i') as tempo_bo"
 			." FROM tb_operacao"
 			." JOIN tb_trem USING(idtrem)"
 			." WHERE "
@@ -42,7 +37,7 @@ class Relatorio_Model extends CI_Model {
 						." AND "
 						."'".date("Y-m-d",strtotime($fim))."'"
 						." AND "
-						." TIMESTAMPDIFF(MINUTE,encoste_linha,faturamento_all) IS NOT NULL";
+						."chegada_trem IS NOT NULL";
 
 		//echo $str;
 
@@ -54,40 +49,77 @@ class Relatorio_Model extends CI_Model {
 			$labels = array();
 			$meta_all = array();
 			$meta_operacao = array();
-			$duracao = array();
+			$op_duracao = array();
+			$bo_duracao = array();
+			$pr_duracao = array();
+			$mi_duracao = array();
+			$tu_duracao = array();
 			$excedidas_all = $excedidas_operacao = 0;
 
 			foreach ($operacoes as $k => $operacao) {
 				
-				$prefixo = "";
-				
-				if($k < (count($operacoes) -1) && $operacao["idtrem"] == $operacoes[$k + 1]["idtrem"]){
-					$prefixo = $operacao["prefixo_trem"]." I";
-				}else{
-					if( $k > 0 && $operacao["idtrem"] == $operacoes[$k - 1]["idtrem"]){
-						$prefixo = $operacao["prefixo_trem"]." II";
+				// IDENTIFICA E ALIMENTA O ARRAY DE LABELS DAS OPERAÇÕES
+					$prefixo = "";
+					
+					if($k < (count($operacoes) -1) && $operacao["idtrem"] == $operacoes[$k + 1]["idtrem"]){
+						$prefixo = $operacao["prefixo_trem"]." I";
 					}else{
-						$prefixo = $operacao["prefixo_trem"]." ";
+						if( $k > 0 && $operacao["idtrem"] == $operacoes[$k - 1]["idtrem"]){
+							$prefixo = $operacao["prefixo_trem"]." II";
+						}else{
+							$prefixo = $operacao["prefixo_trem"];
+						}
 					}
-				}
 
-				array_push($labels, $prefixo." ".date("d/m H:i",strtotime($operacao["chegada_trem"])));
-				
-				// FORMATA O TEMPO 0.00
-				$tempo = floatval($operacao["horas"].".".($operacao["minutos"]<10?"0".$operacao["minutos"]:$operacao["minutos"]));
-				
-				array_push($duracao,$tempo);
-				array_push($meta_all,$operacao["meta_all"]);
-				array_push($meta_operacao,$operacao["meta_operacao"]);
+					array_push($labels, $prefixo." ".date("d/m H:i",strtotime($operacao["chegada_trem"])));
+					
+				// ALIMENTA OS ARRAYS COMO OS TEMPOS
+					array_push($bo_duracao,$operacao["tempo_bo"]);
+					array_push($op_duracao,$operacao["tempo_operacao"]);
+					array_push($meta_all,$operacao["meta_all"]);
+					array_push($meta_operacao,$operacao["meta_operacao"]);
 
-				if($tempo > $operacao["meta_all"]) $excedidas_all += 1;
-				if($tempo > $operacao["meta_operacao"]) $excedidas_operacao += 1;
+				// IDENTIFICA E CONTA AS OPERAÇÕES QUE EXCEDERAM O TEMPO
+					if($operacao["tempo_operacao"] > $operacao["meta_all"]) $excedidas_all += 1;
+					if($operacao["tempo_operacao"] > $operacao["meta_operacao"]) $excedidas_operacao += 1;
+					
+				// RETORNA TODAS AS PARADAS DESTA OPERAÇÃO
+					$paradas = $this->Parada_Model->paradas("idoperacao",$operacao["idoperacao"]);
+
+					$pr = $mi = $total_paradas = 0;
+
+					if($paradas){
+						foreach ($paradas as $j => $parada) {
+							if($parada["idtipo_parada"]==1 ||$parada["idtipo_parada"]==2) $mi += $parada["tempo"];
+							if($parada["idtipo_parada"]==3) $pr += $parada["tempo"];
+							$total_paradas += $parada["tempo"];
+						}
+					}
+
+					array_push($pr_duracao,$pr);
+					array_push($mi_duracao,$mi);
+
+					$segundos = $minutos = $horas = 0;
+					list($h,$m) = explode(".",$operacao["tempo_operacao"]-$total_paradas);
+					$segundos += $h * 3600;
+					$segundos += $m * 60;
+					$horas = floor( $segundos / 3600 ); //converte os segundos em horas e arredonda caso nescessario
+					$segundos %= 3600; // pega o restante dos segundos subtraidos das horas
+					$minutos = floor( $segundos / 60 );//converte os segundos em minutos e arredonda caso nescessario
+					$segundos %= 60;// pega o restante dos segundos subtraidos dos minutos
+					$horas < 10? $horas = "0".$horas:$horas;
+					$minutos < 10? $minutos = "0".$minutos:$minutos;
+					array_push($tu_duracao,$horas.".".$minutos);
 
 			}
 
 			$dados = array(
 				"labels" => $labels,
-				"duracao" => $duracao,
+				"op_valores" => $op_duracao,
+				"bo_valores" => $bo_duracao,
+				"pr_valores" => $pr_duracao,
+				"mi_valores" => $mi_duracao,
+				"tu_valores" => $tu_duracao,
 				"meta_all" => $meta_all,
 				"meta_operacao" => $meta_operacao,
 				"excedidas_operacao" => $excedidas_operacao - $excedidas_all,

@@ -37,8 +37,7 @@ class Operacao extends CI_Controller {
       $this->load->model("Parada_Model");
       $qtd_vagoes = 0;
       foreach ($operacoes as $k => $operacao) {
-        $str_query = "SELECT *, DATE_FORMAT(TIMEDIFF(fim_parada,inicio_parada),'%H:%i') as duracao FROM tb_parada JOIN tb_tipo_parada USING(idtipo_parada) WHERE idoperacao = ".$operacao["idoperacao"];
-        $operacoes[$k]["paradas"] = $this->Parada_Model->query($str_query);
+        $operacoes[$k]["paradas"] = $this->Parada_Model->paradas("idoperacao",$operacao["idoperacao"]);
         $qtd_vagoes += $operacao["qtd_vagoes"];
       }
 

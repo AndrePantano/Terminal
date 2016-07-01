@@ -103,53 +103,53 @@
                 type: 'bar',
                 label: 'Tempo Útil',
                 backgroundColor: "rgba(210,105,30,0.8)",
-                data:<?= json_encode($relatorio["duracao"])?>
+                data:<?= json_encode($relatorio["tu_valores"])?>
             },
             {
                 type: 'bar',
-                label: 'Operação',
-                backgroundColor: "rgba(218,165,32,0.8)",
-                data:<?= json_encode($relatorio["duracao"])?>
+                label: 'Total Operação',
+                backgroundColor: "rgba(255,0,32,0.8)",
+                data:<?= json_encode($relatorio["op_valores"])?>
             },
             {
                 type: 'bar',
-                label: 'Manobra e Inversão',
+                label: 'P. Manobra e Inversão',
                 backgroundColor: "rgba(50,205,50,0.8)",
-                data:<?= json_encode($relatorio["duracao"])?>
+                data:<?= json_encode($relatorio["mi_valores"])?>
             },
             {
                 type: 'bar',
                 label: 'Parada Rodoviária',
                 backgroundColor: "rgba(128,0,255,0.8)",
-                data:<?= json_encode($relatorio["duracao"])?>
+                data:<?= json_encode($relatorio["pr_valores"])?>
             },
             {
                 type: 'bar',
                 label: 'Tempo do BO',
                 backgroundColor: "rgba(100,149,237,0.8)",
-                data:<?= json_encode($relatorio["duracao"])?>
+                data:<?= json_encode($relatorio["bo_valores"])?>                
             }
           ]
 
         };
-
-        var pizza = {
-            labels: ["Operação","ALL","Assertividade"],
-            datasets: [{
-              data: [<?=$relatorio["excedidas_operacao"]?>,<?=$relatorio["excedidas_all"]?>,<?=$relatorio["assertividade"]?>],
-              backgroundColor: [
-                  "rgba(0,0,255,0.8)",
-                  "rgba(255,0,0,0.8)",
-                  "rgba(0,255,0,0.8)"
-              ],
-              hoverBackgroundColor: [
-                  "rgba(0,0,255,0.7)",
-                  "rgba(255,0,0,0.7)",
-                   "rgba(0,255,0,0.7)"
-              ]
-            }]
-        };
-
+        /*
+          var pizza = {
+              labels: ["Operação","ALL","Assertividade"],
+              datasets: [{
+                data: [<?=$relatorio["excedidas_operacao"]?>,<?=$relatorio["excedidas_all"]?>,<?=$relatorio["assertividade"]?>],
+                backgroundColor: [
+                    "rgba(0,0,255,0.8)",
+                    "rgba(255,0,0,0.8)",
+                    "rgba(0,255,0,0.8)"
+                ],
+                hoverBackgroundColor: [
+                    "rgba(0,0,255,0.7)",
+                    "rgba(255,0,0,0.7)",
+                     "rgba(0,255,0,0.7)"
+                ]
+              }]
+          };
+        */
         window.onload = function() {
           var ctx = document.getElementById("chart1").getContext("2d");
           window.myBar = new Chart(ctx, {
@@ -160,7 +160,7 @@
               title: {
                   display: true,
                   fontColor: 'rgb(0, 0, 0)',
-                  text: "Resultado por Operação"
+                  text: "Resultado por Operação em Horas (hs)"
               },
               scales: {
                 yAxes: [{
@@ -172,32 +172,36 @@
               legend: {
                   display: true,
                   position:"top"
+              },
+              tooltip:{  
+                  yLabel: String,
               }
+              
             }
           });
-
-          var ctw = document.getElementById("chart2").getContext("2d");
-          var myPieChart = new Chart(ctw,{
-              type: 'pie',
-              data: pizza,
-              options: {
-                //responsive: true,
-                title: {
+          /*
+            var ctw = document.getElementById("chart2").getContext("2d");
+            var myPieChart = new Chart(ctw,{
+                type: 'pie',
+                data: pizza,
+                options: {
+                  //responsive: true,
+                  title: {
+                      display: true,
+                      fontColor: 'rgb(0, 0, 0)',
+                      text: "Resultado do Período em Operações"
+                  },
+                  legend: {
                     display: true,
-                    fontColor: 'rgb(0, 0, 0)',
-                    text: "Resultado do Período em Operações"
-                },
-                legend: {
-                  display: true,
-                  position:"bottom"
-                  /*,
-                  labels: {
-                      fontColor: 'rgb(255, 99, 132)'
+                    position:"bottom",
+                    labels: {
+                        //fontColor: 'rgb(255, 99, 132)'
+                    }
+                    
                   }
-                  */
                 }
-              }
-          });
+            });
+          */
         };
       </script>
     <?php endif;?>

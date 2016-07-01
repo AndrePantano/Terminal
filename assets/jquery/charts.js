@@ -7609,7 +7609,9 @@ module.exports = function(Chart) {
 			beforeLabel: helpers.noop,
 			label: function(tooltipItem, data) {
 				var datasetLabel = data.datasets[tooltipItem.datasetIndex].label || '';
-				return datasetLabel + ': ' + tooltipItem.yLabel;
+				var valores = parseFloat(tooltipItem.yLabel).toFixed(2);
+				var tempo = valores.replace(".",":");
+				return datasetLabel + ': ' + tempo;
 			},
 			labelColor: function(tooltipItem, chartInstance) {
 				var meta = chartInstance.getDatasetMeta(tooltipItem.datasetIndex);
