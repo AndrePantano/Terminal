@@ -59,13 +59,15 @@ class Previsao_Saida extends CI_Controller {
       "idtrem" => $this->input->post("idtrem"),      
       "data_previsao" => $this->input->post("previsao"),
       "motivo_previsao" => $this->input->post("motivo"),
-      "criado_em" => date("Y-m-d H:i:s"),
-      "atualizado_em" => date("Y-m-d H:i:s"),
       "idusuario" => $this->session->userdata("idusuario")
     );
     
-    if($this->input->post("idprevisao"))
+    if($this->input->post("idprevisao")){
       $dados["idprevisao"] = $this->input->post("idprevisao");
+      $dados["atualizado_em"] = date("Y-m-d H:i:s");
+    }else{
+      $dados["criado_em"] = date("Y-m-d H:i:s");
+    }
 
     return $dados;
   }
@@ -153,7 +155,7 @@ class Previsao_Saida extends CI_Controller {
         'content' => 'Ocorreum erro na validação dos dados.<br/>'.validation_errors()
       ]);
 
-      $this->redireciona($this->input->post("idtrem"));
+      $this->redireciona();
     }
   }
 

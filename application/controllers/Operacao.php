@@ -26,7 +26,6 @@ class Operacao extends CI_Controller {
     if($trem){
       
       // CARREGA AS OPERAÇÕES
-      $this->load->model("Operacao_Model");
       $operacoes = $this->Operacao_Model->operacoes("idtrem",$trem["idtrem"]);
 
       // CARREGA OS TIPOS DE PARADAS
@@ -69,30 +68,14 @@ class Operacao extends CI_Controller {
 
         if ($this->atualizar_quantidade_vagoes($idtrem)) {
           
-          // MONTA O ARRAY DE DADOS
-          $operacao = array(
-            "idtrem" => $idtrem,
-            "qtd_vagoes" => $this->input->post("quantidade"),
-            "encoste_linha" => null,
-            "inicio_operacao" => null,
-            "termino_operacao" => null,
-            "envio_manifesto" => null,
-            "faturamento_all" => null
-          );
-
-          if(!empty($this->input->post("encoste"))){ $operacao["encoste_linha"] = $this->input->post("encoste");}
-          if(!empty($this->input->post("inicio"))){ $operacao["inicio_operacao"] = $this->input->post("inicio");}
-          if(!empty($this->input->post("termino"))){ $operacao["termino_operacao"] = $this->input->post("termino");}
-          if(!empty($this->input->post("manifesto"))){ $operacao["envio_manifesto"] = $this->input->post("manifesto");}
-          if(!empty($this->input->post("all"))){ $operacao["faturamento_all"] = $this->input->post("all");}
-
-          $this->Operacao_Model->create($operacao);
+          $dados = $this->montar_dados();
+          $this->Operacao_Model->create($dados);
 
           // RETORNA A MENSAGEM
           $this->session->set_flashdata(['class' => 'success','content' => 'Operação adicionada com sucesso']);
         }
       }
-      redirect("operacao/trem/".$idtrem);
+      $this->redireciona();
     }
     
   }
@@ -101,28 +84,11 @@ class Operacao extends CI_Controller {
     
     if($this->checar_post()){
 
-      $idtrem = $this->input->post("idtrem");
-      
       if($this->validar_formulario('update')){
         
-        $operacao = array(
-          "idoperacao" =>  $this->input->post("idoperacao"),
-          "idtrem" => $idtrem,
-          "qtd_vagoes" => $this->input->post("quantidade"),
-          "encoste_linha" => null,
-          "inicio_operacao" => null,
-          "termino_operacao" => null,
-          "envio_manifesto" => null,
-          "faturamento_all" => null
-        );
+        $dados = $this->montar_dados();
 
-        if(!empty($this->input->post("encoste"))){ $operacao["encoste_linha"] = $this->input->post("encoste");}
-        if(!empty($this->input->post("inicio"))){ $operacao["inicio_operacao"] = $this->input->post("inicio");}
-        if(!empty($this->input->post("termino"))){ $operacao["termino_operacao"] = $this->input->post("termino");}
-        if(!empty($this->input->post("manifesto"))){ $operacao["envio_manifesto"] = $this->input->post("manifesto");}
-        if(!empty($this->input->post("all"))){ $operacao["faturamento_all"] = $this->input->post("all");}
-
-        $this->Operacao_Model->update($operacao);
+        $this->Operacao_Model->update($dados);
 
         // RETORNA A MENSAGEM
         $this->session->set_flashdata([
@@ -132,7 +98,7 @@ class Operacao extends CI_Controller {
            
       }
       
-      redirect("operacao/trem/".$idtrem);
+      $this->redireciona();
 
     }
     
@@ -256,5 +222,40 @@ class Operacao extends CI_Controller {
     }
   }
 
+  public function montar_dados(){
+
+    //$this->load->model("");
+
+    $dados = array(
+      "idtrem" => $this->input->post("idtrem"),
+      "qtd_vagoes" => $this->input->post("quantidade"),
+      "encoste_linha" => null,
+      "inicio_operacao" => null,
+      "termino_operacao" => null,
+      "envio_manifesto" => null,
+      "faturamento_all" => null,
+      "idusuario" => $this->session->userdata("idusuario")
+    );
+
+    if(!empty($this->input->post("encoste"))){ $dados["encoste_linha"] = $this->input->post("encoste");}
+    if(!empty($this->input->post("inicio"))){ $dados["inicio_operacao"] = $this->input->post("inicio");}
+    if(!empty($this->input->post("termino"))){ $dados["termino_operacao"] = $this->input->post("termino");}
+    if(!empty($this->input->post("manifesto"))){ $dados["envio_manifesto"] = $this->input->post("manifesto");}
+    if(!empty($this->input->post("all"))){ $dados["faturamento_all"] = $this->input->post("all");}
+    
+    if($this->input->post("idoperacao")){
+      $dados["idoperacao"] = $this->input->post("idoperacao");
+      $dados["atualizado_em"] = date("Y-m-d H:i:s");
+    }else{
+      $dados["criado_em"] = date("Y-m-d H:i:s");
+    }
+
+    return $dados;
+  }
+
+  public function redireciona(){
+    
+    redirect("operacao/trem/".$this->input->post("idtrem"));
+  }
 }
 

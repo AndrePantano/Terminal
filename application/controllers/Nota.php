@@ -19,158 +19,86 @@ class Nota extends CI_Controller {
      
   public function create(){
     
-    $idtrem = $this->input->post("idtrem");
+    $this->validar_formulario('create');
+
+    $dados = $this->montar_dados();
     
-    if($this->input->post()){
-
-      // VALIDA O FORMULÁRIO
-      if($this->validar_formulario()){
-        
-
-        // INSERE A PREVISAO COM A DATA PASSADA
-        $nota = array(
-          "idtrem" => $idtrem,
-          "criacao_nota" => date("Y-m-d H:i"),
-          "texto_nota" => $this->input->post("texto")
-        );
-        
-        $this->Nota_Model->create($nota);
-
-        // RETORNA A MENSAGEM
-        $this->session->set_flashdata([
-          'class' => 'success',
-          'content' => 'Nota adicionada com sucesso'
-        ]);        
+    $this->Nota_Model->create($dados);
+    
+    $this->session->set_flashdata([
+      'class' => 'success',
+      'content' => 'Nota adicionada com sucesso'
+    ]);        
            
-      }else{
-        
-        // RETORNA O ERRO
-        $this->session->set_flashdata([
-          'class' => 'danger',
-          'content' => 'Ocorreum erro na validação dos dados.<br/>'.validation_errors()
-        ]);
-        
-      }
-    
-    }else{
-      // RETORNA O ERRO
-      $this->session->set_flashdata([
-        'class' => 'danger',
-        'content' => 'É preciso preencher o formulário para criar uma nota'
-      ]); 
-
-    }
-
-    redirect("nota/trem/".$idtrem);
+    $this->redireciona();
     
   }
 
   public function update(){
     
-    $idtrem = $this->input->post("idtrem");
+    $this->validar_formulario('create');
+
+    $dados = $this->montar_dados();
+
+    $this->Nota_Model->update($dados);
+
+    // RETORNA A MENSAGEM
+    $this->session->set_flashdata([
+      'class' => 'success',
+      'content' => 'Nota editada com sucesso'
+    ]);        
     
-    if($this->input->post()){
-
-      // VALIDA O FORMULÁRIO
-      if($this->validar_formulario_update()){
-        
-
-        // INSERE A PREVISAO COM A DATA PASSADA
-        $nota = array(
-          "idnota" => $this->input->post("idnota"),
-          "criacao_nota" => date("Y-m-d H:i:s"),
-          "texto_nota" => $this->input->post("texto")
-        );
-        
-        $this->Nota_Model->update($nota);
-
-        // RETORNA A MENSAGEM
-        $this->session->set_flashdata([
-          'class' => 'success',
-          'content' => 'Nota editada com sucesso'
-        ]);        
-           
-      }else{
-        
-        // RETORNA O ERRO
-        $this->session->set_flashdata([
-          'class' => 'danger',
-          'content' => 'Ocorreum erro na validação dos dados.<br/>'.validation_errors()
-        ]);
-        
-      }
-    
-    }else{
-      // RETORNA O ERRO
-      $this->session->set_flashdata([
-        'class' => 'danger',
-        'content' => 'É preciso preencher o formulário para criar uma nota'
-      ]); 
-
-    }
-
-    redirect("nota/trem/".$idtrem);
+    $this->redireciona();
     
   }
 
   public function delete(){
     
-    $idtrem = $this->input->post("idtrem");
+    $this->validar_formulario('delete');
+        
+    $dados = array("idnota" => $this->input->post("idnota"));
+        
+    $this->Nota_Model->delete($dados);
     
-    if($this->input->post()){
-
-      if($this->validar_formulario_delete()){
-        
-        $dados = array("idnota" => $this->input->post("idnota"));
-        
-        $this->Nota_Model->delete($dados);
-
-        // RETORNA A MENSAGEM
-        $this->session->set_flashdata([
-          'class' => 'success',
-          'content' => 'Nota excluída com sucesso'
-        ]);        
-           
-      }else{
-        
-        // RETORNA O ERRO
-        $this->session->set_flashdata([
-          'class' => 'danger',
-          'content' => 'Ocorreum erro na validação dos dados.<br/>'.validation_errors()
-        ]);
-        
-      }
+    $this->session->set_flashdata([
+      'class' => 'success',
+      'content' => 'Nota excluída com sucesso'
+    ]);        
+  
+    $this->redireciona();
     
-    }else{
-      // RETORNA O ERRO
-      $this->session->set_flashdata([
-        'class' => 'danger',
-        'content' => 'É preciso preencher o formulário para criar uma nota'
-      ]); 
+  }
 
+  public function validar_formulario($tipo){
+    
+    $this->check_post();
+
+    switch ($tipo) {
+      case 'create':
+        $this->form_validation->set_rules('idtrem','Trem','required');    
+        $this->form_validation->set_rules('texto','Texto','required');       
+        break;
+      case 'update':
+        $this->form_validation->set_rules('idtrem','Trem','required');    
+        $this->form_validation->set_rules('idnota','Nota','required');    
+        $this->form_validation->set_rules('texto','Texto','required');       
+        break;
+      case 'delete':
+        $this->form_validation->set_rules('idtrem','Trem','required');    
+        $this->form_validation->set_rules('idnota','Nota','required');    
+        break;
     }
 
-    redirect("nota/trem/".$idtrem);
-    
-  }
+    if(!$this->form_validation->run()){
 
-  public function validar_formulario(){
-    $this->form_validation->set_rules('idtrem','Trem','required');    
-    $this->form_validation->set_rules('texto','Texto','required');       
-    return $this->form_validation->run();
-  }
+      $this->session->set_flashdata([
+        'class' => 'danger',
+        'content' => 'Ocorreum erro na validação dos dados.<br/>'.validation_errors()
+      ]);
 
-  public function validar_formulario_update(){
-    $this->form_validation->set_rules('idtrem','Trem','required');    
-    $this->form_validation->set_rules('idnota','Nota','required');    
-    $this->form_validation->set_rules('texto','Texto','required');       
-    return $this->form_validation->run();
-  }
- 
-  public function validar_formulario_delete(){
-    $this->form_validation->set_rules('idtrem','Trem','required');    
-    $this->form_validation->set_rules('idnota','Nota','required');    
-    return $this->form_validation->run();
+      $this->redireciona();
+    }
+
   }
 
   public function trem($id){
@@ -197,6 +125,41 @@ class Nota extends CI_Controller {
       $this->load->view('errors/cli/error_404',$dados);
     }   
     
+  }
+
+  public function montar_dados(){
+
+    $dados = array(
+      "idtrem" => $this->input->post("idtrem"),
+      "texto_nota" => $this->input->post("texto"),
+      "idusuario" => $this->session->userdata("idusuario"),
+      "atualizado_em" => date("Y-m-d H:i:s")
+    );
+    
+    if($this->input->post("idnota")){
+      $dados["idnota"] = $this->input->post("idnota");
+    }else{
+      $dados["criado_em"] = date("Y-m-d H:i:s");
+    }
+
+    return $dados;
+  }
+
+  public function check_post(){
+
+    if(!$this->input->post()){
+      $this->session->set_flashdata([
+        'class' => 'danger',
+        'content' => 'Nenhum formulário foi recebido!'
+      ]); 
+      $this->redireciona();
+    }
+
+  }
+
+  public function redireciona(){
+
+    redirect("nota/trem/".$this->input->post("idtrem"));
   }
 
 }

@@ -25,6 +25,9 @@
 				var idtipo_parada = $(".tipo_parada"+id).data("id");			
 				$("#edit_tipo_parada option[value='"+idtipo_parada+"']").prop("selected","selected");
 				
+				// ATRIBUI O ID DA OPERACAO
+				$(".idoperacao").val($(this).data("idoperacao"));
+
 				// ATRIBUI O ID DA PARADA
 				$(".idparada").val(id);
 
@@ -175,7 +178,7 @@
 														<?php 
 														$segundos = 0;
 														foreach ($operacao["paradas"] as $k => $parada): ?>
-															<tr data-id="<?=$parada['idparada']?>" data-linha_operacao="<?=$linha?>">
+															<tr data-id="<?=$parada['idparada']?>" data-linha_operacao="<?=$linha?>" data-idoperacao="<?=$parada["idoperacao"]?>">
 																<td class="ordem_parada<?=$parada['idparada']?>"><?= $k+1 ?></td>
 																<td class="tipo_parada<?=$parada['idparada']?>" data-id="<?= $parada["idtipo_parada"]?>"><?= $parada["nome_tipo_parada"]?></td>
 																<td class="inicio<?=$parada['idparada']?>" data-parada="<?=date('Y-m-d\TH:i',strtotime($parada['inicio_parada']))?>"><?= date("d/m/Y H:i",strtotime($parada["inicio_parada"]))?></td>

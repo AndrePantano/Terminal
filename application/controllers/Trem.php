@@ -56,33 +56,33 @@ class Trem extends CI_Controller {
   public function create(){
     
     $this->validar_formulario('create');
-        
-    // INSERE O TREM E PEGA O SEU ID
-    $trem = array(
-      "prefixo_trem" => strtoupper($this->input->post("trem")),
-      "criado_em" => date("Y-m-d H:i:s"),
-      "atualizado_em" => date("Y-m-d H:i:s"),
-      "idusuario" => $this->session->userdata("idusuario")
-    );
+    
+    // PREPARA OS ARRAY DE DADOS
+    $dados = $this->montar_dados();
 
-    $this->Trem_Model->create($trem);
+    // CRIA O REGISTRO
+    $this->Trem_Model->create($dados);
+
+    // RETORNA O ID DO REGISTRO CRIADO
     $idtrem = $this->db->insert_id();
 
-    // INSERE A OPERAÇÃO COM AS QUANTIDADES DE VAGÕES
+    // INSERE A OPERAÇÃO
     $operacao = array(
       "idtrem" => $idtrem,
-      "qtd_vagoes" => $this->input->post("quantidade")
+      "qtd_vagoes" => $this->input->post("quantidade"),
+      "idusuario" => $this->session->userdata("idusuario"),
+      "criado_em" => date("Y-m-d H:i:s"),
     );
-
     $this->load->model("Operacao_Model");
     $this->Operacao_Model->create($operacao);
     
-    // INSERE A PREVISAO COM A DATA PASSADA
+    // INSERE A PREVISAO
     $previsao_chegada = array(
       "idtrem" => $idtrem,
-      "criacao_previsao" => date("Y-m-d H:i"),
       "data_previsao" => $this->input->post("previsao"),
-      "motivo_previsao" => "Primeiro Lançamento"
+      "motivo_previsao" => "Primeiro Lançamento",
+      "idusuario" => $this->session->userdata("idusuario"),
+      "criado_em" => date("Y-m-d H:i:s"),
     );
     $this->load->model("Previsao_Chegada_Model");
     $this->Previsao_Chegada_Model->create($previsao_chegada);
@@ -98,34 +98,42 @@ class Trem extends CI_Controller {
 
   public function update(){
 
-    // VALIDA O FORMULÁRIO
     $this->validar_formulario('update');
 
-    $chegada = $partida = null;
+    $dados = $this->montar_dados();
 
-    if($this->input->post("chegada") != "") $chegada = date("Y-m-d H:i:s", strtotime($this->input->post("chegada")));
-    if($this->input->post("partida") != "") $partida = date("Y-m-d H:i:s", strtotime($this->input->post("partida")));
-
-    // INSERE O TREM E PEGA O SEU ID
-    $dados = array(
-      "idtrem" => $this->input->post("idtrem"),
-      "prefixo_trem" => strtoupper($this->input->post("trem")),
-      "chegada_trem" => $chegada,
-      "partida_trem" => $partida,
-      "atualizado_em" => date("Y-m-d H:i:s"),
-      "idusuario" => $this->session->userdata("idusuario")
-    );
-
-    $this->load->model("Trem_Model");
     $this->Trem_Model->update($dados);
-
-    // RETORNA A MENSAGEM
+    
     $this->session->set_flashdata([
       'class' => 'success',
       'content' => 'Dados atualizados com sucesso'
     ]);
           
     $this->redireciona($this->input->post("idtrem"));
+  }
+
+  public function montar_dados(){
+
+    $chegada = $partida = null;
+
+    if($this->input->post("chegada") != "") $chegada = date("Y-m-d H:i:s", strtotime($this->input->post("chegada")));
+    if($this->input->post("partida") != "") $partida = date("Y-m-d H:i:s", strtotime($this->input->post("partida")));
+
+    $dados = array(
+      "prefixo_trem" => strtoupper($this->input->post("trem")),
+      "chegada_trem" => $chegada,
+      "partida_trem" => $partida,
+      "idusuario" => $this->session->userdata("idusuario")
+    );
+    
+    if($this->input->post("idtrem")){
+      $dados["idtrem"] = $this->input->post("idtrem");
+      $dados["atualizado_em"] = date("Y-m-d H:i:s");
+    }else{
+      $dados["criado_em"] = date("Y-m-d H:i:s");
+    }
+
+    return $dados;
   }
 
   public function delete(){
@@ -171,9 +179,9 @@ class Trem extends CI_Controller {
     redirect("/");
   }
 
-  public function redireciona($trem){
+  public function redireciona($idtrem){
     
-    redirect("trem/trem/".$trem);
+    redirect("trem/trem/".$idtrem);
   }
 
   public function check_post(){

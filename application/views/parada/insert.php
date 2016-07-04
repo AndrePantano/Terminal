@@ -1,7 +1,7 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="modal_add_parada">
   <div class="modal-dialog modal-sm">
     <form class="form-horizontal" method="post" action="<?=base_url('parada/create')?>">
-      <input name="idoperacao" class="idoperacao" type="hidden" value="" required="">
+      <input name="idoperacao" class="idoperacao" type="hidden" value="" required>
       <input name="idtrem" type="hidden" value="<?=$trem['idtrem']?>" required>
         <div class="modal-content">
           <div class="modal-header">

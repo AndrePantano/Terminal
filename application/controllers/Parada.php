@@ -18,168 +18,79 @@ class Parada extends CI_Controller {
      
   public function create(){
     
-    $idtrem = $this->input->post("idtrem");
+    $this->validar_formulario('create');
+        
+    $this->checar_datas();
+
+    $dados = $this->montar_dados();
+
+    $this->Parada_Model->create($dados);
+
+    $this->session->set_flashdata([
+      'class' => 'success',
+      'content' => 'Parada adicionada com sucesso'
+    ]);
     
-    if($this->input->post()){
-
-      // VALIDA O FORMULÁRIO
-      if($this->validar_formulario('create')){
-        
-        if($this->checar_datas()){
-          // INSERE A PREVISAO COM A DATA PASSADA
-          $dados = array(
-            "idoperacao" => $this->input->post("idoperacao"),
-            "idtipo_parada" => $this->input->post("idtipo_parada"),
-            "inicio_parada" => $this->input->post("inicio"),
-            "fim_parada" => $this->input->post("fim")
-          );
-
-          $this->Parada_Model->create($dados);
-
-          // RETORNA A MENSAGEM
-          $this->session->set_flashdata([
-            'class' => 'success',
-            'content' => 'Parada adicionada com sucesso'
-          ]);
-        }else{
-          // RETORNA A MENSAGEM
-          $this->session->set_flashdata([
-            'class' => 'warning',
-            'content' => 'Data início da parada é maior ou igual a data final.<br>Informe um período válido.'
-          ]);        
-           
-        }      
-           
-      }else{
-        
-        // RETORNA O ERRO
-        $this->session->set_flashdata([
-          'class' => 'danger',
-          'content' => 'Ocorreum erro na validação dos dados.<br/>'.validation_errors()
-        ]);
-        
-      }
-    
-    }else{
-      // RETORNA O ERRO
-      $this->session->set_flashdata([
-        'class' => 'danger',
-        'content' => 'É preciso preencher o formulário para criar uma previsão'
-      ]); 
-
-    }
-
-    redirect("operacao/trem/".$idtrem);
+    $this->redireciona();
     
   }
 
   public function update(){
     
-    $idtrem = $this->input->post("idtrem");
-    
-    if($this->input->post()){
-
-      // VALIDA O FORMULÁRIO
-      if($this->validar_formulario('update')){
+    $this->validar_formulario('update');
         
-        if($this->checar_datas()){
-          // INSERE A PREVISAO COM A DATA PASSADA
-          $dados = array(
-            "idparada" => $this->input->post("idparada"),
-            "idtipo_parada" => $this->input->post("idtipo_parada"),
-            "inicio_parada" => $this->input->post("inicio"),
-            "fim_parada" => $this->input->post("fim")
-          );
+    $this->checar_datas();
 
-          $this->Parada_Model->update($dados);
+    $dados = $this->montar_dados();
 
-          // RETORNA A MENSAGEM
-          $this->session->set_flashdata([
-            'class' => 'success',
-            'content' => 'Dados da Parada atualizados com sucesso'
-          ]);
-        }else{
-          // RETORNA A MENSAGEM
-          $this->session->set_flashdata([
-            'class' => 'warning',
-            'content' => 'Data início da parada é maior ou igual a data final.<br>Informe um período válido.'
-          ]);        
-           
-        }      
-           
-      }else{
-        
-        // RETORNA O ERRO
-        $this->session->set_flashdata([
-          'class' => 'danger',
-          'content' => 'Ocorreum erro na validação dos dados.<br/>'.validation_errors()
-        ]);
-        
-      }
-    
-    }else{
-      // RETORNA O ERRO
-      $this->session->set_flashdata([
-        'class' => 'danger',
-        'content' => 'É preciso preencher o formulário para criar uma previsão'
-      ]); 
+    $this->Parada_Model->update($dados);
 
-    }
-
-    redirect("operacao/trem/".$idtrem);
+    // RETORNA A MENSAGEM
+    $this->session->set_flashdata([
+      'class' => 'success',
+      'content' => 'Dados da Parada atualizados com sucesso'
+    ]);
+          
+    $this->redireciona();
     
   }
 
   public function delete(){
     
-    $idtrem = $this->input->post("idtrem");
-    
-    if($this->input->post()){
-
-      if($this->validar_formulario("delete")){
+    $this->validar_formulario("delete");
         
-          $dados = array("idparada" => $this->input->post("idparada"));
+    $dados = array("idparada" => $this->input->post("idparada"));
 
-          $this->Parada_Model->delete($dados);
+    $this->Parada_Model->delete($dados);
 
-          // RETORNA A MENSAGEM
-          $this->session->set_flashdata([
-            'class' => 'success',
-            'content' => 'Dados excluídos com sucesso'
-          ]);
+    // RETORNA A MENSAGEM
+    $this->session->set_flashdata([
+      'class' => 'success',
+      'content' => 'Dados excluídos com sucesso'
+    ]);
 
-      }else{
-        
-        // RETORNA O ERRO
-        $this->session->set_flashdata([
-          'class' => 'danger',
-          'content' => 'Ocorreum erro na validação dos dados.<br/>'.validation_errors()
-        ]);
-        
-      }
-    
-    }else{
-      // RETORNA O ERRO
-      $this->session->set_flashdata([
-        'class' => 'danger',
-        'content' => 'É preciso preencher o formulário para criar uma previsão'
-      ]); 
-
-    }
-
-    redirect("operacao/trem/".$idtrem);
+    $this->redireciona();
     
   }
 
   public function checar_datas(){
+
     if($this->input->post("inicio") >= $this->input->post("fim")){
-      return false;
-    }else{
-      return true;
+
+      $this->session->set_flashdata([
+        'class' => 'warning',
+        'content' => 'Data início da parada é maior ou igual a data final.<br>Informe um período válido.'
+      ]);
+
+      $this->redireciona();
     }
+
   }
 
   public function validar_formulario($tipo){
+
+    $this->check_post();
+
     switch ($tipo) {
       case 'create':
         $this->form_validation->set_rules('idtrem','Id do Trem','required');    
@@ -199,7 +110,51 @@ class Parada extends CI_Controller {
         break;
     }
 
-    return $this->form_validation->run();
+    if(!$this->form_validation->run()){
+
+      $this->session->set_flashdata([
+        'class' => 'danger',
+        'content' => 'Ocorreum erro na validação dos dados.<br/>'.validation_errors()
+      ]);
+
+      $this->redireciona();
+    }
+
+  }
+
+  public function check_post(){
+    if(!$this->input->post()){
+      $this->session->set_flashdata([
+        'class' => 'danger',
+        'content' => 'Nenhum formulário foi recebido!'
+      ]); 
+      $this->redireciona();
+    }
+  }
+
+  public function montar_dados(){
+
+    $dados = array(
+      "idoperacao" => $this->input->post("idoperacao"),
+      "idtipo_parada" => $this->input->post("idtipo_parada"),
+      "inicio_parada" => $this->input->post("inicio"),
+      "fim_parada" => $this->input->post("fim"),
+      "idusuario" => $this->session->userdata("idusuario")
+    );
+    
+    if($this->input->post("idparada")){
+      $dados["idparada"] = $this->input->post("idparada");
+      $dados["atualizado_em"] = date("Y-m-d H:i:s");
+    }else{
+      $dados["criado_em"] = date("Y-m-d H:i:s");
+    }
+
+    return $dados;
+  }
+
+  public function redireciona(){
+    
+    redirect("operacao/trem/".$this->input->post("idtrem"));
   }
 
 }

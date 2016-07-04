@@ -34,7 +34,7 @@ class Previsao_Chegada extends CI_Controller {
       'content' => 'Previsão excluída com sucesso'
     ]);        
            
-    $this->redireciona($idtrem);
+    $this->redireciona();
     
   }
 
@@ -42,39 +42,26 @@ class Previsao_Chegada extends CI_Controller {
     
     $this->validar_formulario('update');
     
-    $idtrem = $this->input->post("idtrem");
+    $dados = $this->montar_dados();
 
-    $previsao = array(
-      "idtrem" => $idtrem,
-      "idprevisao" => $this->input->post("idprevisao"),
-      "data_previsao" => $this->input->post("previsao"),
-      "motivo_previsao" => $this->input->post("motivo")
-    );
-    
-    $this->Previsao_Chegada_Model->update($previsao);
+    $this->Previsao_Chegada_Model->update($dados);
 
     $this->session->set_flashdata([
       'class' => 'success',
       'content' => 'Previsão atualizada com sucesso'
     ]);        
   
-    $this->redireciona($idtrem);
+    $this->redireciona();
     
   }
+
   public function create(){
     
     $this->validar_formulario('create');
-    
-    $idtrem = $this->input->post("idtrem");
 
-    $previsao = array(
-      "idtrem" => $idtrem,
-      "criacao_previsao" => date("Y-m-d H:i"),
-      "data_previsao" => $this->input->post("previsao"),
-      "motivo_previsao" => $this->input->post("motivo")
-    );
-    
-    $this->Previsao_Chegada_Model->create($previsao);
+    $dados = $this->montar_dados();
+        
+    $this->Previsao_Chegada_Model->create($dados);
 
     // RETORNA A MENSAGEM
     $this->session->set_flashdata([
@@ -82,8 +69,27 @@ class Previsao_Chegada extends CI_Controller {
       'content' => 'Previsão adicionada com sucesso'
     ]);        
        
-    $this->redireciona($idtrem);
+    $this->redireciona();
     
+  }
+
+  public function montar_dados(){
+
+    $dados = array(
+      "idtrem" => $this->input->post("idtrem"),      
+      "data_previsao" => $this->input->post("previsao"),
+      "motivo_previsao" => $this->input->post("motivo"),
+      "idusuario" => $this->session->userdata("idusuario")
+    );
+    
+    if($this->input->post("idprevisao")){
+      $dados["idprevisao"] = $this->input->post("idprevisao");
+      $dados["atualizado_em"] = date("Y-m-d H:i:s");
+    }else{
+      $dados["criado_em"] = date("Y-m-d H:i:s");
+    }
+
+    return $dados;
   }
 
   public function trem($id){
@@ -118,7 +124,7 @@ class Previsao_Chegada extends CI_Controller {
         'class' => 'danger',
         'content' => 'Nenhum formulário foi recebido!'
       ]); 
-      $this->redireciona($idtrem);
+      $this->redireciona();
     }
   }
 
@@ -135,7 +141,8 @@ class Previsao_Chegada extends CI_Controller {
         break;
       case 'update':
         $this->form_validation->set_rules('idtrem','Trem','required');    
-        $this->form_validation->set_rules('previsao','Previsão','required');   
+        $this->form_validation->set_rules('idprevisao','Id Previsão','required');   
+        $this->form_validation->set_rules('previsao','Data Previsão','required');   
         $this->form_validation->set_rules('motivo','Motivo','required'); 
         break;
       case 'delete':
@@ -151,12 +158,12 @@ class Previsao_Chegada extends CI_Controller {
         'content' => 'Ocorreum erro na validação dos dados.<br/>'.validation_errors()
       ]);
 
-      $this->redireciona($this->input->post("idtrem"));
+      $this->redireciona();
     }
   }
 
-  public function redireciona($idtrem){
-    redirect("previsao_chegada/trem/".$idtrem);
+  public function redireciona(){
+    redirect("previsao_chegada/trem/".$this->input->post("idtrem"));
   }
 }
 

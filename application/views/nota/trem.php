@@ -74,7 +74,7 @@
                       <tbody>
                         <?php foreach ($notas as $nota): ?>
                           <tr data-id="<?=$nota['idnota']?>">
-                            <td><?= date("d/m/Y H:i",strtotime($nota['criacao_nota']))?></td>
+                            <td><?= date("d/m/Y H:i",strtotime($nota['atualizado_em']))?></td>
                             <td class="texto_nota<?=$nota['idnota']?>"><?= $nota['texto_nota']?></td>
                           </tr>
                         <?php endforeach;?> 

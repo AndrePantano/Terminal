@@ -1,7 +1,9 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="modal_edit_parada">
   <div class="modal-dialog modal-sm">
     <form class="form-horizontal" method="post" action="<?=base_url('parada/update')?>">
-      <input name="idparada" class="idparada" type="hidden" value="" required="">
+      <input name="idtrem" type="hidden" value="<?=$trem['idtrem']?>" required>
+      <input name="idoperacao" type="hidden" class="idoperacao" value="" required>
+      <input name="idparada" class="idparada" type="hidden" value="" required>
       <input name="idtrem" type="hidden" value="<?=$trem['idtrem']?>" required>
         <div class="modal-content">
           <div class="modal-header">
