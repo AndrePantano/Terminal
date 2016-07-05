@@ -28,7 +28,7 @@
             </div>
 
             <!-- Text input-->
-            <div class="form-group">
+            <!-- div class="form-group">
               <label class="col-sm-3 control-label" for="fim">Mês:</label>  
               <div class="col-sm-9">
               <select name="mes" class="form-control">
@@ -38,7 +38,7 @@
               </select>
               <span class="help-block">Mês do período.</span>  
               </div>
-            </div>
+            </div -->
 
 
           </div>

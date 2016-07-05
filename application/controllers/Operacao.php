@@ -60,92 +60,71 @@ class Operacao extends CI_Controller {
 
   public function create(){
     
-    if($this->checar_post()){
+    $this->validar_formulario('create');
 
-      $idtrem = $this->input->post("idtrem");
-
-      if($this->validar_formulario('create')){
-
-        if ($this->atualizar_quantidade_vagoes($idtrem)) {
+    $this->atualizar_quantidade_vagoes();
           
-          $dados = $this->montar_dados();
-          $this->Operacao_Model->create($dados);
+    $dados = $this->montar_dados();
 
-          // RETORNA A MENSAGEM
-          $this->session->set_flashdata(['class' => 'success','content' => 'Operação adicionada com sucesso']);
-        }
-      }
-      $this->redireciona();
-    }
+    $this->Operacao_Model->create($dados);
+
+    $this->session->set_flashdata(['class' => 'success','content' => 'Operação adicionada com sucesso']);
+    
+    $this->redireciona();
     
   }
 
   public function update(){
     
-    if($this->checar_post()){
-
-      if($this->validar_formulario('update')){
+    $this->validar_formulario('update');
         
-        $dados = $this->montar_dados();
+    $dados = $this->montar_dados();
 
-        $this->Operacao_Model->update($dados);
+    $this->Operacao_Model->update($dados);
 
-        // RETORNA A MENSAGEM
-        $this->session->set_flashdata([
-          'class' => 'success',
-          'content' => 'Operação atualizada com sucesso'
-        ]);        
+    $this->session->set_flashdata([
+      'class' => 'success',
+      'content' => 'Operação atualizada com sucesso'
+    ]);        
            
-      }
-      
-      $this->redireciona();
-
-    }
+    $this->redireciona();
     
   }
 
   public function delete(){
     
-    if($this->checar_post()){
+    $this->validar_formulario('delete');
+        
+    $idoperacao = $this->input->post("idoperacao");
     
-      $idtrem = $this->input->post("idtrem");
-
-      if($this->validar_formulario('delete')){
-        
-        $idoperacao = $this->input->post("idoperacao");
-        
-        $this->load->model("Parada_Model");
-        $this->Parada_Model->delete('idoperacao',$idoperacao);
-        
-        $dados = array("idoperacao" => $idoperacao);
-        $this->Operacao_Model->delete($dados);
-
-        // RETORNA A MENSAGEM
-        $this->session->set_flashdata(['class' => 'success','content' => 'Operação excluída com sucesso']);        
-           
-      }
+    $this->load->model("Parada_Model");
+    $this->Parada_Model->delete('idoperacao',$idoperacao);
     
-      redirect("operacao/trem/".$idtrem);
+    $dados = array("idoperacao" => $idoperacao);
+    $this->Operacao_Model->delete($dados);
 
-    }
+    $this->session->set_flashdata(['class' => 'success','content' => 'Operação excluída com sucesso']);        
+    
+    $this->redireciona();
     
   }
 
   public function checar_post(){
     
-    if($this->input->post()){
-      return true;
-    }else{
+    if(!$this->input->post()){
       $this->session->set_flashdata([
         'class' => 'danger',
         'content' => 'É preciso preencher o formulário para criar uma previsão'
       ]); 
-      return false;
+      $this->redireciona();
     }
 
   }
 
   public function validar_formulario($tipo){
+
+    $this->checar_post();
+
     switch ($tipo) {
       case 'create':
         $this->form_validation->set_rules('idtrem','Id do Trem','required');    
@@ -162,27 +141,21 @@ class Operacao extends CI_Controller {
         break;
     }
 
-    if($this->form_validation->run()){
-
-      return true;
-
-    }else{
-        
+    if(!$this->form_validation->run()){
       // RETORNA O ERRO
       $this->session->set_flashdata([
         'class' => 'danger',
         'content' => 'Ocorreum erro na validação dos dados.<br/>'.validation_errors()
       ]);
-
-      return false;
+      $this->redireciona();
     }
   }  
 
 
-  public function atualizar_quantidade_vagoes($idtrem){
+  public function atualizar_quantidade_vagoes(){
 
     // VERIFICA A QUANTIDADE DE OPERAÇOES
-    $operacoes = $this->Operacao_Model->operacoes("idtrem",$idtrem);
+    $operacoes = $this->Operacao_Model->operacoes("idtrem",$this->input->post("idtrem"));
 
     if ($operacoes && count($operacoes) < 2) {
       
@@ -196,35 +169,18 @@ class Operacao extends CI_Controller {
         
         // ATUALIZA A QUANTIDADE DE VAGOES DA OPERAÇÃO ANTERIOR
         $this->Operacao_Model->update($operacao_anterior);
-        
         return true;
-
       }else{
-
-        $this->session->set_flashdata([
-          'class' => 'danger',
-          'content' => 'A quantidade de vagões da linha 2 é superior a capacidade inicial.'
-        ]);
-
-        return false;
-
+        $this->session->set_flashdata(['class' => 'danger','content' => 'A quantidade de vagões da linha 2 é superior a capacidade inicial.']);
+         $this->redireciona();
       }  
-
     }else{
-
-      $this->session->set_flashdata([
-        'class' => 'danger',
-        'content' => 'A quantidade máxima de operações por trem já foi atingida.'
-      ]);
-
-      return false;
-
+      $this->session->set_flashdata(['class' => 'danger','content' => 'A quantidade máxima de operações por trem já foi atingida.']);
+      $this->redireciona();
     }
   }
 
   public function montar_dados(){
-
-    //$this->load->model("");
 
     $dados = array(
       "idtrem" => $this->input->post("idtrem"),

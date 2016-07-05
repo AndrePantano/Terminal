@@ -10,6 +10,10 @@
   canvas{
     background-color: #FFF;
   }
+  
+  table tbody tr:hover{
+    cursor:default;
+  }
 	</style>
 	<script src="<?= base_url('assets/jquery/charts.js')?>"></script>
 
@@ -46,21 +50,80 @@
           <div class="well well-sm">
             <!-- p class="text-muted">Tempo calculado entre o Enconste na Linha e Faturamento ALL em horas (hs).</p -->
               <canvas id="chart1" height="100"></canvas>
-
+          </div>
+        
+          <div class="well well-sm">
+            <div class="table-responsive">
               <p>Período de Apuração: de <?= date("d/m/Y",strtotime($inicio))?> a <?= date("d/m/Y",strtotime($fim))?>.</p>
-              <p>Operações Realizadas: <?=count($relatorio["labels"])?> Operações.</p>
-              <p>Operações Excedidas: <?=$relatorio["excedidas_operacao"]?> Operações - <?=$relatorio["margem_total"]?>%.</p>
-              <p>Operações Excedidas (Time ALL): <?=$relatorio["excedidas_all"]?> Operações - <?=$relatorio["margem_all"]?>%.</p>
-              <p>Assertividade: <?=$relatorio["assertividade"]?> Operações - <?=$relatorio["margem_assertividade"]?>%</p>
-            
+              
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Operação</th>
+                    <th>Data Chegada</th>
+                    <th>Qtde. Vagões</th>
+                    <th>Tempo Útil</th>
+                    <th>Total Operação</th>
+                    <th>P. Manobra e Inversão</th>
+                    <th>Parada Rodoviária</th>
+                    <th>Tempo B.O.</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php for($i = 0; $i< count($relatorio["labels"]);$i++){?>
+                    <tr>
+                      <td><?=$relatorio["prefixo_trem"][$i]?></td>
+                      <td><?=$relatorio["chegada_trem"][$i]?></td>
+                      <td><?=$relatorio["qtd_vagoes"][$i]?></td>
+                      <td <?=$relatorio["tu_valores"][$i] == 0?"class='text-muted'":""?> ><?= str_replace(".", ":", $relatorio["tu_valores"][$i])?></td>
+                      <td <?=$relatorio["op_valores"][$i] == 0?"class='text-muted'":""?> ><?= str_replace(".", ":", $relatorio["op_valores"][$i])?></td>
+                      <td <?=$relatorio["mi_valores"][$i] == 0?"class='text-muted'":""?> ><?= str_replace(".", ":", $relatorio["mi_valores"][$i])?></td>
+                      <td <?=$relatorio["pr_valores"][$i] == 0?"class='text-muted'":""?> ><?= str_replace(".", ":", $relatorio["pr_valores"][$i])?></td>
+                      <td <?=$relatorio["bo_valores"][$i] == 0?"class='text-muted'":""?> ><?= str_replace(".", ":", $relatorio["bo_valores"][$i])?></td>
+                    </tr>
+                  <?php } ?>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
+              
+            
+            
 
-        <div class="col-sm-4">
+        <div class="col-sm-6">
           <div class="well well-sm">
-            <p class="text-muted">Calculado em quantidade de Operações.</p>
+              <p>Período de Apuração: de <?= date("d/m/Y",strtotime($inicio))?> a <?= date("d/m/Y",strtotime($fim))?>.</p>
               <canvas id="chart2" style="background-color:#FFF"></canvas>
-
+          </div>
+          
+          <div class="well well-sm">
+            <div class="table-responsive">
+              <table class="table text-center">
+                <thead>
+                  <tr>
+                    <th>Operações Excedidas</th>
+                    <th>ALL Excedidas</th>
+                    <th>Assertividades</th>
+                    <th>Total Realizadas</th>
+                  </tr>                
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><?=$relatorio["excedidas_operacao"]?></td>
+                    <td><?=$relatorio["excedidas_all"]?></td>
+                    <td><?=$relatorio["assertividade"]?></td>
+                    <td><?=count($relatorio["labels"])?></td>
+                  </tr>
+                  <tr>
+                    <td><?=$relatorio["margem_total"]?>%</td>
+                    <td><?=$relatorio["margem_all"]?>%</td>
+                    <td><?=$relatorio["margem_assertividade"]?>%</td>
+                    <td>-</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
@@ -134,9 +197,9 @@
           ]
 
         };
-        /*
+        
           var pizza = {
-              labels: ["Operação","ALL","Assertividade"],
+              labels: ["Operações Excedidas","ALL Excedidas","Assertividade"],
               datasets: [{
                 data: [<?=$relatorio["excedidas_operacao"]?>,<?=$relatorio["excedidas_all"]?>,<?=$relatorio["assertividade"]?>],
                 backgroundColor: [
@@ -151,7 +214,7 @@
                 ]
               }]
           };
-        */
+        
         window.onload = function() {
           var ctx = document.getElementById("chart1").getContext("2d");
           window.myBar = new Chart(ctx, {
@@ -162,7 +225,8 @@
               title: {
                   display: true,
                   fontColor: 'rgb(0, 0, 0)',
-                  text: "Resultado por Operação em Horas (hs)"
+                  fontSize:14,
+                  text: "Resultado por Operação em Horas (hs) - Período: de <?= date('d/m/Y',strtotime($inicio))?> a <?= date('d/m/Y',strtotime($fim))?>"
               },
               scales: {
                 yAxes: [{
@@ -181,29 +245,30 @@
               
             }
           });
-          /*
-            var ctw = document.getElementById("chart2").getContext("2d");
-            var myPieChart = new Chart(ctw,{
-                type: 'pie',
-                data: pizza,
-                options: {
-                  //responsive: true,
-                  title: {
-                      display: true,
-                      fontColor: 'rgb(0, 0, 0)',
-                      text: "Resultado do Período em Operações"
-                  },
-                  legend: {
+          
+          var ctw = document.getElementById("chart2").getContext("2d");
+          var myPieChart = new Chart(ctw,{
+              type: 'pie',
+              data: pizza,
+              options: {
+                //responsive: true,
+                title: {
                     display: true,
-                    position:"bottom",
-                    labels: {
-                        //fontColor: 'rgb(255, 99, 132)'
-                    }
-                    
+                    fontColor: 'rgb(0, 0, 0)',
+                    fontSize:14,
+                    text: "Resultado do Período em Operações"
+                },
+                legend: {
+                  display: true,
+                  position:"bottom",
+                  labels: {
+                      //fontColor: 'rgb(255, 99, 132)'
                   }
+                  
                 }
+              }
             });
-          */
+          
         };
       </script>
     <?php endif;?>

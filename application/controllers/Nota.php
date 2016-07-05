@@ -111,7 +111,7 @@ class Nota extends CI_Controller {
 
       // CARREGA AS NOTAS
       $this->load->model("Nota_Model");
-      $notas = $this->Nota_Model->all("idtrem = ".$trem["idtrem"],null);
+      $notas = $this->Nota_Model->notas("idtrem",$trem["idtrem"]);
 
       $dados = array(
         "main" => array("name" => "Trem ".$trem["prefixo_trem"],"icon" => "fa fa-train"),

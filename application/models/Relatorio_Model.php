@@ -28,7 +28,9 @@ class Relatorio_Model extends CI_Model {
 
 		$str = "SELECT *," 			
 			." DATE_FORMAT(TIMEDIFF(faturamento_all,encoste_linha),'%H.%i') as tempo_operacao,"
-			." DATE_FORMAT(TIMEDIFF(faturamento_all,envio_manifesto),'%H.%i') as tempo_bo"
+			." DATE_FORMAT(TIMEDIFF(faturamento_all,envio_manifesto),'%H.%i') as tempo_bo,"
+			." DATE_FORMAT(chegada_trem,'%d/%m/%Y %H:%i') as chegada,"
+			." qtd_vagoes" 
 			." FROM tb_operacao"
 			." JOIN tb_trem USING(idtrem)"
 			." WHERE "
@@ -48,6 +50,7 @@ class Relatorio_Model extends CI_Model {
 
 			$dados = array();
 			$labels = array();
+			$prefixo_trem = array();
 			$meta_all = array();
 			$meta_operacao = array();
 			$op_duracao = array();
@@ -55,6 +58,9 @@ class Relatorio_Model extends CI_Model {
 			$pr_duracao = array();
 			$mi_duracao = array();
 			$tu_duracao = array();
+			$chegada_trem = array();
+			$qtd_vagoes = array();
+
 			$excedidas_all = $excedidas_operacao = 0;
 
 			foreach ($operacoes as $k => $operacao) {
@@ -73,12 +79,17 @@ class Relatorio_Model extends CI_Model {
 					}
 
 					array_push($labels, $prefixo." ".date("d/m",strtotime($operacao["chegada_trem"])));
-					
+					array_push($prefixo_trem,$prefixo);
+
 				// ALIMENTA OS ARRAYS COMO OS TEMPOS
 					array_push($bo_duracao,$operacao["tempo_bo"]);
 					array_push($op_duracao,$operacao["tempo_operacao"]);
 					array_push($meta_all,$operacao["meta_all"]);
 					array_push($meta_operacao,$operacao["meta_operacao"]);
+
+				// ALIMENTA OS ARRAYS COM OUTROS DETALHES
+					array_push($chegada_trem,$operacao['chegada']);
+					array_push($qtd_vagoes,$operacao['qtd_vagoes']);
 
 				// IDENTIFICA E CONTA AS OPERAÇÕES QUE EXCEDERAM O TEMPO
 					if($operacao["tempo_operacao"] > $operacao["meta_all"]) $excedidas_all += 1;
@@ -97,25 +108,15 @@ class Relatorio_Model extends CI_Model {
 						}
 					}
 
-					array_push($pr_duracao,$pr);
-					array_push($mi_duracao,$mi);
-					
-					$segundos = $minutos = $horas = 0;
-					list($h,$m) = explode(".", number_format(($operacao["tempo_operacao"]-$total_paradas),2));
-					$segundos += $h * 3600;
-					$segundos += $m * 60;
-					$horas = floor( $segundos / 3600 ); //converte os segundos em horas e arredonda caso nescessario
-					$segundos %= 3600; // pega o restante dos segundos subtraidos das horas
-					$minutos = floor( $segundos / 60 );//converte os segundos em minutos e arredonda caso nescessario
-					$segundos %= 60;// pega o restante dos segundos subtraidos dos minutos
-					$horas < 10? $horas = "0".$horas:$horas;
-					$minutos < 10? $minutos = "0".$minutos:$minutos;
-					array_push($tu_duracao,$horas.".".$minutos);
+					array_push($pr_duracao,$this->converte_em_hora($pr));
+					array_push($mi_duracao,$this->converte_em_hora($mi));
+					array_push($tu_duracao,$this->converte_em_hora($operacao["tempo_operacao"]-$total_paradas));
 
 			}
 
 			$dados = array(
 				"labels" => $labels,
+				"prefixo_trem" => $prefixo_trem,
 				"op_valores" => $op_duracao,
 				"bo_valores" => $bo_duracao,
 				"pr_valores" => $pr_duracao,
@@ -123,6 +124,8 @@ class Relatorio_Model extends CI_Model {
 				"tu_valores" => $tu_duracao,
 				"meta_all" => $meta_all,
 				"meta_operacao" => $meta_operacao,
+				"qtd_vagoes" => $qtd_vagoes,
+				"chegada_trem" => $chegada_trem,
 				"excedidas_operacao" => $excedidas_operacao - $excedidas_all,
 				"excedidas_all" => $excedidas_all,
 				"margem_total" => round((($excedidas_operacao- $excedidas_all) * 100) / count($labels)),
@@ -211,6 +214,22 @@ class Relatorio_Model extends CI_Model {
 
 		return false;
 		
+	}
+
+	public function converte_em_hora($tempo){
+
+		$segundos = $minutos = $horas = 0;
+		list($h,$m) = explode(".", number_format(($tempo),2));
+		$segundos += $h * 3600;
+		$segundos += $m * 60;
+		$horas = floor( $segundos / 3600 ); //converte os segundos em horas e arredonda caso nescessario
+		$segundos %= 3600; // pega o restante dos segundos subtraidos das horas
+		$minutos = floor( $segundos / 60 );//converte os segundos em minutos e arredonda caso nescessario
+		$segundos %= 60;// pega o restante dos segundos subtraidos dos minutos
+		$horas < 10? $horas = "0".$horas:$horas;
+		$minutos < 10? $minutos = "0".$minutos:$minutos;
+		
+		return  $horas.".".$minutos;
 	}
 
 }

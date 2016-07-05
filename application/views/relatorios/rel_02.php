@@ -90,7 +90,8 @@
               title: {
                   display: true,
                   fontColor: 'rgb(0, 0, 0)',
-                  text: "Resultado por Trens em Horas (hs)"
+                  fontSize:14,
+                  text: "Resultado por Trens em Horas (hs) - Período de Apuração: de <?= date('d/m/Y',strtotime($inicio))?> a <?= date('d/m/Y',strtotime($fim))?>"
               },
               scales: {
                 yAxes: [{
@@ -113,7 +114,7 @@
       </script>
     <?php endif;?>
 
-    <!-- ? ="<pre>".print_r($relatorio,1)."</pre>"? -->
+    <?="<pre>".print_r($relatorio,1)."</pre>"?>
   </div>    
 </body>
 </html>

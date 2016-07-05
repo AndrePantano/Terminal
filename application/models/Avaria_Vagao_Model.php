@@ -1,8 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Operacao_Model extends CI_Model {
-	private $table = "tb_operacao";
+class Avaria_Vagao_Model extends CI_Model {
+	private $table = "tb_avaria_vagao";
 
 	public function __construct(){
 		parent::__construct();
@@ -10,14 +10,12 @@ class Operacao_Model extends CI_Model {
 
 	// INSERE OS DADOS NA TABELA
 	public function create($dados){
-		$dados = $this->acrescentar_metas($dados);
 		return $this->db->insert($this->table,$dados);
 	}
 
 	// ATUALIZA OS DADOS NA TABELA
 	public function update($dados){
-		$dados = $this->acrescentar_metas($dados);
-		$this->db->where(array("idoperacao" => $dados["idoperacao"]));
+		$this->db->where(array("idavaria" => $dados["idavaria"]));
 		return $this->db->update($this->table,$dados);
 	}
 
@@ -27,7 +25,6 @@ class Operacao_Model extends CI_Model {
 	}
 
 	public function query($query){
-
 		$registros = $this->db->query($query);
 		if($registros->num_rows()){						
 			return $registros->result_array();
@@ -36,22 +33,9 @@ class Operacao_Model extends CI_Model {
 		}
 	}
 
-	public function operacoes($coluna, $valor){
+	public function avarias($coluna, $valor){
 		$str = "SELECT * FROM ".$this->table." WHERE ".$coluna." =".$valor;
 		return $this->query($str);
 	}
 
-	public function acrescentar_metas($dados){
-		$this->load->model("Meta_Model");
-	    $metas = $this->Meta_Model->all();
-
-	    if($metas){
-	     foreach ($metas as $meta) {
-	        if($meta["nome_meta"] == "all") $dados["meta_all"] = $meta["valor_meta"];
-	        if($meta["nome_meta"] == "operação") $dados["meta_operacao"] = $meta["valor_meta"];
-	      } 
-	    }
-
-	    return $dados;
-	}
 }
