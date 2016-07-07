@@ -27,31 +27,16 @@ class Trem_Model extends CI_Model {
 
 	public function em_transito(){
 		$str = "SELECT * FROM tb_trem t JOIN tb_previsao_chegada USING(idtrem) WHERE chegada_trem is null AND partida_trem is null AND idprevisao = (SELECT MAX(idprevisao) from tb_previsao_chegada WHERE idtrem = t.idtrem)";
-		$query = $this->db->query($str);
-		if($query->num_rows()){						
-			return $query->result_array();
-		}else{
-			return false;
-		}
+		$query = $this->query($str);
 	}
 
 	public function em_operacao(){
 		$str = "SELECT * FROM tb_trem WHERE chegada_trem is not null AND partida_trem is null";
-		$query = $this->db->query($str);
-		if($query->num_rows()){						
-			return $query->result_array();
-		}else{
-			return false;
-		}
+		return $this->query($str);
 	}
 	public function operados(){
 		$str = "SELECT * FROM tb_trem WHERE chegada_trem is not null AND partida_trem is not null";
-		$query = $this->db->query($str);
-		if($query->num_rows()){						
-			return $query->result_array();
-		}else{
-			return false;
-		}
+		return $this->query($str);
 	}
 
 	public function query($str_query){
@@ -79,12 +64,10 @@ class Trem_Model extends CI_Model {
 		." FROM tb_trem"
 		." WHERE idtrem = ".$id;
 
-		$trens = $this->db->query($str_query);
+		$trens = $this->query($str_query);
 
-		if($trens->num_rows()){
-			$trem = $trens->result_array();
-			//echo "<pre>".print_r($trem[0],1)."</pre>";
-			return $trem[0];
+		if($trens){			
+			return $trens[0];
 		}else{
 			return false;
 		}

@@ -15,6 +15,7 @@ class Avaria_Conteiner extends CI_Controller {
     $this->load->model("Trem_Model");
     $this->load->model("Avaria_Conteiner_Model");
     $this->load->model("Grupo_Avaria_Conteiner_Model");
+    $this->load->model("Message_Model");
 
     
   }
@@ -27,11 +28,8 @@ class Avaria_Conteiner extends CI_Controller {
 
     $this->Avaria_Conteiner_Model->create($avaria);
 
-    $this->session->set_flashdata([
-      'class' => 'success',
-      'content' => 'Avaria adicionada com sucesso'
-    ]);        
-           
+    $this->Message_Model->message("success","Avaria adicionada com sucesso");
+   
     $this->redireciona();
     
   }
@@ -71,10 +69,7 @@ class Avaria_Conteiner extends CI_Controller {
     
     $this->Avaria_Conteiner_Model->update($avaria);
 
-    $this->session->set_flashdata([
-      'class' => 'success',
-      'content' => 'Avaria atualizada com sucesso'
-    ]);        
+    $this->Message_Model->message('success','Avaria atualizada com sucesso');        
            
     $this->redireciona();
 
@@ -88,10 +83,7 @@ class Avaria_Conteiner extends CI_Controller {
     
     $this->Avaria_Conteiner_Model->delete($dados);
 
-    $this->session->set_flashdata([
-      'class' => 'success',
-      'content' => 'Avaria excluída com sucesso'
-    ]);        
+    $this->Message_Model->message('success','Avaria excluída com sucesso');        
            
     $this->redireciona();
     
@@ -104,10 +96,8 @@ class Avaria_Conteiner extends CI_Controller {
     
     if($trem){
 
-      $this->load->model("Avaria_Conteiner_Model");
       $avarias = $this->Avaria_Conteiner_Model->avarias("idtrem",$trem["idtrem"]);
-      
-      $this->load->model("Grupo_Avaria_Conteiner_Model");
+            
       $grupos = $this->Grupo_Avaria_Conteiner_Model->all();
 
       $dados = array(
@@ -119,7 +109,7 @@ class Avaria_Conteiner extends CI_Controller {
       $this->load->view('avaria_conteiner/trem',$dados);
     }else{
       $dados["heading"] = "Registro Inexistente.";
-      $dados["message"] = "Este registro não se encontra em nossa base de dados!";
+      $dados["Message_Model->message"] = "Este registro não se encontra em nossa base de dados!";
       $this->load->view('errors/cli/error_404',$dados);
     }   
     
@@ -127,10 +117,7 @@ class Avaria_Conteiner extends CI_Controller {
 
   public function check_post(){
     if(!$this->input->post()){
-      $this->session->set_flashdata([
-        'class' => 'danger',
-        'content' => 'Nenhum formulário foi recebido!'
-      ]); 
+      $this->Message_Model->message('danger', 'Nenhum formulário foi recebido!'); 
       $this->redireciona();
     }
   }
@@ -159,10 +146,7 @@ class Avaria_Conteiner extends CI_Controller {
 
     if(!$this->form_validation->run()){
 
-      $this->session->set_flashdata([
-        'class' => 'danger',
-        'content' => 'Ocorreum erro na validação dos dados.<br/>'.validation_errors()
-      ]);
+      $this->Message_Model->message('danger','Ocorreum erro na validação dos dados.<br/>'.validation_errors());
 
       $this->redireciona();
     }
@@ -208,11 +192,7 @@ class Avaria_Conteiner extends CI_Controller {
     //echo "verificado = ".$verificado;
 
     if($this->input->post("conteiner") !== $verificado){
-     $this->session->set_flashdata([
-        'class' => 'danger',
-        'content' => 'Número de conteiner inválido.<br/>'
-      ]);
-
+      $this->Message_Model->message('danger','Número de conteiner inválido.');
       $this->redireciona();
     }
   }

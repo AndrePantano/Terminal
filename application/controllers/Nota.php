@@ -14,6 +14,7 @@ class Nota extends CI_Controller {
 
     $this->load->model("Trem_Model");
     $this->load->model("Nota_Model");
+    $this->load->model("Message_Model");
     
   }
      
@@ -25,10 +26,7 @@ class Nota extends CI_Controller {
     
     $this->Nota_Model->create($dados);
     
-    $this->session->set_flashdata([
-      'class' => 'success',
-      'content' => 'Nota adicionada com sucesso'
-    ]);        
+    $this->Message_Model->message('success','Nota adicionada com sucesso');
            
     $this->redireciona();
     
@@ -41,12 +39,8 @@ class Nota extends CI_Controller {
     $dados = $this->montar_dados();
 
     $this->Nota_Model->update($dados);
-
-    // RETORNA A MENSAGEM
-    $this->session->set_flashdata([
-      'class' => 'success',
-      'content' => 'Nota editada com sucesso'
-    ]);        
+    
+    $this->Message_Model->message('success','Nota editada com sucesso');
     
     $this->redireciona();
     
@@ -60,10 +54,7 @@ class Nota extends CI_Controller {
         
     $this->Nota_Model->delete($dados);
     
-    $this->session->set_flashdata([
-      'class' => 'success',
-      'content' => 'Nota excluída com sucesso'
-    ]);        
+    $this->Message_Model->message('success','Nota excluída com sucesso');
   
     $this->redireciona();
     
@@ -91,10 +82,7 @@ class Nota extends CI_Controller {
 
     if(!$this->form_validation->run()){
 
-      $this->session->set_flashdata([
-        'class' => 'danger',
-        'content' => 'Ocorreum erro na validação dos dados.<br/>'.validation_errors()
-      ]);
+      $this->Message_Model->message('danger','Ocorreum erro na validação dos dados.<br/>'.validation_errors());
 
       $this->redireciona();
     }
@@ -148,10 +136,7 @@ class Nota extends CI_Controller {
   public function check_post(){
 
     if(!$this->input->post()){
-      $this->session->set_flashdata([
-        'class' => 'danger',
-        'content' => 'Nenhum formulário foi recebido!'
-      ]); 
+      $this->Message_Model->message('danger','Nenhum formulário foi recebido!'); 
       $this->redireciona();
     }
 

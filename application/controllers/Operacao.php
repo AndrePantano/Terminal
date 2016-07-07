@@ -14,13 +14,14 @@ class Operacao extends CI_Controller {
     
     $this->load->model("Trem_Model");
     $this->load->model("Operacao_Model");
+    $this->load->model("Message_Model");
     
   }
   
   public function trem($id){
     
     $dados = array();
-    // CARREGA O TREM
+    
     $trem = $this->Trem_Model->trem($id);
     
     if($trem){
@@ -68,7 +69,7 @@ class Operacao extends CI_Controller {
 
     $this->Operacao_Model->create($dados);
 
-    $this->session->set_flashdata(['class' => 'success','content' => 'Operação adicionada com sucesso']);
+    $this->Message_Model->message('success','Operação adicionada com sucesso');
     
     $this->redireciona();
     
@@ -82,10 +83,7 @@ class Operacao extends CI_Controller {
 
     $this->Operacao_Model->update($dados);
 
-    $this->session->set_flashdata([
-      'class' => 'success',
-      'content' => 'Operação atualizada com sucesso'
-    ]);        
+    $this->Message_Model->message('success','Operação atualizada com sucesso');
            
     $this->redireciona();
     
@@ -103,7 +101,7 @@ class Operacao extends CI_Controller {
     $dados = array("idoperacao" => $idoperacao);
     $this->Operacao_Model->delete($dados);
 
-    $this->session->set_flashdata(['class' => 'success','content' => 'Operação excluída com sucesso']);        
+    $this->Message_Model->message('success','Operação excluída com sucesso');
     
     $this->redireciona();
     
@@ -112,10 +110,7 @@ class Operacao extends CI_Controller {
   public function checar_post(){
     
     if(!$this->input->post()){
-      $this->session->set_flashdata([
-        'class' => 'danger',
-        'content' => 'É preciso preencher o formulário para criar uma previsão'
-      ]); 
+      $this->Message_Model->message('danger','É preciso preencher o formulário para criar uma previsão'); 
       $this->redireciona();
     }
 
@@ -143,10 +138,7 @@ class Operacao extends CI_Controller {
 
     if(!$this->form_validation->run()){
       // RETORNA O ERRO
-      $this->session->set_flashdata([
-        'class' => 'danger',
-        'content' => 'Ocorreum erro na validação dos dados.<br/>'.validation_errors()
-      ]);
+      $this->Message_Model->message('danger','Ocorreum erro na validação dos dados.<br/>'.validation_errors());
       $this->redireciona();
     }
   }  
@@ -171,11 +163,11 @@ class Operacao extends CI_Controller {
         $this->Operacao_Model->update($operacao_anterior);
         return true;
       }else{
-        $this->session->set_flashdata(['class' => 'danger','content' => 'A quantidade de vagões da linha 2 é superior a capacidade inicial.']);
+        $this->Message_Model->message('danger','A quantidade de vagões da linha 2 é superior a capacidade inicial.');
          $this->redireciona();
       }  
     }else{
-      $this->session->set_flashdata(['class' => 'danger','content' => 'A quantidade máxima de operações por trem já foi atingida.']);
+      $this->Message_Model->message('danger','A quantidade máxima de operações por trem já foi atingida.');
       $this->redireciona();
     }
   }

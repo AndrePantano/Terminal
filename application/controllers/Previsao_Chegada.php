@@ -3,8 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Previsao_Chegada extends CI_Controller {
 
-  private $main = array();
-
   public function __construct(){  
 
     parent::__construct();
@@ -16,6 +14,7 @@ class Previsao_Chegada extends CI_Controller {
 
     $this->load->model("Previsao_Chegada_Model");
     $this->load->model("Trem_Model");
+    $this->load->model("Message_Model");
     
   }
   
@@ -29,10 +28,7 @@ class Previsao_Chegada extends CI_Controller {
 
     $this->Previsao_Chegada_Model->delete($dados);
 
-    $this->session->set_flashdata([
-      'class' => 'success',
-      'content' => 'Previsão excluída com sucesso'
-    ]);        
+    $this->Message_Model->message('success','Previsão excluída com sucesso');
            
     $this->redireciona();
     
@@ -46,10 +42,7 @@ class Previsao_Chegada extends CI_Controller {
 
     $this->Previsao_Chegada_Model->update($dados);
 
-    $this->session->set_flashdata([
-      'class' => 'success',
-      'content' => 'Previsão atualizada com sucesso'
-    ]);        
+    $this->Message_Model->message('success','Previsão atualizada com sucesso');
   
     $this->redireciona();
     
@@ -64,10 +57,7 @@ class Previsao_Chegada extends CI_Controller {
     $this->Previsao_Chegada_Model->create($dados);
 
     // RETORNA A MENSAGEM
-    $this->session->set_flashdata([
-      'class' => 'success',
-      'content' => 'Previsão adicionada com sucesso'
-    ]);        
+    $this->Message_Model->message('success','Previsão adicionada com sucesso');
        
     $this->redireciona();
     
@@ -94,6 +84,8 @@ class Previsao_Chegada extends CI_Controller {
 
   public function trem($id){
     
+    $dados = array();
+
     $trem = $this->Trem_Model->trem($id);
     
     if($trem){
@@ -115,15 +107,12 @@ class Previsao_Chegada extends CI_Controller {
       $this->load->view('errors/cli/error_404',$dados);
       redirect("/");
     }
-
+  
   }
 
   public function check_post(){
     if(!$this->input->post()){
-      $this->session->set_flashdata([
-        'class' => 'danger',
-        'content' => 'Nenhum formulário foi recebido!'
-      ]); 
+      $this->Message_Model->message('danger','Nenhum formulário foi recebido!'); 
       $this->redireciona();
     }
   }
@@ -153,16 +142,14 @@ class Previsao_Chegada extends CI_Controller {
 
     if(!$this->form_validation->run()){
 
-      $this->session->set_flashdata([
-        'class' => 'danger',
-        'content' => 'Ocorreum erro na validação dos dados.<br/>'.validation_errors()
-      ]);
+      $this->Message_Model->message('danger','Ocorreum erro na validação dos dados.<br/>'.validation_errors());
 
       $this->redireciona();
     }
   }
 
   public function redireciona(){
+
     redirect("previsao_chegada/trem/".$this->input->post("idtrem"));
   }
 }

@@ -16,6 +16,7 @@ class Previsao_Saida extends CI_Controller {
 
     $this->load->model("Previsao_Saida_Model");
     $this->load->model("Trem_Model");
+    $this->load->model("Message_Model");
     
   }
   
@@ -27,10 +28,7 @@ class Previsao_Saida extends CI_Controller {
 
     $this->Previsao_Saida_Model->delete($dados);
 
-    $this->session->set_flashdata([
-      'class' => 'success',
-      'content' => 'Previsão excluída com sucesso'
-    ]);        
+    $this->Message_Model->message('success','Previsão excluída com sucesso');        
            
     $this->redireciona();
     
@@ -44,10 +42,7 @@ class Previsao_Saida extends CI_Controller {
     
     $this->Previsao_Saida_Model->update($dados);
 
-    $this->session->set_flashdata([
-      'class' => 'success',
-      'content' => 'Previsão atualizada com sucesso'
-    ]);        
+    $this->Message_Model->message('success','Previsão atualizada com sucesso');        
   
     $this->redireciona($idtrem);
     
@@ -81,10 +76,7 @@ class Previsao_Saida extends CI_Controller {
     $this->Previsao_Saida_Model->create($dados);
 
     // RETORNA A MENSAGEM
-    $this->session->set_flashdata([
-      'class' => 'success',
-      'content' => 'Previsão adicionada com sucesso'
-    ]);        
+    $this->Message_Model->message('success','Previsão adicionada com sucesso');        
        
     $this->redireciona();
     
@@ -118,10 +110,7 @@ class Previsao_Saida extends CI_Controller {
 
   public function check_post(){
     if(!$this->input->post()){
-      $this->session->set_flashdata([
-        'class' => 'danger',
-        'content' => 'Nenhum formulário foi recebido!'
-      ]); 
+      $this->Message_Model->message('danger','Nenhum formulário foi recebido!'); 
       $this->redireciona($idtrem);
     }
   }
@@ -150,10 +139,7 @@ class Previsao_Saida extends CI_Controller {
 
     if(!$this->form_validation->run()){
 
-      $this->session->set_flashdata([
-        'class' => 'danger',
-        'content' => 'Ocorreum erro na validação dos dados.<br/>'.validation_errors()
-      ]);
+      $this->Message_Model->message('danger','Ocorreum erro na validação dos dados.<br/>'.validation_errors());
 
       $this->redireciona();
     }

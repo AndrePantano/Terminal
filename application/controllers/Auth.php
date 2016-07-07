@@ -7,6 +7,7 @@ class Auth extends CI_Controller {
 
     parent::__construct();
     $this->load->model("Usuario_Model");
+    $this->load->model("Message_Model");
 
   }
      
@@ -70,7 +71,7 @@ class Auth extends CI_Controller {
 
     }else{
       
-      $this->message("danger","Login ou senha inválidos!");
+      $this->Message_Model->message("danger","Login ou senha inválidos!");
       $this->redireciona();
       
     }
@@ -92,7 +93,7 @@ class Auth extends CI_Controller {
 
   public function check_post(){
     if(!$this->input->post()){
-      $this->message('danger','Nenhum formulário foi recebido!');
+      $this->Message_Model->message('danger','Nenhum formulário foi recebido!');
       $this->redireciona();
     }
   }
@@ -118,7 +119,7 @@ class Auth extends CI_Controller {
     }
 
     if(!$this->form_validation->run()){
-      $this->message('danger','Ocorreum erro na validação dos dados.<br/>'.validation_errors());
+      $this->Message_Model->message('danger','Ocorreum erro na validação dos dados.<br/>'.validation_errors());
       $this->redireciona();
     }
   }
@@ -128,12 +129,6 @@ class Auth extends CI_Controller {
     redirect("auth/entrar");
   }
 
-  public function message($class,$text){
-    $this->session->set_flashdata([
-      'class' => $class,
-      'content' => $text
-    ]);
-  }
   
   public function gerar_token(){
       $token = md5(date("dmYHis"));  
@@ -170,20 +165,20 @@ class Auth extends CI_Controller {
           );
           $this->Usuario_Model->update($dados);
 
-          $this->message("success","Parabéns ".ucwords($usuario["nome"])."!<br>Senha atualizada com sucesso.<br>Faça login para acessar o sistema.");
+          $this->Message_Model->message("success","Parabéns ".ucwords($usuario["nome"])."!<br>Senha atualizada com sucesso.<br>Faça login para acessar o sistema.");
           redirect("auth/entrar");
         }else{
-          $this->message("danger","Token inválido!");
+          $this->Message_Model->message("danger","Token inválido!");
           redirect("auth/entrar");
         }
       
       }else{
-        $this->message("danger","Esta senha não pode ser utilizada!");
+        $this->Message_Model->message("danger","Esta senha não pode ser utilizada!");
         redirect("auth/entrar");
       }
 
     }else{
-      $this->message("danger","As senhas informadas não conferem!");
+      $this->Message_Model->message("danger","As senhas informadas não conferem!");
       redirect("auth/entrar");
     }
   }

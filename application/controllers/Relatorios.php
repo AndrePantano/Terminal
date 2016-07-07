@@ -12,6 +12,7 @@ class Relatorios extends CI_Controller {
       redirect("auth/entrar");
     }
     $this->load->model("Relatorio_Model");
+    $this->load->model("Message_Model");
   }
      
   // RELATÓRIO DE OPERAÇÕES
@@ -29,7 +30,7 @@ class Relatorios extends CI_Controller {
 
     // VERIFICA SE A DATA INICIO É MAIOR QUE A DATA FIM;
     if(strtotime($inicio) > strtotime($fim)){
-      $this->message("danger","A data início do período não pode ser maior que a data término!");
+      $this->Message_Model->message("danger","A data início do período não pode ser maior que a data término!");
     }else{
       // REALIZA DA PESQUISA
       $relatorio = $this->Relatorio_Model->rel_01($inicio,$fim);
@@ -65,7 +66,7 @@ class Relatorios extends CI_Controller {
 
     // VERIFICA SE A DATA INICIO É MAIOR QUE A DATA FIM;
     if(strtotime($inicio) > strtotime($fim)){
-      $this->message("danger","A data início do período não pode ser maior que a data término!");
+      $this->Message_Model->message("danger","A data início do período não pode ser maior que a data término!");
     }else{
       // REALIZA DA PESQUISA
       $relatorio = $this->Relatorio_Model->rel_02($inicio,$fim);
@@ -86,10 +87,4 @@ class Relatorios extends CI_Controller {
     $this->load->view("relatorios/rel_02",$dados);
   }
 
-  public function message($class,$text){
-    $this->session->set_flashdata([
-      'class' => $class,
-      'content' => $text
-    ]);
-  }
 }

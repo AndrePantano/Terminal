@@ -25,10 +25,7 @@ class Avaria_Vagao extends CI_Controller {
 
     $this->Avaria_Vagao_Model->create($avaria);
 
-    $this->session->set_flashdata([
-      'class' => 'success',
-      'content' => 'Avaria adicionada com sucesso'
-    ]);        
+    $this->message('success','Avaria adicionada com sucesso');        
            
     $this->redireciona();
     
@@ -62,10 +59,7 @@ class Avaria_Vagao extends CI_Controller {
     
     $this->Avaria_Vagao_Model->update($avaria);
 
-    $this->session->set_flashdata([
-      'class' => 'success',
-      'content' => 'Avaria atualizada com sucesso'
-    ]);        
+    $this->message('success','Avaria atualizada com sucesso');        
            
     $this->redireciona();
 
@@ -79,10 +73,7 @@ class Avaria_Vagao extends CI_Controller {
     
     $this->Avaria_Vagao_Model->delete($dados);
 
-    $this->session->set_flashdata([
-      'class' => 'success',
-      'content' => 'Avaria excluída com sucesso'
-    ]);        
+    $this->message( 'success','Avaria excluída com sucesso');        
            
     $this->redireciona();
     
@@ -115,10 +106,7 @@ class Avaria_Vagao extends CI_Controller {
 
   public function check_post(){
     if(!$this->input->post()){
-      $this->session->set_flashdata([
-        'class' => 'danger',
-        'content' => 'Nenhum formulário foi recebido!'
-      ]); 
+      $this->message('danger','Nenhum formulário foi recebido!'); 
       $this->redireciona();
     }
   }
@@ -147,10 +135,7 @@ class Avaria_Vagao extends CI_Controller {
 
     if(!$this->form_validation->run()){
 
-      $this->session->set_flashdata([
-        'class' => 'danger',
-        'content' => 'Ocorreum erro na validação dos dados.<br/>'.validation_errors()
-      ]);
+      $this->message( 'danger','Ocorreum erro na validação dos dados.<br/>'.validation_errors());
 
       $this->redireciona();
     }

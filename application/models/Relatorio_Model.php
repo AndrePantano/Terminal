@@ -149,7 +149,8 @@ class Relatorio_Model extends CI_Model {
 		// RETORNA FALSE SE O INICIO FOR MAIOR QUE O FIM
 		if($inicio > $fim) return false;
 
-		$str = "SELECT *" 			
+		$str = "SELECT *,"
+			." DATE_FORMAT(chegada_trem,'%d/%m/%Y %H:%i') as chegada" 			
 			." FROM tb_trem"
 			." WHERE "
 				."chegada_trem"
@@ -168,17 +169,21 @@ class Relatorio_Model extends CI_Model {
 
 			$dados = array();
 			$labels = array();
-			$trem_duracao = array();			
+			$prefixo_trem = array();
+			$chegada_trem = array();
+			$qtd_vagoes = array();
+			$tempo_operacao = array();			
 
 			foreach ($trens as $k => $trem) {
 
 				// IDENTIFICA E ALIMENTA O ARRAY DE LABELS DOS TRENS
 					array_push($labels, $trem["prefixo_trem"]." ".date("d/m",strtotime($trem["chegada_trem"])));
+					array_push($prefixo_trem, $trem["prefixo_trem"]);
 					
 				// BUSCA TODAS AS OPERAÇÕES DO TREM
 					$operacoes = $this->Operacao_Model->operacoes("idtrem",$trem["idtrem"]);
 
-					$segundos = $minutos = $horas = 0; 
+					$total_vagoes = 0;
 
 					if($operacoes){
 						
@@ -186,11 +191,14 @@ class Relatorio_Model extends CI_Model {
 						
 						if(count($operacoes) > 1) {
 							$faturamento_all = strtotime($operacoes[1]["faturamento_all"]);
+							$total_vagoes = $operacoes[0]["qtd_vagoes"] + $operacoes[1]["qtd_vagoes"];
 						}else{
 							$faturamento_all = strtotime($operacoes[0]["faturamento_all"]);
+							$total_vagoes = $operacoes[0]["qtd_vagoes"];
 						}						
 					}
-					
+
+					$segundos = $minutos = $horas = 0; 
 					$segundos = $faturamento_all - $encoste_linha;
 					$horas = floor( $segundos / 3600 ); //converte os segundos em horas e arredonda caso nescessario
 					$segundos %= 3600; // pega o restante dos segundos subtraidos das horas
@@ -199,14 +207,22 @@ class Relatorio_Model extends CI_Model {
 					$horas < 10? $horas = "0".$horas:$horas;
 					$minutos < 10? $minutos = "0".$minutos:$minutos;
 
-					//array_push($trem_duracao,$operacao["tempo_trem"]);
-					array_push($trem_duracao,$horas.".".$minutos);
+					//array_push($tempo_operacao,$operacao["tempo_trem"]);
+					array_push($tempo_operacao,$horas.".".$minutos);
 
+				// ALIMENTA A QUANTIDADE DE VAGOES
+				array_push($qtd_vagoes,$total_vagoes);
+
+				// ALIMENTA A CHEGADA DO TREM
+				array_push($chegada_trem,$trem["chegada"]);
 			}
 
 			$dados = array(
 				"labels" => $labels,
-				"trem_valores" => $trem_duracao,				
+				"chegada_trem" => $chegada_trem,
+				"prefixo_trem" => $prefixo_trem,
+				"qtd_vagoes" => $qtd_vagoes,
+				"tempo_operacao" => $tempo_operacao,				
 			);
 
 			return $dados;

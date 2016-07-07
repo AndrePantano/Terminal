@@ -45,10 +45,34 @@
         <div class="col-sm-12">
           <div class="well well-sm">
               <canvas id="chart1" height="100"></canvas>
-                <br/>
-                <p>Período de Apuração: de <?= date("d/m/Y",strtotime($inicio))?> a <?= date("d/m/Y",strtotime($fim))?>.</p>
-                <p>Trens Operados: <?=count($relatorio["labels"])?> Trens.</p>
           </div>
+          
+          <div class="well">
+            <div class="table-responsive">
+              <p>Período de Apuração: de <?= date("d/m/Y",strtotime($inicio))?> a <?= date("d/m/Y",strtotime($fim))?>.</p>
+              <p>Trens Operados: <?=count($relatorio["labels"])?> Trens.</p>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Trem</th>
+                    <th>Data Chegada</th>
+                    <th>Qtd. Vagões</th>
+                    <th>Tempo de Operação</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php for($i = 0; $i < count($relatorio["labels"]); $i++) { ?>
+                    <tr>
+                      <td><?=$relatorio["prefixo_trem"][$i]?></td>
+                      <td><?=$relatorio["chegada_trem"][$i]?></td>
+                      <td><?=$relatorio["qtd_vagoes"][$i]?></td>
+                      <td><?=str_replace(".", ":", $relatorio["tempo_operacao"][$i])?></td>
+                    </tr>
+                  <?php } ?>
+                </tbody>
+              </table>
+            </div>
+          </div>      
         </div>
 
       <?php else: ?>
@@ -69,52 +93,61 @@
 
         var colunas = {
             labels: <?= json_encode($relatorio["labels"])?>,            
-            datasets: [            
+            datasets: [
+            {
+                type: 'line',
+                label: 'Quantidade de Vagões',
+                backgroundColor: "transparent",
+                data: <?= json_encode($relatorio["qtd_vagoes"])?>,
+                borderColor: 'rgba(0,0,255,0.8)',
+                borderWidth: 2
+            },            
             {
                 type: 'bar',
                 label: 'Tempo Total do Trem',
                 backgroundColor: "rgba(127,127,0,0.8)",
-                data:<?= json_encode($relatorio["trem_valores"])?>
-            }
-          ]
-
+                data:<?= json_encode($relatorio["tempo_operacao"])?>
+            }]
         };
+
+        var options =  {
+          responsive: true,
+          title: {
+              display: true,
+              fontColor: 'rgb(0, 0, 0)',
+              fontSize:14,
+              text: "Resultado por Trens em Horas (hs) - Período de Apuração: de <?= date('d/m/Y',strtotime($inicio))?> a <?= date('d/m/Y',strtotime($fim))?>"
+          },
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+              display: true,
+              position:"top"
+          },
+          tooltip:{  
+              yLabel: String              
+          },          
+        }
       
         window.onload = function() {
+
           var ctx = document.getElementById("chart1").getContext("2d");
           window.myBar = new Chart(ctx, {
             type: 'bar',
             data: colunas,
-            options: {
-              responsive: true,
-              title: {
-                  display: true,
-                  fontColor: 'rgb(0, 0, 0)',
-                  fontSize:14,
-                  text: "Resultado por Trens em Horas (hs) - Período de Apuração: de <?= date('d/m/Y',strtotime($inicio))?> a <?= date('d/m/Y',strtotime($fim))?>"
-              },
-              scales: {
-                yAxes: [{
-                  ticks: {
-                    beginAtZero:true
-                  }
-                }]
-              },
-              legend: {
-                  display: true,
-                  position:"top"
-              },
-              tooltip:{  
-                  yLabel: String,
-              }
-              
-            }
+            options: options
           });
+    
         };
       </script>
     <?php endif;?>
 
-    <?="<pre>".print_r($relatorio,1)."</pre>"?>
+    <!-- ?="<pre>".print_r($relatorio,1)."</pre>"? -->
   </div>    
 </body>
 </html>

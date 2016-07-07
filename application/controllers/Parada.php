@@ -3,6 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Parada extends CI_Controller {
 
+  private $main = array();
+  
   public function __construct(){  
 
     parent::__construct();  
@@ -13,6 +15,7 @@ class Parada extends CI_Controller {
     }
 
     $this->load->model("Parada_Model");
+    $this->load->model("Message_Model");
     
   }
      
@@ -26,10 +29,7 @@ class Parada extends CI_Controller {
 
     $this->Parada_Model->create($dados);
 
-    $this->session->set_flashdata([
-      'class' => 'success',
-      'content' => 'Parada adicionada com sucesso'
-    ]);
+    $this->Message_Model->message('success','Parada adicionada com sucesso');
     
     $this->redireciona();
     
@@ -46,10 +46,7 @@ class Parada extends CI_Controller {
     $this->Parada_Model->update($dados);
 
     // RETORNA A MENSAGEM
-    $this->session->set_flashdata([
-      'class' => 'success',
-      'content' => 'Dados da Parada atualizados com sucesso'
-    ]);
+    $this->Message_Model->message('success','Dados da Parada atualizados com sucesso');
           
     $this->redireciona();
     
@@ -64,10 +61,7 @@ class Parada extends CI_Controller {
     $this->Parada_Model->delete($dados);
 
     // RETORNA A MENSAGEM
-    $this->session->set_flashdata([
-      'class' => 'success',
-      'content' => 'Dados excluídos com sucesso'
-    ]);
+    $this->Message_Model->message('success','Dados excluídos com sucesso');
 
     $this->redireciona();
     
@@ -77,10 +71,7 @@ class Parada extends CI_Controller {
 
     if($this->input->post("inicio") >= $this->input->post("fim")){
 
-      $this->session->set_flashdata([
-        'class' => 'warning',
-        'content' => 'Data início da parada é maior ou igual a data final.<br>Informe um período válido.'
-      ]);
+      $this->Message_Model->message('warning','Data início da parada é maior ou igual a data final.<br>Informe um período válido.');
 
       $this->redireciona();
     }
@@ -112,10 +103,7 @@ class Parada extends CI_Controller {
 
     if(!$this->form_validation->run()){
 
-      $this->session->set_flashdata([
-        'class' => 'danger',
-        'content' => 'Ocorreum erro na validação dos dados.<br/>'.validation_errors()
-      ]);
+      $this->Message_Model->message('danger','Ocorreum erro na validação dos dados.<br/>'.validation_errors());
 
       $this->redireciona();
     }
@@ -124,10 +112,7 @@ class Parada extends CI_Controller {
 
   public function check_post(){
     if(!$this->input->post()){
-      $this->session->set_flashdata([
-        'class' => 'danger',
-        'content' => 'Nenhum formulário foi recebido!'
-      ]); 
+      $this->Message_Model->message('danger','Nenhum formulário foi recebido!');
       $this->redireciona();
     }
   }
