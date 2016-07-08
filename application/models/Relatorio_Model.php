@@ -68,6 +68,8 @@ class Relatorio_Model extends CI_Model {
 				// IDENTIFICA E ALIMENTA O ARRAY DE LABELS DAS OPERAÇÕES
 					$prefixo = "";
 					
+					$linha = 0;
+
 					if($k < (count($operacoes) -1) && $operacao["idtrem"] == $operacoes[$k + 1]["idtrem"]){
 						$prefixo = $operacao["prefixo_trem"]." I";
 					}else{
@@ -126,12 +128,12 @@ class Relatorio_Model extends CI_Model {
 				"meta_operacao" => $meta_operacao,
 				"qtd_vagoes" => $qtd_vagoes,
 				"chegada_trem" => $chegada_trem,
-				"excedidas_operacao" => $excedidas_operacao - $excedidas_all,
+				//"excedidas_operacao" => $excedidas_operacao - $excedidas_all,
 				"excedidas_all" => $excedidas_all,
 				"margem_total" => round((($excedidas_operacao- $excedidas_all) * 100) / count($labels)),
 				"margem_all" => round(($excedidas_all * 100) / count($labels)),
-				"assertividade" => count($labels) - $excedidas_operacao,
-				"margem_assertividade" => round(((count($labels) - $excedidas_operacao)*100) / count($labels))
+				"assertividade" => count($labels) - $excedidas_all,
+				"margem_assertividade" => round(((count($labels) - $excedidas_all)*100) / count($labels))
 			);
 
 			return $dados;

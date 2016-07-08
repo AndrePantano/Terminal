@@ -34,9 +34,9 @@
 <body>
 	<div class="container">
 		<?php if($this->session->userdata('idperfil')!=3):?>
-			<?php $this->load->view("previsao_saida/insert"); ?>
-			<?php $this->load->view("previsao_saida/edit"); ?>
-			<?php if($this->session->userdata('idperfil')==1){$this->load->view("previsao_saida/delete"); }?>
+			<?php $this->load->view("previsaosaida/insert"); ?>
+			<?php $this->load->view("previsaosaida/edit"); ?>
+			<?php if($this->session->userdata('idperfil')==1){$this->load->view("previsaosaida/delete"); }?>
 		<?php endif; ?>
 
 		<?php $this->load->view("layout/nav_bar"); ?>

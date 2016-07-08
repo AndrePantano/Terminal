@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Avaria_Conteiner extends CI_Controller {
+class Avariaconteiner extends CI_Controller {
 
   public function __construct(){  
 
@@ -52,7 +52,7 @@ class Avaria_Conteiner extends CI_Controller {
       $dados["criado_em"] = date("Y-m-d H:i:s");
     }
 
-    if(!empty($this->input->post("observacao"))){ 
+    if($this->input->post("observacao") != ""){ 
       $dados["observacao"] = $this->input->post("observacao");
     }
     
@@ -106,7 +106,7 @@ class Avaria_Conteiner extends CI_Controller {
         "avarias" => $avarias,
         "grupos" => $grupos
       );
-      $this->load->view('avaria_conteiner/trem',$dados);
+      $this->load->view('avariaconteiner/trem',$dados);
     }else{
       $dados["heading"] = "Registro Inexistente.";
       $dados["Message_Model->message"] = "Este registro não se encontra em nossa base de dados!";
@@ -154,7 +154,7 @@ class Avaria_Conteiner extends CI_Controller {
 
   public function redireciona(){
 
-    redirect("avaria_conteiner/trem/".$this->input->post("idtrem"));
+    redirect("avariaconteiner/trem/".$this->input->post("idtrem"));
   }
 
   public function validar_conteiner(){
@@ -166,9 +166,9 @@ class Avaria_Conteiner extends CI_Controller {
     for($i = 0; $i < 10; $i++){
       
       if($i < 4){
-        $valores += $this->valor_letra($conteiner[$i]) * (2 ** $i); 
+        $valores += $this->valor_letra($conteiner[$i]) * pow(2 , $i); 
       }else{
-        $valores += $conteiner[$i] * (2 ** $i);        
+        $valores += $conteiner[$i] * pow(2, $i);        
       }
 
     }

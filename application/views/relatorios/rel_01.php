@@ -64,7 +64,7 @@
                     <th>Qtde. Vagões</th>
                     <th>Tempo Útil</th>
                     <th>Total Operação</th>
-                    <th>P. Manobra e Inversão</th>
+                    <th>P. Manobra / Inversão</th>
                     <th>Parada Rodoviária</th>
                     <th>Tempo B.O.</th>
                   </tr>
@@ -102,21 +102,18 @@
               <table class="table text-center">
                 <thead>
                   <tr>
-                    <th>Operações Excedidas</th>
-                    <th>ALL Excedidas</th>
+                    <th> Acima Meta Brado 12h</th>
                     <th>Assertividades</th>
                     <th>Total Realizadas</th>
                   </tr>                
                 </thead>
                 <tbody>
                   <tr>
-                    <td><?=$relatorio["excedidas_operacao"]?></td>
                     <td><?=$relatorio["excedidas_all"]?></td>
                     <td><?=$relatorio["assertividade"]?></td>
                     <td><?=count($relatorio["labels"])?></td>
                   </tr>
                   <tr>
-                    <td><?=$relatorio["margem_total"]?>%</td>
                     <td><?=$relatorio["margem_all"]?>%</td>
                     <td><?=$relatorio["margem_assertividade"]?>%</td>
                     <td>-</td>
@@ -199,18 +196,18 @@
         };
         
           var pizza = {
-              labels: ["Operações Excedidas","ALL Excedidas","Assertividade"],
+              labels: ["Acima Meta Brado 12h","Assertividade"],
               datasets: [{
-                data: [<?=$relatorio["excedidas_operacao"]?>,<?=$relatorio["excedidas_all"]?>,<?=$relatorio["assertividade"]?>],
+                data: [<?=$relatorio["excedidas_all"]?>,<?=$relatorio["assertividade"]?>],
                 backgroundColor: [
-                    "rgba(0,0,255,0.8)",
-                    "rgba(255,0,0,0.8)",
-                    "rgba(0,255,0,0.8)"
+                    //"rgba(0,0,255,0.7)",
+                    "rgba(255,0,0,1)",
+                    "rgba(0,128,0,1)"
                 ],
                 hoverBackgroundColor: [
-                    "rgba(0,0,255,0.7)",
-                    "rgba(255,0,0,0.7)",
-                     "rgba(0,255,0,0.7)"
+                    //"rgba(0,0,255,0.7)",
+                     "rgba(255,0,0,0.9)",
+                    "rgba(0,128,0,0.9)"
                 ]
               }]
           };
@@ -256,7 +253,7 @@
                     display: true,
                     fontColor: 'rgb(0, 0, 0)',
                     fontSize:14,
-                    text: "Resultado do Período em Operações"
+                    text: "Resultado de Metas Operacionais"
                 },
                 legend: {
                   display: true,

@@ -93,16 +93,7 @@
 
         var colunas = {
             labels: <?= json_encode($relatorio["labels"])?>,            
-            datasets: [
-            {
-                type: 'line',
-                label: 'Quantidade de Vagões',
-                backgroundColor: "transparent",
-                data: <?= json_encode($relatorio["qtd_vagoes"])?>,
-                borderColor: 'rgba(0,0,255,0.8)',
-                borderWidth: 2
-            },            
-            {
+            datasets: [{
                 type: 'bar',
                 label: 'Tempo Total do Trem',
                 backgroundColor: "rgba(127,127,0,0.8)",

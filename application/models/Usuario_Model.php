@@ -43,4 +43,9 @@ class Usuario_Model extends CI_Model {
 		return $this->query($str);
 	}
 
+	public function all(){
+		$str = "SELECT * FROM ".$this->table." JOIN tb_perfil USING(idperfil)";
+		return $this->query($str);
+	}
+
 }

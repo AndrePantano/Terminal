@@ -40,9 +40,9 @@
 <body>
   <div class="container">
     <?php if($this->session->userdata('idperfil')!=3):?>
-      <?php $this->load->view("avaria_conteiner/insert");?>
-      <?php $this->load->view("avaria_conteiner/edit");?>
-      <?php if($this->session->userdata('idperfil')==1){$this->load->view("avaria_conteiner/delete");}?>
+      <?php $this->load->view("avariaconteiner/insert");?>
+      <?php $this->load->view("avariaconteiner/edit");?>
+      <?php if($this->session->userdata('idperfil')==1){$this->load->view("avariaconteiner/delete");}?>
     <?php endif; ?>
 
     <?php $this->load->view("layout/nav_bar");?>

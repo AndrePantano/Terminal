@@ -1,7 +1,7 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="modal_add">
   <div class="modal-dialog">
     
-    <form class="form-horizontal" method="post" action="<?=base_url('avaria_vagao/create')?>">
+    <form class="form-horizontal" method="post" action="<?=base_url('avariavagao/create')?>">
       <input type="hidden" name="idtrem" value="<?=$trem['idtrem']?>">
         <div class="modal-content">
           <div class="modal-header">

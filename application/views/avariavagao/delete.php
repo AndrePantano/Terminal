@@ -1,7 +1,7 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="modal_del">
   <div class="modal-dialog">
     
-        <form class="form-horizontal" method="post" action="<?=base_url('avaria_vagao/delete')?>">
+        <form class="form-horizontal" method="post" action="<?=base_url('avariavagao/delete')?>">
           <input type="hidden" name="idtrem" value="<?=$trem['idtrem']?>">
           <input type="hidden" name="idavaria" class="idavaria" value="">
         <div class="modal-content">

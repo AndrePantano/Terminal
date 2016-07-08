@@ -32,6 +32,12 @@
           </ul>
         </li>
         <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-truck"></i> Rodoviário <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#"><i class="fa fa-road"></i> Opção 1</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bar-chart"></i> Relatórios <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="<?= base_url('relatorios/rel_01')?>"><i class="fa fa-bar-chart"></i> Painel Operações</a></li>
@@ -41,7 +47,16 @@
       </ul>
 
       <!-- NAVBAR RIGHT -->
-      <ul class="nav navbar-nav navbar-right">                                              
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-wrench"></i> Configurações <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="<?= base_url('usuario/')?>"><i class="fa fa-wrench"></i> Usuários</a></li>
+            <li><a href="<?= base_url('auth/logout')?>"><i class="fa fa-wrench"></i> Metas</a></li>
+            <li><a href="<?= base_url('auth/logout')?>"><i class="fa fa-wrench"></i> Tipos de Paradas</a></li>
+            <li><a href="<?= base_url('auth/logout')?>"><i class="fa fa-wrench"></i> Grupos Avaria-Conteiner</a></li>
+          </ul>
+        </li>                                              
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> <?=ucwords($this->session->userdata("nome"))?> <span class="caret"></span></a>
           <ul class="dropdown-menu">

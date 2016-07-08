@@ -36,9 +36,9 @@
 <body>
   <div class="container">
     <?php if($this->session->userdata('idperfil')!=3):?>
-      <?php $this->load->view("avaria_vagao/insert");?>
-      <?php $this->load->view("avaria_vagao/edit");?>
-      <?php if($this->session->userdata('idperfil')==1){$this->load->view("avaria_vagao/delete");}?>
+      <?php $this->load->view("avariavagao/insert");?>
+      <?php $this->load->view("avariavagao/edit");?>
+      <?php if($this->session->userdata('idperfil')==1){$this->load->view("avariavagao/delete");}?>
     <?php endif; ?>
 
     <?php $this->load->view("layout/nav_bar");?>

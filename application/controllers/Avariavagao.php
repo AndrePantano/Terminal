@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Avaria_Vagao extends CI_Controller {
+class Avariavagao extends CI_Controller {
 
   public function __construct(){  
 
@@ -14,6 +14,7 @@ class Avaria_Vagao extends CI_Controller {
 
     $this->load->model("Trem_Model");
     $this->load->model("Avaria_Vagao_Model");
+    $this->load->model("Message_Model");
     
   }
      
@@ -25,7 +26,7 @@ class Avaria_Vagao extends CI_Controller {
 
     $this->Avaria_Vagao_Model->create($avaria);
 
-    $this->message('success','Avaria adicionada com sucesso');        
+    $this->Message_Model->message('success','Avaria adicionada com sucesso');        
            
     $this->redireciona();
     
@@ -59,7 +60,7 @@ class Avaria_Vagao extends CI_Controller {
     
     $this->Avaria_Vagao_Model->update($avaria);
 
-    $this->message('success','Avaria atualizada com sucesso');        
+    $this->Message_Model->message('success','Avaria atualizada com sucesso');        
            
     $this->redireciona();
 
@@ -73,7 +74,7 @@ class Avaria_Vagao extends CI_Controller {
     
     $this->Avaria_Vagao_Model->delete($dados);
 
-    $this->message( 'success','Avaria excluída com sucesso');        
+    $this->Message_Model->message( 'success','Avaria excluída com sucesso');        
            
     $this->redireciona();
     
@@ -95,7 +96,7 @@ class Avaria_Vagao extends CI_Controller {
         "avarias" => $avarias
         //"grupos" => $grupos
       );
-      $this->load->view('avaria_vagao/trem',$dados);
+      $this->load->view('avariavagao/trem',$dados);
     }else{
       $dados["heading"] = "Registro Inexistente.";
       $dados["message"] = "Este registro não se encontra em nossa base de dados!";
@@ -106,7 +107,7 @@ class Avaria_Vagao extends CI_Controller {
 
   public function check_post(){
     if(!$this->input->post()){
-      $this->message('danger','Nenhum formulário foi recebido!'); 
+      $this->Message_Model->message('danger','Nenhum formulário foi recebido!'); 
       $this->redireciona();
     }
   }
@@ -135,7 +136,7 @@ class Avaria_Vagao extends CI_Controller {
 
     if(!$this->form_validation->run()){
 
-      $this->message( 'danger','Ocorreum erro na validação dos dados.<br/>'.validation_errors());
+      $this->Message_Model->message( 'danger','Ocorreum erro na validação dos dados.<br/>'.validation_errors());
 
       $this->redireciona();
     }
@@ -143,7 +144,7 @@ class Avaria_Vagao extends CI_Controller {
 
   public function redireciona(){
 
-    redirect("avaria_vagao/trem/".$this->input->post("idtrem"));
+    redirect("avariavagao/trem/".$this->input->post("idtrem"));
   }
 
 }
