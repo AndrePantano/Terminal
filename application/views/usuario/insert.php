@@ -28,7 +28,7 @@
           <div class="form-group">
             <label class="col-md-3 control-label" for="quantidade">Perfil:</label>  
             <div class="col-md-6">
-              <select name="idtipo_parada" class="form-control input-md" required>
+              <select name="idperfil" class="form-control input-md" required>
               <option value="">Selecione uma opção</option>
               <?php foreach($perfis as $perfil):?>
                 <option value="<?=$perfil['idperfil']?>"><?=strtoupper($perfil['nome_perfil'])?></option>

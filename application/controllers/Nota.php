@@ -34,7 +34,7 @@ class Nota extends CI_Controller {
 
   public function update(){
     
-    $this->validar_formulario('create');
+    $this->validar_formulario('update');
 
     $dados = $this->montar_dados();
 

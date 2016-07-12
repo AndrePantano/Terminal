@@ -11,12 +11,14 @@ class Operacao_Model extends CI_Model {
 	// INSERE OS DADOS NA TABELA
 	public function create($dados){
 		$dados = $this->acrescentar_metas($dados);
+		$dados = $this->acrescentar_tarifa($dados);
 		return $this->db->insert($this->table,$dados);
 	}
 
 	// ATUALIZA OS DADOS NA TABELA
 	public function update($dados){
 		$dados = $this->acrescentar_metas($dados);
+		$dados = $this->acrescentar_tarifa($dados);
 		$this->db->where(array("idoperacao" => $dados["idoperacao"]));
 		return $this->db->update($this->table,$dados);
 	}
@@ -50,6 +52,17 @@ class Operacao_Model extends CI_Model {
 	        if($meta["nome_meta"] == "all") $dados["meta_all"] = $meta["valor_meta"];
 	        if($meta["nome_meta"] == "operação") $dados["meta_operacao"] = $meta["valor_meta"];
 	      } 
+	    }
+
+	    return $dados;
+	}
+
+	public function acrescentar_tarifa($dados){
+		$this->load->model("Tarifa_Model");
+	    $tarifa = $this->Tarifa_Model->tarifa_atual();
+
+	    if($tarifa){
+			$dados["tarifa"] = $tarifa["valor_tarifa"];	        
 	    }
 
 	    return $dados;

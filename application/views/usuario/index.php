@@ -20,6 +20,23 @@
 				$(this).css("cursor","pointer");
 			});
 
+			$("#table > tbody > tr").click(function(){
+
+				var id = $(this).data("id");
+				
+				// EDITAR DADOS
+				$(".nome").val($(".nome"+id).text());
+				$(".email").val($(".email"+id).text());
+
+				if($(".ativo"+id).data("id") == 1){
+					$(".ativo-nao").prop("checked","true");
+				}else{
+					$(".ativo-sim").prop("checked","true");
+				}
+
+				//alert($(".ativo"+id).data("id"));
+				$("#modal_edit").modal("show");
+			});
 		});
 	</script>
 	<title><?=$main['name']?></title>
@@ -27,6 +44,7 @@
 <body>
 	<div class="container"> 		
 	<?php $this->load->view("usuario/insert"); ?>
+	<?php $this->load->view("usuario/edit"); ?>
 	<?php $this->load->view("layout/nav_bar"); ?>
 
 	<div class="row">
@@ -63,12 +81,12 @@
 								</thead>
 								<tbody>
 									<?php foreach ($usuarios as $value): ?>
-										<tr onclick="javascript:window.location.href = '<?=base_url('usuario/usuario/'.$value['idusuario'])?>'" class="<?= $value['ativo']?'':'danger'?>">
+										<tr class="<?= $value['ativo']?'':'danger'?>" data-id="<?=$value["idusuario"]?>">
 											<td><?= $value['idusuario']?></td>
-											<td><?= ucwords($value['nome'])?></td>
-											<td><?= $value['email']?></td>
-											<td><?= $value['ativo']?"Sim":"Não"?></td>
-											<td><?= $value['nome_perfil']?></td>
+											<td class="nome<?=$value['idusuario']?>"><?= ucwords($value['nome'])?></td>
+											<td class="email<?=$value['idusuario']?>"><?= $value['email']?></td>
+											<td class="ativo<?=$value['idusuario']?>" data-id="<?= $value['ativo']?>"><?= $value['ativo']?"Sim":"Não"?></td>
+											<td class="perfil<?=$value['idusuario']?>" data-id="<?= $value['idperfil']?>"><?= $value['nome_perfil']?></td>
 										</tr>
 									<?php endforeach; ?>
 								</tbody>						

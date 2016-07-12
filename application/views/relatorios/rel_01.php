@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+
 	<?php $this->load->view("layout/head"); ?> 
 	<!-- link href="<?php echo base_url('assets/bootstrap/css/bootstrap_o.css')?>" rel="stylesheet" -->
 	<style type="text/css">
@@ -10,14 +11,28 @@
   canvas{
     background-color: #FFF;
   }
-  
+  table{
+    font-size: 14;
+  }
+  /*
   table tbody tr:hover{
     cursor:default;
   }
+  */
 	</style>
 	<script src="<?= base_url('assets/jquery/charts.js')?>"></script>
 
 	<title><?=$main['name']?></title>
+
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $("tr").click(function(){
+        var caminho = $(this).data("caminho");
+        window.open(caminho,"_blank");
+      });
+    });
+  </script>
+
 </head>
 <body>
 	<div class="container">
@@ -56,23 +71,29 @@
             <div class="table-responsive">
               <p>Período de Apuração: de <?= date("d/m/Y",strtotime($inicio))?> a <?= date("d/m/Y",strtotime($fim))?>.</p>
               
-              <table class="table">
+              <table class="table table-hover table-condensed table-striped">
                 <thead>
                   <tr>
-                    <th>Operação</th>
-                    <th>Data Chegada</th>
-                    <th>Qtde. Vagões</th>
-                    <th>Tempo Útil</th>
-                    <th>Total Operação</th>
-                    <th>P. Manobra / Inversão</th>
-                    <th>Parada Rodoviária</th>
-                    <th>Tempo B.O.</th>
+                    <th title="Operação" width="120px">Operação</th>
+                    <th title="Chegada">Chegada</th>
+                    <th title="Quantidade de Vagões" width="80px">Vagões</th>
+                    <th title="Tempo Útil">T. Útil</th>
+                    <th title="Tempo Total da Operação">T. Oper.</th>
+                    <th title="Parada de Manobra ou Inversão">P. Man. / Inv.</th>
+                    <th title="Parada Rodoviária">P. Rodo.</th>
+                    <th title="Tempo de B.O.">T. B.O.</th>
+                    <th title="A Cobrar TERLOC" width="110px">AC. TERLOG</th>
+                    <th title="Estadia de Vagão" width="110px">Est.Vagão</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <?php for($i = 0; $i< count($relatorio["labels"]);$i++){?>
-                    <tr>
-                      <td><?=$relatorio["prefixo_trem"][$i]?></td>
+                  <?php 
+                    
+                    $total_vagoes = $soma_act = $soma_tev = 0;
+
+                    for($i = 0; $i< count($relatorio["labels"]);$i++){?>
+                    <tr data-caminho="<?=base_url('trem/trem/'.$relatorio['idtrem'][$i])?>" >
+                      <td title="<?=$relatorio['prefixo_trem'][$i]. ' Chegada em: '.$relatorio['chegada_trem'][$i]?>" ><?=$relatorio["prefixo_trem"][$i]?></td>
                       <td><?=$relatorio["chegada_trem"][$i]?></td>
                       <td><?=$relatorio["qtd_vagoes"][$i]?></td>
                       <td <?=$relatorio["tu_valores"][$i] == 0?"class='text-muted'":""?> ><?= str_replace(".", ":", $relatorio["tu_valores"][$i])?></td>
@@ -80,9 +101,26 @@
                       <td <?=$relatorio["mi_valores"][$i] == 0?"class='text-muted'":""?> ><?= str_replace(".", ":", $relatorio["mi_valores"][$i])?></td>
                       <td <?=$relatorio["pr_valores"][$i] == 0?"class='text-muted'":""?> ><?= str_replace(".", ":", $relatorio["pr_valores"][$i])?></td>
                       <td <?=$relatorio["bo_valores"][$i] == 0?"class='text-muted'":""?> ><?= str_replace(".", ":", $relatorio["bo_valores"][$i])?></td>
+                      <td <?=$relatorio["a_cobrar_terloc"][$i] == 0?"class='text-muted'":""?> >R$<span class="pull-right"><?= number_format($relatorio["a_cobrar_terloc"][$i],2,",",".")?></span></td>
+                      <td <?=$relatorio["estadia_vagoes"][$i] == 0?"class='text-muted'":""?> >R$<span class="pull-right"><?= number_format($relatorio["estadia_vagoes"][$i],2,",",".")?></span></td>
                     </tr>
-                  <?php } ?>
+                  <?php
+
+                    $total_vagoes += $relatorio["qtd_vagoes"][$i];
+                    $soma_act += $relatorio["a_cobrar_terloc"][$i];
+                    $soma_tev += $relatorio["estadia_vagoes"][$i];
+                  }?>
                 </tbody>
+                <tfoot>
+                  <tr>
+                    <th><?=count($relatorio["labels"])?> Operações</th>
+                    <th>&nbsp;</th>
+                    <th><?= $total_vagoes ?></th>
+                    <th colspan="5">&nbsp;</th>
+                    <th>R$<span class="pull-right"><?= number_format($soma_act,2,",",".")?></span></th>
+                    <th>R$<span class="pull-right"><?= number_format($soma_tev,2,",",".")?></span></th>
+                  </tr>
+                </tfoot>
               </table>
             </div>
           </div>
@@ -270,7 +308,7 @@
       </script>
     <?php endif;?>
 
-    <!-- ?="<pre>".print_r($relatorio,1)."</pre>"? -->
+    <!-- ?="<pre>".print_r($relatorio[""],1)."</pre>"? -->
   </div>    
 </body>
 </html>

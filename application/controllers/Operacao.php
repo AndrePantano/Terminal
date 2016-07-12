@@ -185,11 +185,11 @@ class Operacao extends CI_Controller {
       "idusuario" => $this->session->userdata("idusuario")
     );
 
-    if(!empty($this->input->post("encoste"))){ $dados["encoste_linha"] = $this->input->post("encoste");}
-    if(!empty($this->input->post("inicio"))){ $dados["inicio_operacao"] = $this->input->post("inicio");}
-    if(!empty($this->input->post("termino"))){ $dados["termino_operacao"] = $this->input->post("termino");}
-    if(!empty($this->input->post("manifesto"))){ $dados["envio_manifesto"] = $this->input->post("manifesto");}
-    if(!empty($this->input->post("all"))){ $dados["faturamento_all"] = $this->input->post("all");}
+    if($this->input->post("encoste")!=""){ $dados["encoste_linha"] = $this->input->post("encoste");}
+    if($this->input->post("inicio")!=""){ $dados["inicio_operacao"] = $this->input->post("inicio");}
+    if($this->input->post("termino")!=""){ $dados["termino_operacao"] = $this->input->post("termino");}
+    if($this->input->post("manifesto")!=""){ $dados["envio_manifesto"] = $this->input->post("manifesto");}
+    if($this->input->post("all")!=""){ $dados["faturamento_all"] = $this->input->post("all");}
     
     if($this->input->post("idoperacao")){
       $dados["idoperacao"] = $this->input->post("idoperacao");

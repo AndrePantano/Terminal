@@ -52,9 +52,9 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-wrench"></i> Configurações <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="<?= base_url('usuario/')?>"><i class="fa fa-wrench"></i> Usuários</a></li>
-            <li><a href="<?= base_url('auth/logout')?>"><i class="fa fa-wrench"></i> Metas</a></li>
             <li><a href="<?= base_url('auth/logout')?>"><i class="fa fa-wrench"></i> Tipos de Paradas</a></li>
             <li><a href="<?= base_url('auth/logout')?>"><i class="fa fa-wrench"></i> Grupos Avaria-Conteiner</a></li>
+            <li><a href="<?= base_url('auth/logout')?>"><i class="fa fa-wrench"></i> Básicas</a></li>
           </ul>
         </li>                                              
         <li class="dropdown">
