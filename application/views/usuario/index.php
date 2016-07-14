@@ -10,6 +10,7 @@
 
 	<script type="text/javascript">
 		$("document").ready(function(){
+
 			$('#table').DataTable({
 				//order: [[ 2, "asc" ]],
 				paging: true,
@@ -20,23 +21,51 @@
 				$(this).css("cursor","pointer");
 			});
 
-			$("#table > tbody > tr").click(function(){
+			$("#table > tbody").on("click","tr",function(){
 
 				var id = $(this).data("id");
+				
+				$(".idusuario").val(id);
 				
 				// EDITAR DADOS
 				$(".nome").val($(".nome"+id).text());
 				$(".email").val($(".email"+id).text());
-
-				if($(".ativo"+id).data("id") == 1){
+				
+				if($(".ativo"+id).data("id") == "não"){
 					$(".ativo-nao").prop("checked","true");
 				}else{
 					$(".ativo-sim").prop("checked","true");
 				}
+				
+				//SELECIONA O OPTION DO SELECT DE TIPOS DE PERFIS
+				var idperfil = $(".perfil"+id).data("id");			
+				$(".perfil option[value='"+idperfil+"']").prop("selected","selected");
 
-				//alert($(".ativo"+id).data("id"));
+				// EXCLUIR DADOS
+				$(".nome_del").text($(".nome"+id).text());
+				$(".email_del").text($(".email"+id).text());
+				$(".ativo_del").text($(".ativo"+id).text());
+				$(".perfil_del").text($(".perfil"+id).text());
+
 				$("#modal_edit").modal("show");
+
 			});
+
+			// EXCLUI PARADA
+			$("#btn_del").click(function(){
+
+				$("#modal_edit").modal("hide");
+				$("#modal_del").modal({
+					show:true,
+					backdrop:'static'
+				});
+			});
+
+			//CHAMA MODAL EDITAR AO SAIR DA MODAL DE EXCLUIR
+			$(".close-del").click(function(){
+				$("#modal_edit").modal('show');
+			});
+
 		});
 	</script>
 	<title><?=$main['name']?></title>
@@ -45,6 +74,7 @@
 	<div class="container"> 		
 	<?php $this->load->view("usuario/insert"); ?>
 	<?php $this->load->view("usuario/edit"); ?>
+	<?php $this->load->view("usuario/delete"); ?>
 	<?php $this->load->view("layout/nav_bar"); ?>
 
 	<div class="row">
@@ -81,11 +111,11 @@
 								</thead>
 								<tbody>
 									<?php foreach ($usuarios as $value): ?>
-										<tr class="<?= $value['ativo']?'':'danger'?>" data-id="<?=$value["idusuario"]?>">
+										<tr class="<?= $value['ativo'] =='sim'?'':'danger'?>" data-id="<?=$value["idusuario"]?>">
 											<td><?= $value['idusuario']?></td>
 											<td class="nome<?=$value['idusuario']?>"><?= ucwords($value['nome'])?></td>
 											<td class="email<?=$value['idusuario']?>"><?= $value['email']?></td>
-											<td class="ativo<?=$value['idusuario']?>" data-id="<?= $value['ativo']?>"><?= $value['ativo']?"Sim":"Não"?></td>
+											<td class="ativo<?=$value['idusuario']?>" data-id="<?= $value['ativo']?>"><?= $value['ativo'] ?></td>
 											<td class="perfil<?=$value['idusuario']?>" data-id="<?= $value['idperfil']?>"><?= $value['nome_perfil']?></td>
 										</tr>
 									<?php endforeach; ?>

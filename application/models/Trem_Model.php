@@ -73,4 +73,8 @@ class Trem_Model extends CI_Model {
 		}
 	}
 
+	public function trens($coluna,$valor){
+		$str_query = "SELECT * FROM ".$this->table." WHERE ".$coluna." = ".$valor;
+		return $this->query($str_query);
+	}
 }

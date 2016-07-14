@@ -1,7 +1,7 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="modal_edit">
   <div class="modal-dialog">
     
-        <form class="form-horizontal" method="post" action="<?=base_url('usuario/edit')?>">
+        <form class="form-horizontal" method="post" action="<?=base_url('usuario/update')?>">
           <input name="idusuario" type="hidden" class="idusuario">
 
         <div class="modal-content">
@@ -20,20 +20,23 @@
           <div class="form-group">
             <label class="col-md-3 control-label" for="email">Email:</label>  
             <div class="col-md-6">
-              <input name="email" type="email" placeholder="email@site.com"  class="form-control input-md email" required >
+              <!-- div class="input-group" -->
+                <input name="email" type="email" placeholder="email@site.com"  class="form-control input-md email" required >
+                <!-- span class="input-group-addon">
+                  @brado.com.br
+                </span>
+              </div-->
             </div>
           </div>
 
           <div class="form-group">
-            <label class="col-md-3 control-label" for="ativo">Ativo</label>
+            <label class="col-md-3 control-label">Ativo</label>
             <div class="col-md-6"> 
-              <label class="radio-inline" for="ativo-0">
-                <input type="radio" class="ativo-sim" name="ativo" value="1">
-                Sim
+              <label class="radio-inline">
+                <input type="radio" class="ativo-sim" name="ativo" value="sim">Sim
               </label> 
-              <label class="radio-inline" for="ativo-1">
-                <input type="radio" class="ativo-nao" name="ativo" value="0">
-                Não
+              <label class="radio-inline">
+                <input type="radio" class="ativo-nao" name="ativo" value="não">Não
               </label>
             </div>
           </div>
@@ -52,6 +55,9 @@
 
           </div>
           <div class="modal-footer">
+            <?php if($this->session->userdata('idperfil')==1):?>
+              <button type="button" class="btn btn-default pull-left" id="btn_del">Excluir</button>
+            <?php endif;?>
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
             <button type="submit" class="btn btn-primary">Salvar</button>
           </div>

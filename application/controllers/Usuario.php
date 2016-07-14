@@ -54,10 +54,26 @@ class Usuario extends CI_Controller {
 
     $dados = $this->montar_dados();
 
-    $this->Nota_Model->update($dados);
+    $this->Usuario_Model->update($dados);
     
     $this->Message_Model->message('success','Dados atualizados com sucesso');
     
+    $this->redireciona();
+    
+  }
+
+  public function delete(){
+    
+    $this->validar_formulario('delete');
+
+    $this->checar_historico($this->input->post("idusuario"));
+
+    $dados = array("idusuario" => $this->input->post("idusuario"));
+    
+    //$this->Usuario_Model->delete($dados);
+
+    $this->Message_Model->message( 'success','Usuário excluído com sucesso');        
+           
     $this->redireciona();
     
   }
@@ -99,16 +115,14 @@ class Usuario extends CI_Controller {
       "nome" => $this->input->post("nome"),
       "email" => $this->input->post("email"),
       "idperfil" => $this->input->post("idperfil"),
-      "ativo" => 1
+      "ativo" => "sim"
     );
     
-    if($this->input->post("idusuario")){
-      $dados["idusuario"] = $this->input->post("idusuario");
-    }else{
-      $dados["senha"] = md5("brado");
-    }
+    if($this->input->post("idusuario")) $dados["idusuario"] = $this->input->post("idusuario");
+    
+    //if($this->input->post("reset_senha")) $dados["senha"] = md5("brado");
 
-    if($this->input->post("ativo")) $dados["ativo"] = $this->input->post("ativo");
+    if($this->input->post("ativo") && $this->input->post("ativo") == "não") $dados["ativo"] = $this->input->post("ativo");
 
     return $dados;
   }
@@ -125,6 +139,65 @@ class Usuario extends CI_Controller {
   public function redireciona(){
 
     redirect("usuario/");
+  }
+
+  public function checar_historico($idusuario){
+    
+    $registro = array();
+
+    // CHECA O HISTÓRICO DA AVARIA DE CONTEINER
+    $this->load->model("Avaria_Conteiner_Model");
+    $historico = $this->Avaria_Conteiner_Model->avarias("idusuario",$idusuario);
+    $registro["Avaria Conteiner"] = count($historico);
+    $reg = count($historico);
+
+    // CHECA O HISTÓRICO DA AVARIA DE VAGAO
+    $this->load->model("Avaria_Vagao_Model");
+    $historico = $this->Avaria_Vagao_Model->avarias("idusuario",$idusuario);
+    $registro["Avaria Vagão"] = count($historico);
+    $reg  = count($historico);
+
+    // CHECA O HISTÓRICO DA NOTA
+    $this->load->model("Nota_Model");
+    $historico = $this->Nota_Model->notas("idusuario",$idusuario);
+    $registro["Nota"] = count($historico);
+    $reg = count($historico);
+
+    // CHECA O HISTÓRICO DA OPERACAO
+    $this->load->model("Operacao_Model");
+    $historico = $this->Operacao_Model->operacoes("idusuario",$idusuario);
+    $registro["Operação"] = count($historico);
+    $reg = count($historico);
+
+    // CHECA O HISTÓRICO DA PARADA
+    $this->load->model("Parada_Model");
+    $historico = $this->Parada_Model->paradas("idusuario",$idusuario);
+    $registro["Paradas"] = count($historico);
+    $reg = count($historico);
+
+    // CHECA O HISTÓRICO DA PREVISAO CHEGADA
+    $this->load->model("Previsao_Chegada_Model");
+    $historico = $this->Previsao_Chegada_Model->previsoes_chegada("idusuario",$idusuario);
+    $registro["Previsão Chegada"] = count($historico);
+    $reg = count($historico);
+
+    // CHECA O HISTÓRICO DA PREVISAO SAÍDA
+    $this->load->model("Previsao_Saida_Model");
+    $historico = $this->Previsao_Saida_Model->previsoes_saida("idusuario",$idusuario);
+    $registro["Previsão Saída"] = count($historico);
+    $reg = count($historico);
+
+    // CHECA O HISTÓRICO DO TREM
+    $this->load->model("Trem_Model");
+    $historico = $this->Trem_Model->trens("idusuario",$idusuario);
+    $registro["Trem"] = count($historico);
+    $reg = count($historico);
+
+    if($reg > 0){
+       $this->Message_Model->message( 'danger','Não é possível excluir este usuário, existem '.$reg.' registros vinculados a ele.'.print_r($registro,1));
+       $this->redireciona();
+    }
+
   }
 
 }
