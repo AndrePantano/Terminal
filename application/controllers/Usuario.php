@@ -70,12 +70,27 @@ class Usuario extends CI_Controller {
 
     $dados = array("idusuario" => $this->input->post("idusuario"));
     
-    //$this->Usuario_Model->delete($dados);
+    $this->Usuario_Model->delete($dados);
 
     $this->Message_Model->message( 'success','Usuário excluído com sucesso');        
            
     $this->redireciona();
+  }
+
+  public function reset(){
     
+    $this->validar_formulario('reset');
+
+    $dados = array(
+      "idusuario" => $this->input->post("idusuario"),
+      "senha" => md5("brado")
+      );
+    
+    $this->Usuario_Model->update($dados);
+
+    $this->Message_Model->message( 'success','Senha resetada com sucesso');        
+           
+    $this->redireciona();
   }
 
   public function validar_formulario($tipo){
@@ -96,6 +111,9 @@ class Usuario extends CI_Controller {
         $this->form_validation->set_rules('idperfil','Perfil','required');       
         break;
       case 'delete':
+        $this->form_validation->set_rules('idusuario','Id do Usuario','required');    
+        break;
+      case 'reset':
         $this->form_validation->set_rules('idusuario','Id do Usuario','required');    
         break;
     }
@@ -143,58 +161,43 @@ class Usuario extends CI_Controller {
 
   public function checar_historico($idusuario){
     
-    $registro = array();
+    $qtd = 0;
 
     // CHECA O HISTÓRICO DA AVARIA DE CONTEINER
     $this->load->model("Avaria_Conteiner_Model");
-    $historico = $this->Avaria_Conteiner_Model->avarias("idusuario",$idusuario);
-    $registro["Avaria Conteiner"] = count($historico);
-    $reg = count($historico);
-
+    $qtd += $this->Avaria_Conteiner_Model->contar_registros_do_usuario($idusuario);
+    
     // CHECA O HISTÓRICO DA AVARIA DE VAGAO
     $this->load->model("Avaria_Vagao_Model");
-    $historico = $this->Avaria_Vagao_Model->avarias("idusuario",$idusuario);
-    $registro["Avaria Vagão"] = count($historico);
-    $reg  = count($historico);
+    $qtd += $this->Avaria_Vagao_Model->contar_registros_do_usuario($idusuario);
 
     // CHECA O HISTÓRICO DA NOTA
     $this->load->model("Nota_Model");
-    $historico = $this->Nota_Model->notas("idusuario",$idusuario);
-    $registro["Nota"] = count($historico);
-    $reg = count($historico);
+    $qtd += $this->Nota_Model->contar_registros_do_usuario($idusuario);
 
     // CHECA O HISTÓRICO DA OPERACAO
     $this->load->model("Operacao_Model");
-    $historico = $this->Operacao_Model->operacoes("idusuario",$idusuario);
-    $registro["Operação"] = count($historico);
-    $reg = count($historico);
+    $qtd += $this->Operacao_Model->contar_registros_do_usuario($idusuario);
 
     // CHECA O HISTÓRICO DA PARADA
     $this->load->model("Parada_Model");
-    $historico = $this->Parada_Model->paradas("idusuario",$idusuario);
-    $registro["Paradas"] = count($historico);
-    $reg = count($historico);
+    $qtd += $this->Parada_Model->contar_registros_do_usuario($idusuario);
 
     // CHECA O HISTÓRICO DA PREVISAO CHEGADA
     $this->load->model("Previsao_Chegada_Model");
-    $historico = $this->Previsao_Chegada_Model->previsoes_chegada("idusuario",$idusuario);
-    $registro["Previsão Chegada"] = count($historico);
-    $reg = count($historico);
+    $qtd += $this->Previsao_Chegada_Model->contar_registros_do_usuario($idusuario);
 
     // CHECA O HISTÓRICO DA PREVISAO SAÍDA
     $this->load->model("Previsao_Saida_Model");
-    $historico = $this->Previsao_Saida_Model->previsoes_saida("idusuario",$idusuario);
-    $registro["Previsão Saída"] = count($historico);
-    $reg = count($historico);
+    $qtd += $this->Previsao_Saida_Model->contar_registros_do_usuario($idusuario);
 
     // CHECA O HISTÓRICO DO TREM
     $this->load->model("Trem_Model");
-    $historico = $this->Trem_Model->trens("idusuario",$idusuario);
-    $registro["Trem"] = count($historico);
-    $reg = count($historico);
+    $qtd += $this->Trem_Model->contar_registros_do_usuario($idusuario);
 
-    if($reg > 0){
-       $this->Message_Model->message( 'danger','Não é possível excluir este usuário, existem '.$reg.' registros vinculados a ele.'.print_r($registro,1));
+
+    if($qtd > 0){
+       $this->Message_Model->message( 'danger','Não é possível excluir este usuário, existem registros vinculados a ele.');
        $this->redireciona();
     }
 

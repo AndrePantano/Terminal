@@ -48,15 +48,16 @@
 
       <!-- NAVBAR RIGHT -->
       <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-wrench"></i> Configurações <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="<?= base_url('usuario/')?>"><i class="fa fa-wrench"></i> Usuários</a></li>
-            <li><a href="<?= base_url('auth/logout')?>"><i class="fa fa-wrench"></i> Tipos de Paradas</a></li>
-            <li><a href="<?= base_url('auth/logout')?>"><i class="fa fa-wrench"></i> Grupos Avaria-Conteiner</a></li>
-            <li><a href="<?= base_url('auth/logout')?>"><i class="fa fa-wrench"></i> Básicas</a></li>
-          </ul>
-        </li>                                              
+        <?php if($this->session->userdata('idperfil')==1):?>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-wrench"></i> Configurações <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="<?= base_url('usuario/')?>"><i class="fa fa-wrench"></i> Usuários</a></li>
+              <li><a href="<?= base_url('meta/')?>"><i class="fa fa-wrench"></i> Metas de Controle</a></li>
+              <li><a href="<?= base_url('tarifa/')?>"><i class="fa fa-wrench"></i> Tarifa</a></li>
+            </ul>
+          </li>                                    
+        <?php endif; ?>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> <?=ucwords($this->session->userdata("nome"))?> <span class="caret"></span></a>
           <ul class="dropdown-menu">

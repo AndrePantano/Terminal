@@ -27,7 +27,7 @@ class Trem_Model extends CI_Model {
 
 	public function em_transito(){
 		$str = "SELECT * FROM tb_trem t JOIN tb_previsao_chegada USING(idtrem) WHERE chegada_trem is null AND partida_trem is null AND idprevisao = (SELECT MAX(idprevisao) from tb_previsao_chegada WHERE idtrem = t.idtrem)";
-		$query = $this->query($str);
+		return $this->query($str);
 	}
 
 	public function em_operacao(){
@@ -40,7 +40,7 @@ class Trem_Model extends CI_Model {
 	}
 
 	public function query($str_query){
-		
+		echo $str_query;
 		$query = $this->db->query($str_query);
 
 		if($query->num_rows()){						
@@ -76,5 +76,11 @@ class Trem_Model extends CI_Model {
 	public function trens($coluna,$valor){
 		$str_query = "SELECT * FROM ".$this->table." WHERE ".$coluna." = ".$valor;
 		return $this->query($str_query);
+	}
+
+	public function contar_registros_do_usuario($idusuario){
+		$str = "SELECT COUNT(idusuario) as quantidade FROM ".$this->table." WHERE idusuario = ".$idusuario;
+		$quantidade = $this->query($str);
+		return $quantidade[0]["quantidade"];
 	}
 }

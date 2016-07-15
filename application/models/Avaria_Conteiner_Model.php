@@ -25,6 +25,7 @@ class Avaria_Conteiner_Model extends CI_Model {
 	}
 
 	public function query($query){
+		
 		$registros = $this->db->query($query);
 		if($registros->num_rows()){						
 			return $registros->result_array();
@@ -36,6 +37,12 @@ class Avaria_Conteiner_Model extends CI_Model {
 	public function avarias($coluna, $valor){
 		$str = "SELECT * FROM ".$this->table." JOIN tb_grupo_avaria_conteiner USING (idgrupo_avaria_conteiner) WHERE ".$coluna." =".$valor;
 		return $this->query($str);
+	}
+
+	public function contar_registros_do_usuario($idusuario){
+		$str = "SELECT COUNT(idusuario) as quantidade FROM ".$this->table." WHERE idusuario = ".$idusuario;
+		$quantidade = $this->query($str);
+		return $quantidade[0]["quantidade"];
 	}
 
 }

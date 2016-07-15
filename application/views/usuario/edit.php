@@ -57,6 +57,7 @@
           <div class="modal-footer">
             <?php if($this->session->userdata('idperfil')==1):?>
               <button type="button" class="btn btn-default pull-left" id="btn_del">Excluir</button>
+              <button type="button" class="btn btn-default pull-left" id="btn_reset">Resetar Senha</button>              
             <?php endif;?>
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
             <button type="submit" class="btn btn-primary">Salvar</button>

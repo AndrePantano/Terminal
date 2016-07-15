@@ -44,4 +44,10 @@ class Parada_Model extends CI_Model {
 		$this->db->where($dados);
 		$this->db->delete($this->table);
 	}
+
+	public function contar_registros_do_usuario($idusuario){
+		$str = "SELECT COUNT(idusuario) as quantidade FROM ".$this->table." WHERE idusuario = ".$idusuario;
+		$quantidade = $this->query($str);
+		return $quantidade[0]["quantidade"];
+	}
 }

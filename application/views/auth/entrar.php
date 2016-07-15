@@ -54,9 +54,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               </fieldset>
             </form>
           </div>
-          <div class="panel-footer text-center">
-           Esqueci minha senha <a href="#" onClick=""> clique aqui</a>.
-          </div>
+          <div class="panel-footer"></div>
         </div>
       </div>
     </div>

@@ -51,7 +51,17 @@
 
 			});
 
-			// EXCLUI PARADA
+			// CHAMA A MODAL DE RESET DE SENHA
+			$("#btn_reset").click(function(){
+
+				$("#modal_edit").modal("hide");
+				$("#modal_reset").modal({
+					show:true,
+					backdrop:'static'
+				});
+			});
+
+			// CHAMA A MODAL DE EXCLUIR
 			$("#btn_del").click(function(){
 
 				$("#modal_edit").modal("hide");
@@ -75,6 +85,7 @@
 	<?php $this->load->view("usuario/insert"); ?>
 	<?php $this->load->view("usuario/edit"); ?>
 	<?php $this->load->view("usuario/delete"); ?>
+	<?php $this->load->view("usuario/reset"); ?>
 	<?php $this->load->view("layout/nav_bar"); ?>
 
 	<div class="row">
@@ -102,7 +113,7 @@
 							<table class="table table-hover" id="table">
 								<thead>
 									<tr>
-										<th>Cód.</th>
+										<th width="50px">Cód.</th>
 										<th>Nome</th>
 										<th>Email</th>
 										<th>Ativo</th>

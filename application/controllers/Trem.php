@@ -137,6 +137,16 @@ class Trem extends CI_Controller {
         
     $idtrem = $this->input->post("idtrem");
 
+    // EXCLUI AS AVARIAS DE CONTEINERS
+    $this->load->model("Avaria_Conteiner_Model");
+    $dados = array("idtrem" => $idtrem);
+    $this->Avaria_Conteiner_Model->delete($dados);
+
+    // EXCLUI AS AVARIAS DE VAGAO
+    $this->load->model("Avaria_Vagao_Model");
+    $dados = array("idtrem" => $idtrem);
+    $this->Avaria_Vagao_Model->delete($dados);
+
     // EXCLUI AS NOTAS DE ATIVIDADES
     $this->load->model("Nota_Model");
     $dados = array("idtrem" => $idtrem);
