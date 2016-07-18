@@ -36,7 +36,8 @@ class Parada_Model extends CI_Model {
 			." TIMESTAMPDIFF(MINUTE,inicio_parada,fim_parada) as t_parada"
 			." FROM tb_parada".
 			" JOIN tb_tipo_parada USING(idtipo_parada)"
-			." WHERE ".$coluna." = ".$valor;
+			." WHERE ".$coluna." = ".$valor
+			." ORDER BY inicio_parada ASC";
 		return $this->query($str_query);
 	}
 

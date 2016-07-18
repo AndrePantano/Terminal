@@ -4,18 +4,26 @@
 	<?php $this->load->view("layout/head"); ?> 
 	<script src="<?php echo base_url('assets/data-table/js/data-table-o.js')?>"></script>
 	<script src="<?php echo base_url('assets/data-table/js/dataTables.bootstrap.js')?>"></script>
+	<script src="<?php echo base_url('assets/data-table/js/moment.js')?>"></script>
+	<script src="<?php echo base_url('assets/data-table/js/datetime-moment.js')?>"></script>
 	<link rel="stylesheet" href="<?php echo base_url('assets/data-table/css/jquery.dataTables.css')?>"/>
 	<link rel="stylesheet" href="<?php echo base_url('assets/data-table/css/dataTables.bootstrap.css')?>"/>
 	<link rel="stylesheet" href="<?php echo base_url('assets/data-table/css/andre_dataTable.css')?>"/>
 
 	<script type="text/javascript">
 		$("document").ready(function(){
+			
+    		$.fn.dataTable.moment( 'DD/MM/YY HH:mm' );
+		
 			$('#table').DataTable({
-				//order: [[ 2, "asc" ]],
-				paging: true,
-        		select: true
+				paginate:true,
+				order: [[ 2, "desc" ]]
 			});
 			
+			$("#table > tbody > tr").hover(function(){
+				$(this).css("cursor","pointer");
+			});
+
 		});
 	</script>
 	<title><?=$main['name']?></title>
@@ -27,6 +35,7 @@
 	<div class="row">
 		<div class="col-sm-12">			
 			<h1 class="page-header"><i class="<?=$main['icon']?>"></i> <?=$main['name']?></h1>
+			<p class="text-muted">Os trens da tabela abaixo são exibidos por ordem de chegada, do mais recente para o mais antigo.</p>
 		</div>
 	</div>
 
@@ -47,19 +56,21 @@
 								<table class="table table-hover" id="table">
 									<thead>
 										<tr>
-											<th>Cód.</th>
-											<th>Trem</th>
-											<th>Data Chegada</th>
-											<th>Data Partida</th>
+											<!-- th>Cód.</th -->
+											<th class="text-center">Trem</th>
+											<th class="text-center">Qtd. Vagões</th>
+											<th class="text-center">Data Chegada</th>
+											<th class="text-center">Data Partida</th>											
 										</tr>
 									</thead>
-									<tbody>
+									<tbody class="text-center">
 										<?php foreach ($trens as $value): ?>
 											<tr onclick="javascript:window.location.href = '<?=base_url('trem/trem/'.$value['idtrem'])?>'" >
-												<td><?= $value['idtrem']?></td>
+												<!-- td><?= $value['idtrem']?></td -->
 												<td><?= $value['prefixo_trem']?></td>
-												<td><?= date("d/m/Y H:i",strtotime($value['chegada_trem']))?></td>
-												<td><?= date("d/m/Y H:i",strtotime($value['partida_trem']))?></td>
+												<td><?= $value['qtd_vagoes']?></td>
+												<td><?= date("d/m/y H:i",strtotime($value['chegada_trem']))?></td>
+												<td><?= date("d/m/y H:i",strtotime($value['partida_trem']))?></td>
 											</tr>
 										<?php endforeach; ?>
 									</tbody>						

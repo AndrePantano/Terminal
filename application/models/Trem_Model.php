@@ -26,21 +26,21 @@ class Trem_Model extends CI_Model {
 	}
 
 	public function em_transito(){
-		$str = "SELECT * FROM tb_trem t JOIN tb_previsao_chegada USING(idtrem) WHERE chegada_trem is null AND partida_trem is null AND idprevisao = (SELECT MAX(idprevisao) from tb_previsao_chegada WHERE idtrem = t.idtrem)";
+		$str = "SELECT *, (SELECT SUM(qtd_vagoes) FROM tb_operacao WHERE idtrem = t.idtrem) as qtd_vagoes FROM tb_trem t JOIN tb_previsao_chegada USING(idtrem) WHERE chegada_trem is null AND partida_trem is null AND idprevisao = (SELECT MAX(idprevisao) from tb_previsao_chegada WHERE idtrem = t.idtrem)";
 		return $this->query($str);
 	}
 
 	public function em_operacao(){
-		$str = "SELECT * FROM tb_trem WHERE chegada_trem is not null AND partida_trem is null";
+		$str = "SELECT * , (SELECT SUM(qtd_vagoes) FROM tb_operacao WHERE idtrem = tb_trem.idtrem) as qtd_vagoes FROM tb_trem WHERE chegada_trem is not null AND partida_trem is null";
 		return $this->query($str);
 	}
 	public function operados(){
-		$str = "SELECT * FROM tb_trem WHERE chegada_trem is not null AND partida_trem is not null";
+		$str = "SELECT *, (SELECT SUM(qtd_vagoes) FROM tb_operacao WHERE idtrem = tb_trem.idtrem) as qtd_vagoes FROM tb_trem WHERE chegada_trem is not null AND partida_trem is not null";
 		return $this->query($str);
 	}
 
 	public function query($str_query){
-		echo $str_query;
+		//echo $str_query;
 		$query = $this->db->query($str_query);
 
 		if($query->num_rows()){						
