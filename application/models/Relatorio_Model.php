@@ -35,7 +35,8 @@ class Relatorio_Model extends CI_Model {
 			." JOIN tb_trem USING(idtrem)"
 			." WHERE "
 				."chegada_trem BETWEEN '".date("Y-m-d",strtotime($inicio))."' AND '".date("Y-m-d",strtotime($fim))."'"
-				." AND chegada_trem IS NOT NULL AND partida_trem IS NOT NULL ";
+				." AND chegada_trem IS NOT NULL AND partida_trem IS NOT NULL "
+				." ORDER BY chegada_trem ASC";
 
 		//echo $str."<br/>";
 
@@ -188,11 +189,12 @@ class Relatorio_Model extends CI_Model {
 			." WHERE "
 				."chegada_trem"
 					." BETWEEN "
-						."'".date("Y-m-d",strtotime($inicio))."'"
+						." '".date("Y-m-d",strtotime($inicio))."'"
 						." AND "
-						."'".date("Y-m-d",strtotime($fim))."'"
+						." '".date("Y-m-d",strtotime($fim))."'"
 						." AND "
-						."chegada_trem IS NOT NULL";
+						." chegada_trem IS NOT NULL"
+						." ORDER BY chegada_trem ASC";
 
 		//echo $str."<br/>";
 
