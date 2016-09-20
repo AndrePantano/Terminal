@@ -80,6 +80,9 @@
                           <th width="115px">Conteiner</th>
                           <th>Avaria</th>
                           <th>Observação</th>
+                          <?php if($this->session->userdata('idperfil')==1):?>
+                            <th width="120px">Alterado por:</th>
+                          <?php endif; ?>
                         </tr>
                       </thead>
                       <tbody>
@@ -88,6 +91,9 @@
                             <td class="conteiner<?=$avaria['idavaria']?>"><?= $avaria['conteiner']?></td>
                             <td class="grupo_avaria<?=$avaria['idavaria']?>" data-nome="<?=$avaria['nome_avaria']?>" data-id="<?=$avaria['idgrupo_avaria_conteiner']?>"><?= $avaria['nome_avaria']?></td>
                             <td class="observacao<?=$avaria['idavaria']?>"><?= $avaria['observacao']?></td>
+                            <?php if($this->session->userdata('idperfil')==1):?>
+                              <td><?= ucwords($avaria["nome"])?></td>
+                            <?php endif; ?>
                           </tr>
                         <?php endforeach;?> 
                       </tbody>            
