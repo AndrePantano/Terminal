@@ -62,6 +62,7 @@ class Trem_Model extends CI_Model {
 		." TIMESTAMPDIFF(HOUR, ".$inicio." + INTERVAL ".$diff_dias.",".$fim.") AS horas ,"
 		." TIMESTAMPDIFF(MINUTE, ".$inicio." + INTERVAL ".$diff_horas.",".$fim.") AS minutos"
 		." FROM tb_trem"
+		." JOIN tb_usuario USING(idusuario)"
 		." WHERE idtrem = ".$id;
 
 		$trens = $this->query($str_query);

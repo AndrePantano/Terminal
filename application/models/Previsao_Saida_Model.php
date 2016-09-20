@@ -36,7 +36,7 @@ class Previsao_Saida_Model extends CI_Model {
 	}
 
 	public function previsoes_saida($coluna, $valor){
-		$str = "SELECT * FROM ".$this->table." WHERE ".$coluna." =".$valor;
+		$str = "SELECT * FROM ".$this->table." JOIN tb_usuario USING(idusuario) WHERE ".$coluna." =".$valor;
 		return $this->query($str);
 	}
 

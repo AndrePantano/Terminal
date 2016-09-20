@@ -11,6 +11,7 @@ class TipoParada_Model extends CI_Model {
 	public function all(){
 		$this->db->select("*");
 		$this->db->from($this->table);
+		$this->db->order_by("nome_tipo_parada", "asc");
 		$query = $this->db->get();
 
 		if($query->num_rows()){						

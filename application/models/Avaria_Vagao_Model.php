@@ -34,7 +34,7 @@ class Avaria_Vagao_Model extends CI_Model {
 	}
 
 	public function avarias($coluna, $valor){
-		$str = "SELECT * FROM ".$this->table." WHERE ".$coluna." =".$valor;
+		$str = "SELECT * FROM ".$this->table." JOIN tb_usuario USING(idusuario)  WHERE ".$coluna." =".$valor;
 		return $this->query($str);
 	}
 

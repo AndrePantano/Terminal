@@ -35,7 +35,7 @@ class Avaria_Conteiner_Model extends CI_Model {
 	}
 
 	public function avarias($coluna, $valor){
-		$str = "SELECT * FROM ".$this->table." JOIN tb_grupo_avaria_conteiner USING (idgrupo_avaria_conteiner) WHERE ".$coluna." =".$valor;
+		$str = "SELECT * FROM ".$this->table." JOIN tb_usuario USING(idusuario) JOIN tb_grupo_avaria_conteiner USING (idgrupo_avaria_conteiner) WHERE ".$coluna." =".$valor;
 		return $this->query($str);
 	}
 

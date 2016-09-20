@@ -34,8 +34,9 @@ class Parada_Model extends CI_Model {
 		$str_query = "SELECT *,"
 			." DATE_FORMAT(TIMEDIFF(fim_parada,inicio_parada),'%H:%i') as duracao,"
 			." TIMESTAMPDIFF(MINUTE,inicio_parada,fim_parada) as t_parada"
-			." FROM tb_parada".
-			" JOIN tb_tipo_parada USING(idtipo_parada)"
+			." FROM tb_parada"
+			." JOIN tb_tipo_parada USING(idtipo_parada)"
+			." JOIN tb_usuario USING(idusuario)"
 			." WHERE ".$coluna." = ".$valor
 			." ORDER BY inicio_parada ASC";
 		return $this->query($str_query);

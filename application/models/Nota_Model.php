@@ -36,7 +36,7 @@ class Nota_Model extends CI_Model {
 	}
 
 	public function notas($coluna,$valor){
-		$str_query = "SELECT * FROM ".$this->table." WHERE ".$coluna." = ".$valor;
+		$str_query = "SELECT * FROM ".$this->table." JOIN tb_usuario USING(idusuario) WHERE ".$coluna." = ".$valor;
 		return $this->query($str_query);
 	}
 
