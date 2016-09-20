@@ -75,6 +75,9 @@
                         <tr>
                           <th width="115px">Vagão</th>
                           <th>Descrição da Avaria</th>
+                          <?php if($this->session->userdata('idperfil')==1):?>
+                            <th width="120px">Alterado por:</th>
+                          <?php endif; ?>
                         </tr>
                       </thead>
                       <tbody>
@@ -82,6 +85,9 @@
                           <tr data-id="<?=$avaria['idavaria']?>">
                             <td class="vagao<?=$avaria['idavaria']?>"><?= $avaria['vagao']?></td>
                             <td class="descricao<?=$avaria['idavaria']?>"><?= $avaria['descricao']?></td>
+                            <?php if($this->session->userdata('idperfil')==1):?>
+                               <td><?= ucwords($avaria["nome"])?></td>
+                            <?php endif; ?>
                           </tr>
                         <?php endforeach;?> 
                       </tbody>            
