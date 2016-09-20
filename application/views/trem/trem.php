@@ -69,7 +69,11 @@
 							</div>							
 						</div>
 					</div>
-					<div class="panel-footer"></div>
+					<div class="panel-footer">
+						<?php if($this->session->userdata('idperfil')==1):?>
+							<span>Alterado por: <?= ucwords($trem["nome"]) ?></span>
+						<?php endif; ?>
+					</div>
 				</div>	
 			</div>
 			<div class="col-sm-12">
