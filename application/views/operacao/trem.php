@@ -147,7 +147,13 @@
 									</div>
 							 	</div>
 							 </div>
+							<div class="panel-footer">
+							<?php if($this->session->userdata('idperfil')==1):?>
+								<span>Alterado por: <?= ucwords($operacao["nome"]) ?></span>
+							<?php endif; ?>
+							</div>	
 						</div>
+
 
 						<!-- PAINEL DE PARADAS -->
 						<div class="panel panel-default">
@@ -172,6 +178,9 @@
 															<th>Data Início</th>
 															<th>Data Fim</th>
 															<th>Duração</th>
+															<?php if($this->session->userdata('idperfil')==1):?>
+																<th  width="120px">Alterado por:</th>
+															<?php endif; ?>
 														</tr>
 													</thead>
 													<tbody>
@@ -181,9 +190,12 @@
 															<tr data-id="<?=$parada['idparada']?>" data-linha_operacao="<?=$linha?>" data-idoperacao="<?=$parada["idoperacao"]?>">
 																<td class="ordem_parada<?=$parada['idparada']?>"><?= $k+1 ?></td>
 																<td class="tipo_parada<?=$parada['idparada']?>" data-id="<?= $parada["idtipo_parada"]?>"><?= $parada["nome_tipo_parada"]?></td>
-																<td class="inicio<?=$parada['idparada']?>" data-parada="<?=date('Y-m-d\TH:i',strtotime($parada['inicio_parada']))?>"><?= date("d/m/Y H:i",strtotime($parada["inicio_parada"]))?></td>
-																<td class="fim<?=$parada['idparada']?>" data-parada="<?=date('Y-m-d\TH:i',strtotime($parada['fim_parada']))?>"><?= date("d/m/Y H:i",strtotime($parada["fim_parada"]))?></td>
+																<td class="inicio<?=$parada['idparada']?>" data-parada="<?=date('Y-m-d\TH:i',strtotime($parada['inicio_parada']))?>"><?= date("d/m H:i",strtotime($parada["inicio_parada"]))?></td>
+																<td class="fim<?=$parada['idparada']?>" data-parada="<?=date('Y-m-d\TH:i',strtotime($parada['fim_parada']))?>"><?= date("d/m H:i",strtotime($parada["fim_parada"]))?></td>
 																<td class="<?=$parada['idparada']?>"><?= $parada["duracao"] ?></td>
+																<?php if($this->session->userdata('idperfil')==1):?>
+																	<td><?= ucwords($parada["nome"])?></td>
+																<?php endif; ?>
 															</tr>
 														<?php 
 															list($h,$m) = explode(":",$parada["duracao"]);
@@ -204,6 +216,7 @@
 														<tr>
 															<th colspan="4">Duração Total de Paradas</th>
 															<th><?=$horas.":".$minutos?></th>
+															<td>&nbsp;</td>
 														</tr>
 													</tfoot>
 
