@@ -69,13 +69,19 @@
                         <tr>
                           <th width="150px">Data</th>
                           <th>Atividade</th>
+                          <?php if($this->session->userdata('idperfil')==1):?>
+                            <th>Alterado por:</th>
+                          <?php endif; ?>
                         </tr>
                       </thead>
                       <tbody>
                         <?php foreach ($notas as $nota): ?>
                           <tr data-id="<?=$nota['idnota']?>">
-                            <td><?= date("d/m/Y H:i",strtotime($nota['atualizado_em']))?></td>
+                            <td><?= date("d/m H:i",strtotime($nota['atualizado_em']))?></td>
                             <td class="texto_nota<?=$nota['idnota']?>"><?= $nota['texto_nota']?></td>
+                            <?php if($this->session->userdata('idperfil')==1):?>
+                               <td width="120px"><?= ucwords($nota["nome"])?></td>
+                            <?php endif; ?>
                           </tr>
                         <?php endforeach;?> 
                       </tbody>            
