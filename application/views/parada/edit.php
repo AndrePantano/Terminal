@@ -21,7 +21,7 @@
                       <select name="idtipo_parada" id="edit_tipo_parada" class="form-control input-md" required>
                       <option value="">Selecione uma opção</option>
                       <?php foreach($tipos_paradas as $tipo_parada):?>
-                        <option value="<?=$tipo_parada['idtipo_parada']?>"><?=strtoupper($tipo_parada['nome_tipo_parada'])?></option>
+                        <option value="<?=$tipo_parada['idtipo_parada']?>"><?=$tipo_parada['nome_tipo_parada']?></option>
                       <?php endforeach; ?>
                       </select>
                     </div>
