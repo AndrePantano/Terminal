@@ -71,6 +71,9 @@
 										<tr>
 											<th width="150px">Previsão</th>
 											<th>Motivo</th>
+											<?php if($this->session->userdata('idperfil')==1):?>
+                    				        	<th width="120px">Alterado por:</th>
+					                        <?php endif; ?>
 										</tr>
 									</thead>
 									<tbody>
@@ -78,6 +81,9 @@
 											<tr data-id="<?= $previsao['idprevisao']?>">
 												<td class="data-prev<?= $previsao['idprevisao']?>" data-previsao="<?=date('Y-m-d\TH:i',strtotime($previsao['data_previsao']))?>"><?= date("d/m/Y H:i",strtotime($previsao['data_previsao']))?></td>
 												<td class="motivo-prev<?= $previsao['idprevisao']?>"><?= $previsao['motivo_previsao']?></td>
+												<?php if($this->session->userdata('idperfil')==1):?>
+                               						<td><?= ucwords($previsao["nome"])?></td>
+                            					<?php endif; ?>
 											</tr>
 										<?php endforeach; ?>
 									</tbody>						
