@@ -10,15 +10,13 @@ class Operacao_Model extends CI_Model {
 
 	// INSERE OS DADOS NA TABELA
 	public function create($dados){
-		$dados = $this->acrescentar_metas($dados);
-		$dados = $this->acrescentar_tarifa($dados);
+		$dados = $this->acrescentar_meta_e_tarifa($dados);
 		return $this->db->insert($this->table,$dados);
 	}
 
 	// ATUALIZA OS DADOS NA TABELA
 	public function update($dados){
-		$dados = $this->acrescentar_metas($dados);
-		$dados = $this->acrescentar_tarifa($dados);
+		$dados = $this->acrescentar_meta_e_tarifa($dados);
 		$this->db->where(array("idoperacao" => $dados["idoperacao"]));
 		return $this->db->update($this->table,$dados);
 	}
@@ -43,31 +41,24 @@ class Operacao_Model extends CI_Model {
 		return $this->query($str);
 	}
 
-	public function acrescentar_metas($dados){
-		$this->load->model("Meta_Model");
-	    $metas = $this->Meta_Model->all();
+	public function acrescentar_meta_e_tarifa($dados){
+		$this->load->model("Terminal_Model");
+	    $terminais = $this->Terminal_Model->all();
 
-	    if($metas){
-	     foreach ($metas as $meta) {
-	        if($meta["nome_meta"] == "all") $dados["meta_all"] = $meta["valor_meta"];
-	        if($meta["nome_meta"] == "operação") $dados["meta_operacao"] = $meta["valor_meta"];
-	      } 
-	    }
-
-	    return $dados;
-	}
-
-	public function acrescentar_tarifa($dados){
-		$this->load->model("Tarifa_Model");
-	    $tarifa = $this->Tarifa_Model->tarifa_atual();
-
-	    if($tarifa){
-			$dados["tarifa"] = $tarifa["valor_tarifa"];	        
-	    }
+	    $dados["meta_all"] = 12;
+	    
+		if($terminais){
+			foreach ($terminais as $terminal) {
+				if($terminal["idterminal"] == $this->session->userdata("idterminal")){
+					$dados["meta_operacao"] = $terminal["meta_operacao"];
+					$dados["tarifa"] = $terminal["valor_tarifa"];
+				}
+			}
+		}
 
 	    return $dados;
 	}
-
+	
 	public function contar_registros_do_usuario($idusuario){
 		$str = "SELECT COUNT(idusuario) as quantidade FROM ".$this->table." WHERE idusuario = ".$idusuario;
 		$quantidade = $this->query($str);

@@ -8,11 +8,18 @@ class Relatorios extends CI_Controller {
     parent::__construct();
 
     // SE NÃO HOUVER SESSÃO O USUARIO É REDIRECIONADO PARA A ÁREA DE LOGIN
-    if(!$this->session->has_userdata("idusuario")){
-      redirect("auth/entrar");
-    }
     $this->load->model("Relatorio_Model");
     $this->load->model("Message_Model");
+
+    if(!$this->session->has_userdata("idusuario")){
+      redirect("auth/entrar");
+    }    
+    
+    if($this->session->userdata("ver_relatorios") != "sim" ){
+      $this->Message_Model->message("danger","Você não tem permissão para acessar a página requisitada!");
+      redirect("/");
+    }
+
   }
      
   // RELATÓRIO DE OPERAÇÕES

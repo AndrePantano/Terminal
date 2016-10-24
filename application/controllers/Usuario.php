@@ -107,7 +107,8 @@ class Usuario extends CI_Controller {
         $this->form_validation->set_rules('idusuario','Id do Usuario','required');    
         $this->form_validation->set_rules('nome','Nome','required');    
         $this->form_validation->set_rules('email','Email','valid_email|required');       
-        $this->form_validation->set_rules('ativo','Ativo','required');       
+        $this->form_validation->set_rules('ativo','Ativo','required');      
+        $this->form_validation->set_rules('ver_relatorios','Ver Relatórios','required');      
         $this->form_validation->set_rules('idperfil','Perfil','required');       
         break;
       case 'delete':
@@ -133,6 +134,7 @@ class Usuario extends CI_Controller {
       "nome" => $this->input->post("nome"),
       "email" => $this->input->post("email"),
       "idperfil" => $this->input->post("idperfil"),
+      "ver_relatorios" => "sim",
       "ativo" => "sim"
     );
     
@@ -141,6 +143,7 @@ class Usuario extends CI_Controller {
     //if($this->input->post("reset_senha")) $dados["senha"] = md5("brado");
 
     if($this->input->post("ativo") && $this->input->post("ativo") == "não") $dados["ativo"] = $this->input->post("ativo");
+    if($this->input->post("ver_relatorios") && $this->input->post("ver_relatorios") == "não") $dados["ver_relatorios"] = $this->input->post("ver_relatorios");
 
     return $dados;
   }

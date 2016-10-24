@@ -34,7 +34,7 @@ class Usuario_Model extends CI_Model {
 	}
 
 	public function check_login($dados){
-		$str = "SELECT * FROM ".$this->table." WHERE email = '".$dados["email"]."@brado.com.br' AND senha = '".md5($dados["senha"])."'";
+		$str = "SELECT * FROM ".$this->table." WHERE email = '".$dados["email"]."@brado.com.br' AND senha = '".md5($dados["senha"])."' AND ativo = 'sim'";
 		return $this->query($str);
 	}
 

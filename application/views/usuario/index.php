@@ -37,6 +37,12 @@
 					$(".ativo-sim").prop("checked","true");
 				}
 				
+				if($(".ver_relatorios"+id).data("id") == "não"){
+					$(".ver_relatorios-nao").prop("checked","true");
+				}else{
+					$(".ver_relatorios-sim").prop("checked","true");
+				}
+
 				//SELECIONA O OPTION DO SELECT DE TIPOS DE PERFIS
 				var idperfil = $(".perfil"+id).data("id");			
 				$(".perfil option[value='"+idperfil+"']").prop("selected","selected");
@@ -45,6 +51,7 @@
 				$(".nome_del").text($(".nome"+id).text());
 				$(".email_del").text($(".email"+id).text());
 				$(".ativo_del").text($(".ativo"+id).text());
+				$(".ver_relatorios_del").text($(".ver_relatorios"+id).text());
 				$(".perfil_del").text($(".perfil"+id).text());
 
 				$("#modal_edit").modal("show");
@@ -116,8 +123,9 @@
 										<th width="50px">Cód.</th>
 										<th>Nome</th>
 										<th>Email</th>
-										<th>Ativo</th>
-										<th>Perfil</th>
+										<th style="text-align:center;">Ativo</th>
+										<th style="text-align:center;">Perfil</th>
+										<th style="text-align:center;">Ver Relatórios</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -126,8 +134,9 @@
 											<td><?= $value['idusuario']?></td>
 											<td class="nome<?=$value['idusuario']?>"><?= ucwords($value['nome'])?></td>
 											<td class="email<?=$value['idusuario']?>"><?= $value['email']?></td>
-											<td class="ativo<?=$value['idusuario']?>" data-id="<?= $value['ativo']?>"><?= $value['ativo'] ?></td>
-											<td class="perfil<?=$value['idusuario']?>" data-id="<?= $value['idperfil']?>"><?= $value['nome_perfil']?></td>
+											<td align="center" class="ativo<?=$value['idusuario']?>" data-id="<?= $value['ativo']?>"><?= $value['ativo'] ?></td>
+											<td align="center" class="perfil<?=$value['idusuario']?>" data-id="<?= $value['idperfil']?>"><?= $value['nome_perfil']?></td>
+											<td align="center" class="ver_relatorios<?=$value['idusuario']?>" data-id="<?= $value['ver_relatorios']?>"><?= $value['ver_relatorios'] ?></td>
 										</tr>
 									<?php endforeach; ?>
 								</tbody>						

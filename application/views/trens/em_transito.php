@@ -33,7 +33,7 @@
 
 	<div class="row">
 		<div class="col-sm-12">			
-			<h1 class="page-header"><i class="<?=$main['icon']?>"></i> <?=$main['name']?></h1>
+			<h2 class="page-header"><i class="<?=$main['icon']?>"></i> <?=$main['name']?></h2>
 			<p class="text-muted">Os trens da tabela abaixo são exibidos pela ordem da previsão de chegada, do primeiro para o último a chegar.</p>
 		</div>
 	</div>
@@ -50,7 +50,7 @@
 					<div class="panel panel-default">
 						<div class="panel-heading"></div>
 						<div class="panel-body">
-							<?php if(count($trens) > 0 ): ?>				
+							<?php if(count($trens) > 0 ): ?>
 							
 									<table class="table table-hover" id="table">
 										<thead>
@@ -71,13 +71,14 @@
 												</tr>
 											<?php endforeach; ?>
 										</tbody>						
-									</table>
-								
+									</table>								
 							<?php else: ?>
 								<div class="jumbotron">
-								  <h1>Não há trens em trânsito!</h1>
-								  <p>Para adicionar um trem, clique no botão abaixo.</p>
-								  <p><a class="btn btn-primary btn-lg" data-target="#modal_add_trem" data-toggle="modal" role="button">Adicionar Trem</a></p>
+								  <h2>Não há trens cadastrados!</h2>
+								  	<?php if($this->session->userdata('idperfil')!=3):?>
+								  		<p>Para adicionar um trem, clique no botão abaixo.</p>
+								  		<p><a class="btn btn-primary btn-lg" href="#" data-target="#modal_add_trem" data-toggle="modal" role="button">Adicionar Trem</a></p>
+									<?php endif; ?>
 								</div>
 							<?php endif; ?>
 						</div>

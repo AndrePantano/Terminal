@@ -11,47 +11,59 @@
           </div>
           <div class="modal-body">
             <div class="form-group">
-            <label class="col-md-3 control-label" for="nome">Nome:</label>  
-            <div class="col-md-6">
-              <input name="nome" type="text" placeholder="Nome" class="form-control input-md nome" required minlength="5" maxlength="40">
+              <label class="col-md-3 control-label" for="nome">Nome:</label>  
+              <div class="col-md-6">
+                <input name="nome" type="text" placeholder="Nome" class="form-control input-md nome" required minlength="5" maxlength="40">
+              </div>
             </div>
-          </div>
 
-          <div class="form-group">
-            <label class="col-md-3 control-label" for="email">Email:</label>  
-            <div class="col-md-6">
-              <!-- div class="input-group" -->
-                <input name="email" type="email" placeholder="email@site.com"  class="form-control input-md email" required >
-                <!-- span class="input-group-addon">
-                  @brado.com.br
-                </span>
-              </div-->
+            <div class="form-group">
+              <label class="col-md-3 control-label" for="email">Email:</label>  
+              <div class="col-md-6">
+                <!-- div class="input-group" -->
+                  <input name="email" type="email" placeholder="email@site.com"  class="form-control input-md email" required >
+                  <!-- span class="input-group-addon">
+                    @brado.com.br
+                  </span>
+                </div-->
+              </div>
             </div>
-          </div>
 
-          <div class="form-group">
-            <label class="col-md-3 control-label">Ativo</label>
-            <div class="col-md-6"> 
-              <label class="radio-inline">
-                <input type="radio" class="ativo-sim" name="ativo" value="sim">Sim
-              </label> 
-              <label class="radio-inline">
-                <input type="radio" class="ativo-nao" name="ativo" value="não">Não
-              </label>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Ativo</label>
+              <div class="col-md-6"> 
+                <label class="radio-inline">
+                  <input type="radio" class="ativo-sim" name="ativo" value="sim">Sim
+                </label> 
+                <label class="radio-inline">
+                  <input type="radio" class="ativo-nao" name="ativo" value="não">Não
+                </label>
+              </div>
             </div>
-          </div>
 
-          <div class="form-group">
-            <label class="col-md-3 control-label" for="quantidade">Perfil:</label>  
-            <div class="col-md-6">
-              <select name="idperfil" class="form-control input-md perfil" required>
-                <option value="">Selecione uma opção</option>
-                <?php foreach($perfis as $perfil):?>
-                  <option value="<?=$perfil['idperfil']?>"><?=strtoupper($perfil['nome_perfil'])?></option>
-                <?php endforeach; ?>
-              </select>
+            <div class="form-group">
+              <label class="col-md-3 control-label" for="quantidade">Perfil:</label>  
+              <div class="col-md-6">
+                <select name="idperfil" class="form-control input-md perfil" required>
+                  <option value="">Selecione uma opção</option>
+                  <?php foreach($perfis as $perfil):?>
+                    <option value="<?=$perfil['idperfil']?>"><?=strtoupper($perfil['nome_perfil'])?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
             </div>
-          </div>
+
+            <div class="form-group">
+              <label class="col-md-3 control-label">Ver Relatórios</label>
+              <div class="col-md-6"> 
+                <label class="radio-inline">
+                  <input type="radio" class="ver_relatorios-sim" name="ver_relatorios" value="sim">Sim
+                </label> 
+                <label class="radio-inline">
+                  <input type="radio" class="ver_relatorios-nao" name="ver_relatorios" value="não">Não
+                </label>
+              </div>
+            </div>
 
           </div>
           <div class="modal-footer">

@@ -52,4 +52,10 @@ class Parada_Model extends CI_Model {
 		$quantidade = $this->query($str);
 		return $quantidade[0]["quantidade"];
 	}
+
+	public function contar_registros_tipo_parada($idtipo_parada){
+		$str = "SELECT COUNT(idtipo_parada) as quantidade FROM ".$this->table." WHERE idtipo_parada = ".$idtipo_parada;
+		$quantidade = $this->query($str);
+		return $quantidade[0]["quantidade"];
+	}
 }

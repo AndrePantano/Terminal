@@ -48,9 +48,7 @@ class Trem extends CI_Controller {
       return $this->load->view('trem/trem',$dados);
 
     }else{
-      $dados["heading"] = "Registro Inexistente.";
-      $dados["message"] = "Este registro não se encontra em nossa base de dados!";
-      $this->load->view('errors/cli/error_404',$dados);
+      $this->Message_Model->trem_inexistente();      
     }    
   }
 
@@ -118,7 +116,8 @@ class Trem extends CI_Controller {
       "prefixo_trem" => strtoupper($this->input->post("trem")),
       "chegada_trem" => $chegada,
       "partida_trem" => $partida,
-      "idusuario" => $this->session->userdata("idusuario")
+      "idusuario" => $this->session->userdata("idusuario"),
+      "idterminal" => $this->session->userdata("idterminal")
     );
     
     if($this->input->post("idtrem")){

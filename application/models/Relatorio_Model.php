@@ -35,7 +35,7 @@ class Relatorio_Model extends CI_Model {
 			." JOIN tb_trem USING(idtrem)"
 			." WHERE "
 				."chegada_trem BETWEEN '".date("Y-m-d",strtotime($inicio))."' AND '".date("Y-m-d",strtotime($fim))."'"
-				." AND chegada_trem IS NOT NULL AND partida_trem IS NOT NULL "
+				." AND chegada_trem IS NOT NULL AND partida_trem IS NOT NULL AND tb_trem.idterminal = ".$this->session->userdata("idterminal")
 				." ORDER BY chegada_trem ASC";
 
 		//echo $str."<br/>";
@@ -133,16 +133,20 @@ class Relatorio_Model extends CI_Model {
 					array_push($mi_duracao,$this->converter_tempo($mi));
 					array_push($tu_duracao,$this->converter_tempo($tempo_util));
 
+					$act = $tev = 0;
+					
+					if($this->session->userdata("idterminal") == 1){
+						
 					// ALIMENTA OS ARRAYS DE VALORES MONETÁRIOS
-					$act = 0;
-					if($tempo_util > $mt_operacao)
-						$act = (($tempo_util - $mt_operacao) * ($operacao["tarifa"] /60) ) * $operacao["qtd_vagoes"];
-					array_push($a_cobrar_terloc,$act);
+						if($tempo_util > $mt_operacao)
+							$act = (($tempo_util - $mt_operacao) * ($operacao["tarifa"] /60) ) * $operacao["qtd_vagoes"];
 
 					// SE O TEMPO DE ESTADIA FOR SUPERIOR A 24 HORAS
-					$tev = 0;
-					if($operacao["t_estadia"] > 1440)
-						$tev = (($operacao["t_estadia"] - 1440) * ($operacao["tarifa"] /60) ) * $operacao["qtd_vagoes"];
+						if($operacao["t_estadia"] > 1440)
+							$tev = (($operacao["t_estadia"] - 1440) * ($operacao["tarifa"] /60) ) * $operacao["qtd_vagoes"];
+					}
+					
+					array_push($a_cobrar_terloc,$act);
 					array_push($estadia_vagoes,$tev);
 
 			}
@@ -194,6 +198,8 @@ class Relatorio_Model extends CI_Model {
 						." '".date("Y-m-d",strtotime($fim))."'"
 						." AND "
 						." chegada_trem IS NOT NULL"
+						."	AND "
+						."	idterminal = ".$this->session->userdata("idterminal")
 						." ORDER BY chegada_trem ASC";
 
 		//echo $str."<br/>";

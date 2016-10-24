@@ -78,9 +78,11 @@
 							
 						<?php else: ?>
 							<div class="jumbotron">
-							  <h1>Não há trens neste período!</h1>
-							  <p>Para adicionar um trem, clique no botão abaixo.</p>
-							  <p><a class="btn btn-primary btn-lg" href="<?= base_url('ads/insert') ?>" role="button">Adicionar Trem</a></p>
+							  <h2>Não há trens cadastrados!</h2>
+							  	<?php if($this->session->userdata('idperfil')!=3):?>
+							  		<p>Para adicionar um trem, clique no botão abaixo.</p>
+							  		<p><a class="btn btn-primary btn-lg" href="#" data-target="#modal_add_trem" data-toggle="modal" role="button">Adicionar Trem</a></p>
+								<?php endif; ?>
 							</div>
 						<?php endif; ?>
 					</div>

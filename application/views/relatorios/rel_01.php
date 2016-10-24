@@ -82,8 +82,11 @@
                     <th title="Parada de Manobra ou Inversão">P. Man. / Inv.</th>
                     <th title="Parada Rodoviária">P. Rodo.</th>
                     <th title="Tempo de B.O.">T. B.O.</th>
-                    <th title="A Cobrar TERLOC" width="110px">AC. TERLOG</th>
-                    <th title="Estadia de Vagão" width="110px">Est.Vagão</th>
+
+                    <?php if($this->session->userdata("idterminal") == 1):?>
+                      <th title="A Cobrar TERLOC" width="110px">AC. TERLOG</th>
+                      <th title="Estadia de Vagão" width="110px">Est.Vagão</th>
+                    <?php endif;?>
                   </tr>
                 </thead>
                 <tbody>
@@ -101,8 +104,10 @@
                       <td <?=$relatorio["mi_valores"][$i] == 0?"class='text-muted'":""?> ><?= str_replace(".", ":", $relatorio["mi_valores"][$i])?></td>
                       <td <?=$relatorio["pr_valores"][$i] == 0?"class='text-muted'":""?> ><?= str_replace(".", ":", $relatorio["pr_valores"][$i])?></td>
                       <td <?=$relatorio["bo_valores"][$i] == 0?"class='text-muted'":""?> ><?= str_replace(".", ":", $relatorio["bo_valores"][$i])?></td>
-                      <td <?=$relatorio["a_cobrar_terloc"][$i] == 0?"class='text-muted'":""?> >R$<span class="pull-right"><?= number_format($relatorio["a_cobrar_terloc"][$i],2,",",".")?></span></td>
-                      <td <?=$relatorio["estadia_vagoes"][$i] == 0?"class='text-muted'":""?> >R$<span class="pull-right"><?= number_format($relatorio["estadia_vagoes"][$i],2,",",".")?></span></td>
+                      <?php if($this->session->userdata("idterminal") == 1):?>
+                        <td <?=$relatorio["a_cobrar_terloc"][$i] == 0?"class='text-muted'":""?> >R$<span class="pull-right"><?= number_format($relatorio["a_cobrar_terloc"][$i],2,",",".")?></span></td>
+                        <td <?=$relatorio["estadia_vagoes"][$i] == 0?"class='text-muted'":""?> >R$<span class="pull-right"><?= number_format($relatorio["estadia_vagoes"][$i],2,",",".")?></span></td>
+                      <?php endif; ?>
                     </tr>
                   <?php
 
@@ -116,9 +121,13 @@
                     <th><?=count($relatorio["labels"])?> Operações</th>
                     <th>&nbsp;</th>
                     <th><?= $total_vagoes ?></th>
-                    <th colspan="5">&nbsp;</th>
-                    <th>R$<span class="pull-right"><?= number_format($soma_act,2,",",".")?></span></th>
-                    <th>R$<span class="pull-right"><?= number_format($soma_tev,2,",",".")?></span></th>
+                    <?php if($this->session->userdata("idterminal") == 1):?>
+                      <th colspan="5">&nbsp;</th>
+                      <th>R$<span class="pull-right"><?= number_format($soma_act,2,",",".")?></span></th>
+                      <th>R$<span class="pull-right"><?= number_format($soma_tev,2,",",".")?></span></th>
+                    <?php else: ?>
+                      <th colspan="7">&nbsp;</th>
+                    <?php endif; ?>
                   </tr>
                 </tfoot>
               </table>

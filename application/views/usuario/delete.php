@@ -49,7 +49,16 @@
                     <div class="col-sm-6">
                       <span class="perfil_del"></span>
                     </div>
-                  </div> 
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <span class="pull-right">Ver Relatórios:</span>
+                    </div>
+                    <div class="col-sm-6">
+                      <span class="ver_relatorios_del"></span>
+                    </div>
+                  </div>  
                 
                 </div>
               </div>

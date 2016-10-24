@@ -23,11 +23,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div class="row">
     <div class="col-sm-12">
         <div class="jumbotron">
-            <h1>Ol&aacute;! Seja bem vindo.</h1>
-            <p class="text-muted">A planilha de Movimentação dos trens da CESARI está em novo formato.</p>
-            <p class="text-muted">Trens, Previsões de Chegada, Operações e Notas de Atividades estão mais simples de inserir e localizar.</p>
-        </div>
-    </div>
+            <?php if($this->session->has_userdata("idterminal")):?>
+              <h2><i class="fa fa-thumbs-up"></i> Ok! Você está na <?= $this->session->userdata("nome_terminal")?>.</h2>
+              <p>Utilize o menu superior para obter mais informações dos trens deste terminal.</p>
+            <?php else: ?>
+              <h2>Ol&aacute; <?= $this->session->userdata("nome")?>!</h2>
+              <p class="text-muted">Seja bem vindo ao Sistema de Movimentação de Trens.</p>
+              <p class="text-muted">Selecione um terminal acima para ter mais informações.</p>
+            <?php endif; ?>            
+        </div>        
+    </div>    
 </div>
 
 <?php $this->load->view("layout/rodape"); ?>

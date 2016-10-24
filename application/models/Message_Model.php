@@ -15,4 +15,9 @@ class Message_Model extends CI_Model {
     $this->session->set_flashdata($msg);
   }
 
+  public function trem_inexistente(){
+    $this->message('danger','Não existe este registro no banco de dados,<br/> ou este resgistro não pertence ao terminal atual.');
+    redirect('/');
+  }
+
 }

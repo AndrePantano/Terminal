@@ -99,11 +99,7 @@ class Previsaosaida extends CI_Controller {
       $this->load->view('previsaosaida/trem',$dados);
 
     }else{
-
-      $dados["heading"] = "Registro Inexistente.";
-      $dados["message"] = "Este registro não se encontra em nossa base de dados!";
-      $this->load->view('errors/cli/error_404',$dados);
-      redirect("/");
+      $this->Message_Model->trem_inexistente();
     }
 
   }

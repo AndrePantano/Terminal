@@ -49,6 +49,7 @@ class Auth extends CI_Controller {
         $this->session->set_userdata("idusuario",$usuario["idusuario"]);
         $this->session->set_userdata("nome",$usuario["nome"]);
         $this->session->set_userdata("idperfil",$usuario["idperfil"]);
+        $this->session->set_userdata("ver_relatorios",$usuario["ver_relatorios"]);
         redirect("/");
 
       }else{
@@ -88,6 +89,10 @@ class Auth extends CI_Controller {
     unset($_SESSION["idusuario"]);
     unset($_SESSION["nome"]);
     unset($_SESSION["perfil"]);
+    unset($_SESSION["idterminal"]);
+    unset($_SESSION["nome_terminal"]);
+    unset($_SESSION["sigla_terminal"]);
+    unset($_SESSION["terminais"]);
     $this->redireciona();
   }
 
