@@ -61,6 +61,7 @@
             <ul class="dropdown-menu">
               <li><a href="<?= base_url('relatorios/rel_01')?>"><i class="fa fa-bar-chart"></i> Painel Operações</a></li>
               <li><a href="<?= base_url('relatorios/rel_02')?>"><i class="fa fa-bar-chart"></i> Painel Trens</a></li>
+              <li><a href="<?= base_url('relatorios/rel_03')?>"><i class="fa fa-bar-chart"></i> Painel Prev. Chegadas</a></li>
             </ul>
           </li>
         <?php endif;?>

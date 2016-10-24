@@ -273,6 +273,140 @@ class Relatorio_Model extends CI_Model {
 		
 	}
 
+	// RELATORIO DE PREVISÃO DE CHEGADA
+	public function rel_03($inicio,$fim){
+
+		$this->load->model("Trem_Model");
+
+		// RETORNA FALSE SE O INICIO FOR MAIOR QUE O FIM
+		if($inicio > $fim) return false;
+
+		$str = "SELECT *"
+			//." DATE_FORMAT(partida_trem,'%d/%m/%Y %H:%i') as partida" 			
+			." FROM tb_trem"			
+			." WHERE "
+				."chegada_trem"
+					." BETWEEN "
+						." '".date("Y-m-d",strtotime($inicio))."'"
+						." AND "
+						." '".date("Y-m-d",strtotime($fim))."'"
+						." AND "
+						." chegada_trem IS NOT NULL"
+						."	AND "
+						."	idterminal = ".$this->session->userdata("idterminal")
+						." ORDER BY partida_trem DESC";
+
+		//echo $str."<br/>";
+
+		$trens = $this->query($str);
+
+		$dados = array();
+
+		if($trens){
+		
+			$deltas = array();
+			$previsoes = array();
+
+			foreach ($trens as $trem) {
+
+				$str = "SELECT * FROM tb_previsao_chegada WHERE idtrem = ".$trem["idtrem"]." ORDER BY idprevisao DESC LIMIT 4";
+				$previsoes = $this->query($str);
+
+				$array_previsoes = array();
+				$array_deltas = array();
+				$array_deltas_color = array();
+
+				if($previsoes){
+					for($i=0;$i<4;$i++){ // RODA 4 VEZES					
+						if(array_key_exists($i, $previsoes)){
+							
+							array_push($array_previsoes,date("d/m H:i",strtotime($previsoes[$i]["data_previsao"])));
+
+							// RETORNA O DELTA DE ENTRE CADA PREVISÃO
+							if($i > 0){
+								$datatime1 = new DateTime($previsoes[$i - 1]["data_previsao"]);
+								$datatime2 = new DateTime($previsoes[$i]["data_previsao"]);
+
+								$cod = "";
+								if($datatime1 > $datatime2){ // SE A PREVISAO FOR MAIOR QUE A CHEGADA
+									$cod = "+";
+								}elseif($datatime1 < $datatime2){ // SE PREVISAO FOR MENOR QUE A CHEGADA
+									$cod = "-";
+								}
+
+								$diff = $datatime1->diff($datatime2);
+								$horas = $diff->format("%H");
+
+								// RETORNA A COR DO DELTA 
+								if($diff->format('%H') != 0){
+									if($diff->format('%H') > 10 ){
+										$color = '#FF7417'; // fora
+									}else{
+										$color = '#0F0'; // dentro
+									}
+								}else{
+									$color = 'null'; // dentro
+								}
+
+								array_push($array_deltas, $cod." ".$horas);
+								array_push($array_deltas_color, $color);
+							}
+
+							// RETORNA SOMENTE O DELTA ENTRE A ULTIMA PREVISAO E A DATA DE CHEGADA
+							if($i == 0){
+								
+								$datatime1 = new DateTime($previsoes[$i]["data_previsao"]);
+								$datatime2 = new DateTime($trem["chegada_trem"]);
+
+								$diff = $datatime1->diff($datatime2);
+								
+								$cod = "";
+								if($datatime1 > $datatime2){ // SE A PREVISAO FOR MAIOR QUE A CHEGADA
+									$cod = "-";
+								}elseif($datatime1 < $datatime2){ // SE PREVISAO FOR MENOR QUE A CHEGADA
+									$cod = "+";
+								}
+
+								$delta_f = $cod." ".$diff->format('%H:%I');
+ 				
+								if($diff->format('%H') >= 3){
+									$color = '#FF7417'; // fora
+								}else{
+									$color = '#0F0'; // dentro
+								}
+
+							}
+
+						}else{
+							array_push($array_previsoes,"null");
+							array_push($array_deltas, "null");
+							array_push($array_deltas_color, "null");
+						}
+					}
+				}
+
+				$linha = array(
+					"prefixo" 		=> $trem["prefixo_trem"],
+					"chegada" 		=> date("d/m H:i",strtotime($trem["chegada_trem"])),
+					"previsoes" 	=> array_reverse($array_previsoes),
+					"deltas" 		=> array_reverse($array_deltas),
+					"deltas_color" 	=> array_reverse($array_deltas_color),
+					"delta_f"		=> $delta_f,
+					"color"			=> $color
+				);
+
+				array_push($dados, $linha);
+
+			}
+
+			//echo "<pre>".print_r($dados,1)."</pre>";
+			return $dados;
+		}
+
+		return false;
+	}
+
+
 	public function converte_em_hora($tempo){
 
 		//$segundos = $minutos = $horas = 0;
@@ -315,4 +449,5 @@ class Relatorio_Model extends CI_Model {
 		
 		return  $horas.".".$minutos;
 	}
+
 }

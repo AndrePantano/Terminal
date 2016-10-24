@@ -94,4 +94,39 @@ class Relatorios extends CI_Controller {
     $this->load->view("relatorios/rel_02",$dados);
   }
 
+  // RELATÓRIO DE TRENS
+  public function rel_03(){
+
+    $relatorio = array();
+    
+    $inicio = date("Y-m-")."01";
+    $fim = date("Y-m-d");
+
+    if($this->input->post("inicio") && $this->input->post("fim")){
+      $inicio =  $this->input->post("inicio");
+      $fim = $this->input->post("fim");
+    }
+
+    // VERIFICA SE A DATA INICIO É MAIOR QUE A DATA FIM;
+    if(strtotime($inicio) > strtotime($fim)){
+      $this->Message_Model->message("danger","A data início do período não pode ser maior que a data término!");
+    }else{
+      // REALIZA DA PESQUISA
+      $relatorio = $this->Relatorio_Model->rel_03($inicio,$fim);
+    }
+
+    $dados = array(
+      "main" => array(
+        "name" => "Rel. Prev. Chegadas",
+        "icon" => "fa fa-bar-chart"
+      ),
+      "titulo" => "Rel. Prev. Chegadas",
+      "relatorio" => $relatorio,
+      "tipo_relatorio" => "rel_03",
+      "inicio" => $inicio,
+      "fim" => $fim
+    );
+
+    $this->load->view("relatorios/rel_03",$dados);
+  }
 }
