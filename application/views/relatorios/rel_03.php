@@ -51,11 +51,11 @@
             <div class="table-responsive">
               <p>
                 Período de Apuração: de <?= date("d/m/Y",strtotime($inicio))?> a <?= date("d/m/Y",strtotime($fim))?>.
-                <span class="pull-right"> &Delta;hs até 10hs <span style="color:#0F0;">&block;</span>, acima de 10hs para + ou - <span style="color:#FF7417;">&block;</span></span>
+                <span class="pull-right"> &Delta; Hs até 10hs = <span style="color:#0F0;">&block;</span>, + ou - = <span style="color:#FF7417;">&block;</span></span>
               </p>
               <p>
                 Trens Operados: <?=count($relatorio)?> Trens.
-                <span class="pull-right"> &Delta; Final até 3hs <span style="color:#0F0;">&block;</span>, acima de 3hs para + ou - <span style="color:#FF7417;">&block;</span></span>
+                <span class="pull-right"> &Delta; Final até 3hs = <span style="color:#0F0;">&block;</span>, + ou - = <span style="color:#FF7417;">&block;</span></span>
               </p>              
               <table class="table" style="text-align:center;">
                 <thead>
@@ -74,7 +74,7 @@
                 </thead>
                 <tbody>
                   <?php foreach ($relatorio as $trem):?>
-                    <tr>
+                    <tr data-caminho="<?=base_url('trem/trem/'.$trem['idtrem'])?>">
                       <td><?=$trem["prefixo"]?></td>
                       <?php foreach($trem["previsoes"] as $k => $previsao):?>                        
                         <td><?= $previsao != "null"? $previsao : "---------------" ?></td>
@@ -156,6 +156,16 @@
     <?php endif; */?>
 
     <!-- ?="<pre>".print_r($relatorio,1)."</pre>"? -->
+
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $("tr").click(function(){
+          var caminho = $(this).data("caminho");
+          window.open(caminho,"_blank");
+        });
+      });
+    </script>
+  
   </div>    
 </body>
 </html>
